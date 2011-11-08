@@ -14,7 +14,9 @@
       background,
       foreground;
 
-  window.parallel = function(cars) {
+  window.parallel = function(model) {
+  
+    var cars = model.get('data');
   
     var svg = d3.select("#parallel").append("svg:svg")
         .attr("width", w + m[1] + m[3])
@@ -93,6 +95,27 @@
       .selectAll("rect")
         .attr("x", -8)
         .attr("width", 16);
+        
+    // Handles a brush event, toggling the display of foreground lines.
+    function brush() {
+      var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
+          extents = actives.map(function(p) { return y[p].brush.extent(); });
+      /** To be factored **/
+      var filter = {};
+      _(actives).each(function(key, i) {
+        filter[key] = {
+          min: extents[i][0],
+          max: extents[i][1]
+        }
+      });
+      model.set({filter: filter});
+      /***/
+      foreground.style("display", function(d) {
+        return actives.every(function(p, i) {
+          return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+        }) ? null : "none";
+      });
+    }
   };
 
   function position(d) {
@@ -108,15 +131,5 @@
   function path(d) {
     return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
   }
-
-  // Handles a brush event, toggling the display of foreground lines.
-  function brush() {
-    var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-        extents = actives.map(function(p) { return y[p].brush.extent(); });
-    foreground.style("display", function(d) {
-      return actives.every(function(p, i) {
-        return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-      }) ? null : "none";
-    });
-  }
+  
 })(d3);
