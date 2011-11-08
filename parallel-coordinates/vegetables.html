@@ -30,8 +30,15 @@
 <body>
 
 <div id="main">
-  <h2>Parallel Coordinates</h2>
-  <p>Drag gray handles to constrain filters.<br/>Drag yellow ranges to move filters.<br/>The data table below will update automatically, displaying the filtered dataset.</p>
+  <h2>Vegetable Nutrition with Parallel Coordinates</h2>
+  <p><a href="#" onclick="$('#instructions').fadeIn();$(this).hide();">Instructions</a></p>
+  <div id="instructions" style="display:none;">
+    <p><strong>Hover</strong> your mouse over the chart. There is a translucent gray background while hovering over an axis. The chart will <em>colorize</em> data based on values in that axis.</p>
+    <p>To <em>create</em> a filter on some axes, <strong>click and drag</strong> starting from the area between axes and select the range to filter. To filter a single axis, click and drag within that axis.</p>
+    <p>To <em>move</em> a filter, <strong>drag</strong> it up and down.</p>
+    <p>To <em>destroy</em> a filter, <strong>double click</strong> the translucent gray axis background.</p>
+    <p>&nbsp;</p>
+  </div>
   <div id="parallel-coordinates">
   </div>
   <div style="width:1360px;">

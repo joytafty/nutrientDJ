@@ -191,7 +191,7 @@
         var pos = getPos(this.el, e);
         var start = this.startdrag;
         this.selection.ctx.clearRect(0,0,this.width,this.height);
-        this.selection.ctx.fillStyle = "rgba(55,55,55,0.03)";
+        this.selection.ctx.fillStyle = "rgba(255,235,55,0.4)";
         this.selection.ctx.fillRect(start.x, start.y, pos.x-start.x, pos.y-start.y);
         // apply filter
         _(this.axes).each(function(axis, key) {
@@ -276,10 +276,9 @@
           model: this.model,
           el: this.make('div', {
                 "class": 'axis',
-                "height": this.height-2*(this.gutter.y-10),
                 "rel": this.columns[i],
                 "style": 'top: ' + (this.gutter.y-10) + 'px;' +
-                  'left: ' + ((i * space)-20) + 'px;'
+                  'left: ' + ((i * space)-20) + 'px;height:' + (this.height-2*(this.gutter.y-10)) + 'px;',
               })
         });
 
@@ -327,7 +326,7 @@
       this.cols = [];
 
       if (!self.coloring)
-        var line_stroke = this.lineStroke || "hsla(0,00%,30%," + (1/Math.sqrt(this.size)) + ")";
+        var line_stroke = this.lineStroke || "hsla(0,00%,20%," + (3/Math.sqrt(this.size)) + ")";
       var text_fill = this.textFill || "#222";
       ctx.clearRect(0, 0, w, h);
 
@@ -376,7 +375,7 @@
       // Draw dots
       _(cols).each(function(col,i) {
         self.axes[col].ctx.clearRect(0, 0, 40, self.height);
-        self.axes[col].ctx.fillStyle = 'rgba(80,80,80,0.15)';
+        self.axes[col].ctx.fillStyle = 'rgba(50,50,50,0.35)';
       });
       _(data).each(function(d,k) {
         _(cols).each(function(col,i) {
@@ -398,8 +397,8 @@
 
       _(filtered).each(function(d,k) {
         if (self.coloring) {
-          var frac = Math.round(250*(self.range[self.coloring].max-d[self.coloring])/self.range[self.coloring].size); 
-          ctx.strokeStyle = "hsla(" + frac + ",35%,50%," + (4.5/Math.sqrt(self.size)) + ")";
+          var frac = Math.round((self.range[self.coloring].max-d[self.coloring])/self.range[self.coloring].size); 
+          ctx.strokeStyle = "hsla(" + (250*frac) + ",45%,30%," + (3/Math.sqrt(self.size)) + ")";
         }
 
         ctx.beginPath();

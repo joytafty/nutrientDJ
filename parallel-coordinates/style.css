@@ -43,8 +43,11 @@ body {
 #parallel-coordinates .axis {
   width: 40px;
 }
-#parallel-coordinates .axis-data:hover {
-  background: rgba(55,55,55,0.02);
+#parallel-coordinates .axis:hover {
+  background: rgba(55,55,55,0.2);
+}
+#gray {
+  color: #888;
 }
 .axis-data {
   z-index: 9;
@@ -55,7 +58,7 @@ body {
   z-index: 10;
 }
 .axis-filter.active {
-  background: rgba(55,55,55,0.1);
+  background: rgba(55,55,55,0.3);
 }
 #footer {
   padding: 60px;
