@@ -58,7 +58,7 @@
     check: function(d) {
       var filter = this.get('filter')
       for (key in this.get('filter')) {
-        if ((d[key] <= filter[key].min) || (d[key] >= filter[key].max))
+        if ((d[key] < filter[key].min) || (d[key] > filter[key].max))
           return false;
       }
       return true;
