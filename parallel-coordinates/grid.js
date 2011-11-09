@@ -27,7 +27,7 @@
       this.cols = _(this.columns).map(function(col) {
         return {
           id: col,
-          name: self.alias[col],
+          name: function() { if (self.alias) { return self.alias[col]; } else { return col; } }(), // how to do aliasing?
           field: col,
           width: self.width/self.columns.length
         }
