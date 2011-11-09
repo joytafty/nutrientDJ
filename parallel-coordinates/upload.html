@@ -24,7 +24,6 @@
   <script src="../lib/slickgrid/slick.dataview.js"></script>
   <script src="../lib/slickgrid/slick.pager.js"></script>
   <script src="grid.js"></script>
-  <script src="data/vegetable-table.js"></script>
   <link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
 <style type="text/css">
 #main {
@@ -75,8 +74,8 @@ svg {
 <body>
 
 <div id="main">
-  <h2>Vegetable Nutrition with Parallel Coordinates</h2>
-  <p>Chart from <a href="http://bl.ocks.org/1341281">Parallel Coordinates</a> using d3's new brush control.</p>
+  <h2>CSV Viewer</h2>
+  <p>Upload a CSV file, such as this <a href="data/cars.csv">cars dataset</a></p>
   <div id="controls">
     <input type="file" id="uploader">
   </div>
@@ -91,9 +90,10 @@ svg {
   
   var reader = new FileReader();
   
-  reader.onload = function() {
-    console.log('loaded!');
-    console.log(showResult(reader, "Text"));
+  reader.onload = function(e) {
+    var contents = e.target.result;
+    var data = d3.csv.parse(contents);
+    parallel_grid(data);
   };
   
   var uploader = document.getElementById("uploader");  
@@ -101,7 +101,7 @@ svg {
   
   function handleFiles() {
     var file = this.files[0];
-    console.log(file, reader, reader.readAsText(file));
+    reader.readAsText(file);
   };
 
   function parallel_grid(data) {
@@ -122,8 +122,6 @@ svg {
     slicky.update();
 	};
   
-  parallel_grid(vegetables);
-
   </script>
   <!--
     <p>
