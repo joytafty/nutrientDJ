@@ -55,6 +55,14 @@
       this.set({filtered: filtered});
     },
 
+    outliers: function() {
+      var self = this;
+      var leftovers = _(self.get('data')).reject(function(d,k) {
+        return self.check(d);
+      });
+      this.set({data: leftovers});
+    },
+
     check: function(d) {
       var filter = this.get('filter')
       for (key in this.get('filter')) {

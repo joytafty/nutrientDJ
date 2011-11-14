@@ -41,13 +41,24 @@
       .enter().append("svg:path")
         .attr("d", path);
 
+    // TODO: factor out
+    var foodgroups = ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils", "Poultry Products", "Soups, Sauces, and Gravies", "Sausages and Luncheon Meats", "Breakfast Cereals", "Fruits and Fruit Juices", "Vegetables and Vegetable Products", "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products", "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta", "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
+    var color = d3.scale.category20();
+    var colors = {};
+    _(foodgroups).each(function(group, i) {
+      colors[group] = color(i);
+    });
+
     // Add blue foreground lines for focus.
     foreground = svg.append("svg:g")
         .attr("class", "foreground")
       .selectAll("path")
         .data(cars)
       .enter().append("svg:path")
-        .attr("d", path);
+        .attr("d", path)
+        .attr("style", function(d) {
+          return "stroke:" + colors[d.group] + ";";
+        });
 
     // Add a group element for each dimension.
     var g = svg.selectAll(".dimension")

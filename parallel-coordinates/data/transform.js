@@ -8,58 +8,67 @@ function like(str, name) {
   return name.toLowerCase().indexOf(str) != -1;
 };
 
-var transformed = _(vegetables)
-  .chain()
-  .filter(function(veg) {
-    var nuts = veg.nutrients;
-    return has(203, nuts) && // Protein
-           has(301, nuts) && // Calcium
-           has(307, nuts) && // Sodium
-           has(291, nuts) && // Fiber
-           has(401, nuts) && // Vitamin C
-           has(306, nuts) && // Potassium
-           has(205, nuts) && // Carboyhdrate
-           has(204, nuts) && // Fat
-           has(269, nuts) && // Sugars
-           !(like('powder', veg.name)) &&
-           !(like('dehydrated', veg.name)) &&
-           !(like('dried', veg.name)) &&
-           !(like('canned', veg.name)) &&
-           !(like('fireweed', veg.name)) &&
-           !(like('catsup', veg.name)) &&
-           !(like('chowchow', veg.name)) &&
-           !(like('relish', veg.name)) &&
-           !(like('pickles', veg.name)) &&
-           !(like('cooked', veg.name)) &&
-           !(like('microwaved', veg.name)) &&
-           !(like('baked', veg.name)) &&
-           !(like('mashed', veg.name)) &&
-           !(like('hashed', veg.name)) &&
-           !(like('boiled', veg.name)) &&
-           !(like('pudding', veg.name)) &&
-           !(like('frozen', veg.name)) &&
-           !(like('sauteed', veg.name)) &&
-           !(like('pancakes', veg.name)) &&
-           !(like('souffle', veg.name)) &&
-           !(like('flour', veg.name)) &&
-           !(like('gratin', veg.name));
-    })
-  .map(function(veg) {
-    return {
-      name: veg.name,
-      protein: _(veg.nutrients).find(function(d) { return d.id == "203" }).amount,
-      calcium: _(veg.nutrients).find(function(d) { return d.id == "301" }).amount,
-      sodium: _(veg.nutrients).find(function(d) { return d.id == "307" }).amount,
-      fiber: _(veg.nutrients).find(function(d) { return d.id == "291" }).amount,
-      vitaminc: _(veg.nutrients).find(function(d) { return d.id == "401" }).amount,
-      potassium: _(veg.nutrients).find(function(d) { return d.id == "306" }).amount,
-      carbohydrate: _(veg.nutrients).find(function(d) { return d.id == "205" }).amount,
-      sugars: _(veg.nutrients).find(function(d) { return d.id == "269" }).amount,
-      fat: _(veg.nutrients).find(function(d) { return d.id == "204" }).amount
-    }
-    })
-  .sortBy(function(d) { return d.name; })
-  .value();
+var transformed = [];
 
-  $('body').html("var vegetables = " + JSON.stringify(transformed) + ";");
+_(foodgroups).each(function(group) {
+  var transformed_group = _(group.foods)
+    .chain()
+    .filter(function(food) {
+      var nuts = food.nutrients;
+      return has(203, nuts) && // Protein
+             has(301, nuts) && // Calcium
+             has(307, nuts) && // Sodium
+             has(291, nuts) && // Fiber
+             has(401, nuts) && // Vitamin C
+             has(306, nuts) && // Potassium
+             has(205, nuts) && // Carboyhdrate
+             has(204, nuts) && // Fat
+             has(269, nuts); // Sugars
+             /*
+             !(like('powder', food.name)) &&
+             !(like('dehydrated', food.name)) &&
+             !(like('dried', food.name)) &&
+             !(like('canned', food.name)) &&
+             !(like('fireweed', food.name)) &&
+             !(like('catsup', food.name)) &&
+             !(like('chowchow', food.name)) &&
+             !(like('relish', food.name)) &&
+             !(like('pickles', food.name)) &&
+             !(like('cooked', food.name)) &&
+             !(like('microwaved', food.name)) &&
+             !(like('baked', food.name)) &&
+             !(like('mashed', food.name)) &&
+             !(like('hashed', food.name)) &&
+             !(like('boiled', food.name)) &&
+             !(like('pudding', food.name)) &&
+             !(like('frozen', food.name)) &&
+             !(like('sauteed', food.name)) &&
+             !(like('pancakes', food.name)) &&
+             !(like('souffle', food.name)) &&
+             !(like('flour', food.name)) &&
+             !(like('gratin', food.name));
+             */
+      })
+    .map(function(food) {
+      return {
+        name: food.name,
+        group: group.name,
+        protein: _(food.nutrients).find(function(d) { return d.id == "203" }).amount,
+        calcium: _(food.nutrients).find(function(d) { return d.id == "301" }).amount,
+        sodium: _(food.nutrients).find(function(d) { return d.id == "307" }).amount,
+        fiber: _(food.nutrients).find(function(d) { return d.id == "291" }).amount,
+        vitaminc: _(food.nutrients).find(function(d) { return d.id == "401" }).amount,
+        potassium: _(food.nutrients).find(function(d) { return d.id == "306" }).amount,
+        carbohydrate: _(food.nutrients).find(function(d) { return d.id == "205" }).amount,
+        sugars: _(food.nutrients).find(function(d) { return d.id == "269" }).amount,
+        fat: _(food.nutrients).find(function(d) { return d.id == "204" }).amount
+      }
+      })
+    .sortBy(function(d) { return d.name; })
+    .value();
+
+  transformed = transformed.concat(transformed_group);
+});
+
+  $('body').html("var foods= " + JSON.stringify(transformed) + ";");
 
