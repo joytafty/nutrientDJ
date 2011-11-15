@@ -60,7 +60,12 @@
       var leftovers = _(self.get('data')).reject(function(d,k) {
         return self.check(d);
       });
-      this.set({data: leftovers});
+      self.set({data: leftovers});
+      self.clearFilter();
+    },
+    
+    clearFilter: function() {
+      this.set({filter: {}});
     },
 
     check: function(d) {

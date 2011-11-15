@@ -17,8 +17,8 @@
   window.parallel = function(model) {
   
     var cars = model.get('data');
-  
-    var svg = d3.select("#parallel").append("svg:svg")
+
+    var svg = d3.select("#parallel").html("").append("svg:svg")
         .attr("width", w + m[1] + m[3])
         .attr("height", h + m[0] + m[2])
       .append("svg:g")
@@ -26,7 +26,7 @@
 
     // Extract the list of dimensions and create a scale for each.
     x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
-      return d != "name" && d != "group" &&
+      return d != "name" && d != "group" && d != "id" &&
              d != "Eqid" && d != "Src" && d != "Datetime" && d != "Region" &&   // Earthquake csv
              (y[d] = d3.scale.linear()
           .domain(d3.extent(cars, function(p) { return +p[d]; }))
@@ -42,7 +42,12 @@
         .attr("d", path);
 
     // TODO: factor out
-    var foodgroups = ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils", "Poultry Products", "Soups, Sauces, and Gravies", "Sausages and Luncheon Meats", "Breakfast Cereals", "Fruits and Fruit Juices", "Vegetables and Vegetable Products", "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products", "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta", "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
+    var foodgroups = ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils",
+                      "Poultry Products", "Soups, Sauces, and Gravies", "Sausages and Luncheon Meats",
+                      "Breakfast Cereals", "Fruits and Fruit Juices", "Vegetables and Vegetable Products",
+                      "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
+                      "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
+                      "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
     var color = d3.scale.category20();
     var colors = {};
     _(foodgroups).each(function(group, i) {
