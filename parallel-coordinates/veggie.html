@@ -31,7 +31,11 @@
 
 <div id="main">
   <h2>Vegetable Nutrition with Parallel Coordinates</h2>
-  <p><a href="#" onclick="$('#instructions').fadeIn();$(this).hide();">Instructions</a></p>
+  <p>
+	<a href="#" onclick="$('#instructions').fadeIn();$(this).hide();">Instructions</a>
+    <small><a href="#" id="remove_selected" style="float:right;color:#666;">Remove Selected</a></small>
+	<small><a href="#" id="keep_selected" style="float:right;color:#666;">Keep Selected</a></small>
+  </p>
   <div id="instructions" style="display:none;">
     <p><strong>Hover</strong> your mouse over the chart. There is a translucent gray background while hovering over an axis. The chart will <em>colorize</em> data based on values in that axis.</p>
     <p>To <em>create</em> a filter on some axes, <strong>click and drag</strong> starting from the area between axes and select the range to filter. To filter a single axis, click and drag within that axis.</p>
@@ -116,6 +120,7 @@
 
   parallel.update();
   slicky.update();
+  
   /*
   slicky.bind('columnsReordered', function(cols) {
     var cols = _(cols).reject(function(col) { return col == 'name'});
@@ -123,6 +128,16 @@
     parallel.update()
   });
   */
+  
+  $('#remove_selected').click(function() {
+    dimensions.outliers();
+    parallel(dimensions);
+  });
+  
+  $('#keep_selected').click(function() {
+    dimensions.inliers();
+    parallel(dimensions);
+  });
 
   </script>
   <div id="footer">

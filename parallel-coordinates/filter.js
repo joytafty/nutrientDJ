@@ -60,12 +60,30 @@
       var leftovers = _(self.get('data')).reject(function(d,k) {
         return self.check(d);
       });
+      if (_(leftovers).size() === 0) {
+        if (!confirm("This will remove all the data. Are you sure about this?"))
+          return false;
+      }
+      self.set({data: leftovers});
+      self.clearFilter();
+    },
+    
+    inliers: function() {
+      var self = this;
+      var leftovers = _(self.get('data')).filter(function(d,k) {
+        return self.check(d);
+      });
+      if (_(leftovers).size() === 0) {
+        if (!confirm("This will remove all the data. Are you sure about this?"))
+          return false;
+      }
       self.set({data: leftovers});
       self.clearFilter();
     },
     
     clearFilter: function() {
       this.set({filter: {}});
+      this.trigger('change:filter');  // why necessary?
     },
 
     check: function(d) {

@@ -2,15 +2,94 @@ body {
   font-family: "Lucida Grande", arial, helvetica, clean, sans-serif;
   font-size: 13px;
   line-height: 1.35em;
+  color: #222;
+}
+a {
+  text-decoration: none;
+  background: #fff8d0;
+  color: #222;
+}
+a:visited {
+  color: #777;
+}
+a:hover {
+  color: blue;
 }
 #main {
   width: 1360px;
   margin: 0 auto;
 }
+.widgets h3 {
+  float: left;
+  margin: 12px;
+  font-size: 16px;
+  line-height: 20px;
+}
+.button {
+  font-size: 13px;
+  line-height: 16px;
+  margin: 12px;
+  padding: 2px 8px;
+  background: #ddd;
+  color: #999;
+  text-decoration: none;
+  font-weight: bold;
+  float: right;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+.widget {
+  margin: 12px;
+  padding: 0px 8px;
+  line-height: 11px;
+  color: #999;
+  font-size: 11px;
+  text-align: center;
+  float: right;
+}
+.info {
+  margin: 12px;
+  line-height: 20px;
+  float: right;
+}
+.button:hover {
+  color: #333;
+  background: #eee;
+}
+.button.red:hover {
+  color: #921;
+}
+.button.blue:hover {
+  color: #027;
+}
+.button.green:hover {
+  color: #050;
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
+.gone {
+  display: none;
+}
+h2 {
+  color: #333;
+}
+.intro,
+.outtro {
+  font-size: 16px;
+  line-height: 1.3em;
+  width: 540px;
+}
+.intro li {
+  font-size: 16px;
+}
 /*SlickGrid */
 .slick-header-column {
   font-weight:bold;
-  border-right: none !important;
+  border-right: 1px solid #ddd !important;
 }
 .slick-cell {
   border: none !important;
@@ -42,9 +121,18 @@ body {
 }
 #parallel-coordinates .axis {
   width: 40px;
+  background: rgba(55,55,255,0);
+  -webkit-transition: background 300ms ease-in 200ms;
+  -moz-transition: background 300ms ease-in 200ms;
+  -o-transition: background 300ms ease-in 200ms;
+  transition: background 300ms ease-in 200ms;
 }
 #parallel-coordinates .axis:hover {
   background: rgba(55,55,55,0.2);
+  -webkit-transition: background 300ms ease-in 200ms;
+  -moz-transition: background 300ms ease-in 200ms;
+  -o-transition: background 300ms ease-in 200ms;
+  transition: background 300ms ease-in 200ms;
 }
 #gray {
   color: #888;

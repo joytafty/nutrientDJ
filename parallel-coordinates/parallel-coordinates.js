@@ -278,7 +278,7 @@
                 "class": 'axis',
                 "rel": this.columns[i],
                 "style": 'top: ' + (this.gutter.y-10) + 'px;' +
-                  'left: ' + ((i * space)-20) + 'px;height:' + (this.height-2*(this.gutter.y-10)) + 'px;',
+                  'left: ' + ((i * space)-20+this.gutter.y) + 'px;height:' + (this.height-2*(this.gutter.y-10)) + 'px;',
               })
         });
 
@@ -326,7 +326,7 @@
       this.cols = [];
 
       if (!self.coloring)
-        var line_stroke = this.lineStroke || "hsla(0,00%,20%," + (3/Math.sqrt(this.size)) + ")";
+        var line_stroke = this.lineStroke || "hsla(0,00%,20%," + (5/Math.sqrt(this.size)) + ")";
       var text_fill = this.textFill || "#222";
       ctx.clearRect(0, 0, w, h);
 
@@ -342,6 +342,8 @@
         };
         self.axes[col].range = self.range[col];
       });
+      
+      ctx.textAlign = "center";
 
       // Draw columns
       var space = (w-2-this.gutter.x)/(n-1);
@@ -359,10 +361,10 @@
         //ctx.fillRect(space*i-1, self.gutter.y-12, 2, h-(2*self.gutter.y)+24);
         ctx.fillStyle = text_fill;
         ctx.font = "bold 12px Helvetica";
-        ctx.fillText(name, space*i, 12);
+        ctx.fillText(name, space*i+(self.gutter.x/2), 12);
         ctx.font = "12px Helvetica";
-        ctx.fillText(self.range[col].min, space*i, h-24);
-        ctx.fillText(self.range[col].max, space*i, 28);
+        ctx.fillText(self.range[col].min, space*i+(self.gutter.x/2), h-24);
+        ctx.fillText(self.range[col].max, space*i+(self.gutter.x/2), 28);
       });
       function gutters(gutter, h, d, col) {
         if (self.range[col].size == 0) {
@@ -397,23 +399,24 @@
 
       _(filtered).each(function(d,k) {
         if (self.coloring) {
-          var frac = Math.round((self.range[self.coloring].max-d[self.coloring])/self.range[self.coloring].size); 
-          ctx.strokeStyle = "hsla(" + (250*frac) + ",45%,30%," + (3/Math.sqrt(self.size)) + ")";
+          var frac = (self.range[self.coloring].max-d[self.coloring])/self.range[self.coloring].size; 
+          ctx.strokeStyle = "hsla(" + Math.round(250*frac) + ",45%,30%," + (10/Math.sqrt(self.size)) + ")";
         }
 
         ctx.beginPath();
         var x0 = 0;
         var y0 = 0;
         _(cols).each(function(col,i) {
-          var x = space*i;
+          var x = (self.gutter.x/2) + space*i;
           var y = gutters(self.gutter.y, h, d, col);
           if (i == 0) {
             ctx.moveTo(x, y);
           } else {
             // ctx.lineTo(x, y);
-            var cp1x = x - 0.7*(x-x0);
+            
+            var cp1x = x - 0.8*(x-x0);
             var cp1y = y0;
-            var cp2x = x - 0.3*(x-x0);
+            var cp2x = x - 0.2*(x-x0);
             var cp2y = y;
             ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
           }

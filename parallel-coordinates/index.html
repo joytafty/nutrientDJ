@@ -37,15 +37,15 @@ svg {
 
 .background path {
   fill: none;
-  stroke: #ccc;
-  stroke-opacity: .4;
+  stroke: #e9e9e9;
+  stroke-opacity: 1;
   shape-rendering: crispEdges;
 }
 
 .foreground path {
   fill: none;
   stroke: darkolivegreen;
-  stroke-opacity: .7;
+  stroke-opacity: .5;
 }
 
 .brush .extent {
@@ -75,20 +75,73 @@ svg {
 <body>
 
 <div id="main">
-  <h2>Vegetable Nutrition with Parallel Coordinates</h2>
-  <p>
-    Chart from <a href="http://bl.ocks.org/1341281">Parallel Coordinates</a> using d3's new brush control.
-    <small><a href="#" id="removeSelected" style="float:right;color:#666;">Remove Selected</a></small>
+  <h1>Vegetable Nutrition</h1>
+  <p class="intro">
+    An interactive data visualization of the <a href="http://www.ars.usda.gov/Services/docs.htm?docid=8964">USDA Nutrient Database</a>.
+	Each food traces out a line across the parallel coordinates below based on its nutrient content. The lines are colored by food group.
   </p>
+  <p class="intro">
+	If you are unfamiliar with parallel coordinates, read this <a href="http://eagereyes.org/techniques/parallel-coordinates">tutorial</a>.
+  </p>
+  <h3 class="intro">First, select some data...</h3>
+  <ul class="intro">
+	<li>Click and drag along an axis to <strong>create a selection</strong></li>
+	<li>To <strong>move a selection</strong>, drag it up and down</li>
+	<li>To <strong>remove a selection</strong>, click the axis line behind it</li>
+  </ul>
+  <h3 class="intro">Then...</h3>
+  <ul class="intro">
+	<li><strong>Keep</strong> data you're interested in</li>
+	<li><strong>Remove</strong> data you're not interested in, such as outliers</li>
+  </ul>
+  <p class="intro">
+    Refresh the page to start over.
+  </p>
+  <p class="intro">
+	When you're done with these instructions, <a href="#" id="hide_instructions">hide them</a>.
+  </p>
+  <p class="outtro">
+	<a href="#" id="show_instructions" class="gone">Show instructions.</a>
+  </p>
+  <div class="widgets">
+	<h3>Nutrient content by weight, colored by food group</h3>
+    <a href="#" id="remove_selected" class="button red filter_control">Remove</a>
+    <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
+    <div id="pager" class="info"></div>
+	<div class="widget">
+	  <input type="range" min="0" max="1" value="0.5" step="0.01" name="power" list="powers" id="line_opacity"></input><br/>
+	  Line Opacity:
+	</div>
+  </div>
   <div id="parallel">
   </div>
   <div style="width:960px;">
-      <div id="pager" style="width:100%;height:20px;"></div>
-      <div id="myGrid" style="width:100%;height:500px;"></div>
+      <div id="myGrid" style="width:100%;height:300px;"></div>
   </div>
   <p>Last update: 11/14/2011</p>
   <script type="text/javascript">
-
+  
+  if (localStorage['hidden'] === "true") {
+	$('.intro').hide();
+	$('#show_instructions').show();
+  }
+  
+  $('#hide_instructions').click(function() {
+	if (localStorage)
+	  localStorage['hidden'] = "true";
+    $('.intro').hide();
+	$('#show_instructions').show();
+	return false;
+  });
+    
+  $('#show_instructions').click(function() {
+	if (localStorage)
+	  localStorage['hidden'] = "false";
+    $('.intro').fadeIn();
+	$('#show_instructions').hide();
+	return false; 
+  });
+  
   var dimensions = new Filter();
 
   dimensions.set({data: foods });
@@ -128,9 +181,20 @@ svg {
 
   slicky.update();
 
-  $('#removeSelected').click(function() {
+  $('#remove_selected').click(function() {
     dimensions.outliers();
     parallel(dimensions);
+	return false;
+  });
+  
+  $('#keep_selected').click(function() {
+    dimensions.inliers();
+    parallel(dimensions);
+	return false;
+  });
+  
+  $('#line_opacity').change(function() {
+    $('#parallel .foreground path').css('stroke-opacity', $(this).val());
   });
 
   </script>
