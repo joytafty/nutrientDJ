@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-  <title>Parallel Coordinates</title>
+  <title>Food Nutrition - Parallel Coordinates</title>
         
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.5.0"></script>
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js?2.5.0"></script>
@@ -75,10 +75,10 @@ svg {
 <body>
 
 <div id="main">
-  <h1>Vegetable Nutrition</h1>
+  <h1>Nutrients in Food</h1>
   <p class="intro">
-    An interactive data visualization of the <a href="http://www.ars.usda.gov/Services/docs.htm?docid=8964">USDA Nutrient Database</a>.
-	Each food traces out a line across the parallel coordinates below based on its nutrient content. The lines are colored by food group.
+    An interactive visualization of the <a href="http://www.ars.usda.gov/Services/docs.htm?docid=8964">USDA Nutrient Database</a>.
+	Each food traces a line across the colorized parallel coordinates based on its nutrient content. The lines are colored by food group.
   </p>
   <p class="intro">
 	If you are unfamiliar with parallel coordinates, read this <a href="http://eagereyes.org/techniques/parallel-coordinates">tutorial</a>.
@@ -118,7 +118,7 @@ svg {
   <div style="width:960px;">
       <div id="myGrid" style="width:100%;height:300px;"></div>
   </div>
-  <p>Last update: 11/14/2011</p>
+  <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
   if (localStorage['hidden'] === "true") {

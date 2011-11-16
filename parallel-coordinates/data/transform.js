@@ -23,31 +23,10 @@ _(foodgroups).each(function(group) {
              has(306, nuts) && // Potassium
              has(205, nuts) && // Carboyhdrate
              has(204, nuts) && // Fat
-             has(269, nuts); // Sugars
-             /*
+             has(269, nuts) && // Sugars
              !(like('powder', food.name)) &&
              !(like('dehydrated', food.name)) &&
-             !(like('dried', food.name)) &&
-             !(like('canned', food.name)) &&
-             !(like('fireweed', food.name)) &&
-             !(like('catsup', food.name)) &&
-             !(like('chowchow', food.name)) &&
-             !(like('relish', food.name)) &&
-             !(like('pickles', food.name)) &&
-             !(like('cooked', food.name)) &&
-             !(like('microwaved', food.name)) &&
-             !(like('baked', food.name)) &&
-             !(like('mashed', food.name)) &&
-             !(like('hashed', food.name)) &&
-             !(like('boiled', food.name)) &&
-             !(like('pudding', food.name)) &&
-             !(like('frozen', food.name)) &&
-             !(like('sauteed', food.name)) &&
-             !(like('pancakes', food.name)) &&
-             !(like('souffle', food.name)) &&
-             !(like('flour', food.name)) &&
-             !(like('gratin', food.name));
-             */
+             !(like('dried', food.name));
       })
     .map(function(food) {
       return {

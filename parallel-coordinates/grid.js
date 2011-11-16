@@ -29,13 +29,13 @@
           id: col,
           name: function() { if (self.alias) { return self.alias[col]; } else { return col; } }(), // how to do aliasing?
           field: col,
-          width: self.width/self.columns.length
+          width: function() { if (col == "name" || col == "group") { return 200; } else { return self.width/self.columns.length } }()
         }
       });
       
       this.options = {
         enableCellNavigation: true,
-        enableColumnReorder: false
+        enableColumnReorder: true
       };
 
       this.dataView = new Slick.Data.DataView();
