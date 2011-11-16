@@ -13,38 +13,43 @@ $(function() {
   });
     
   $('#show_instructions').click(function() {
-	if (localStorage)
-	  localStorage['hidden'] = "false";
+	  if (localStorage)
+	    localStorage['hidden'] = "false";
     $('.intro').fadeIn();
-	$('#show_instructions').hide();
-	return false; 
+  	$('#show_instructions').hide();
+	  return false; 
   });
   
-  if (localStorage['inverted'] === "true") {
-    $('body').addClass('invert');
+  toggleCSS('inverted');
+  toggleCSS('no_ticks');
+  toggleCSS('no_background_lines');
+  toggleCSS('full_width', function() {
+    $('#parallel').trigger('resize');
+  });
+  
+  function toggleCSS(key, func) {
+    // initialize on load
+    if (localStorage[key] === "true") {
+      $('body').addClass(key);
+    }
+  
+    // alter state
+    $('#' + key).click(function() {
+      if (localStorage && localStorage[key] != "true") {
+	      localStorage[key] = "true";
+        $('body').addClass(key);
+        if (func)
+          func();
+    	} else {
+	      if (localStorage) {
+	      	localStorage[key] = "false";
+        }
+        $('body').removeClass(key);
+        if (func)
+          func();
+	    }
+    	return false;
+    });
   }
   
-  $('#invert_colors').click(function() {
-    if (localStorage && localStorage['inverted'] != "true") {
-	  localStorage['inverted'] = "true";
-      $('body').addClass('invert');
-	} else {
-	  if (localStorage)
-	  	localStorage['inverted'] = "false";
-      $('body').removeClass('invert');
-	}
-	return false;
-  });
-  
-  $('#toggle_labels').toggle(function() {
-    $('#parallel .axis g').hide();
-  }, function() {
-    $('#parallel .axis g').show();
-  });
-  
-  $('#toggle_background').toggle(function() {
-    $('#parallel').addClass('no_background');
-  }, function() {
-    $('#parallel').removeClass('no_background');
-  });
 });

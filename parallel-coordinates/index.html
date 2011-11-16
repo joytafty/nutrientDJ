@@ -66,76 +66,94 @@
     <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
     <div id="pager" class="info"></div>
 	<div class="widget">
-	  <input type="range" min="0" max="1" value="0.5" step="0.01" name="power" list="powers" id="line_opacity"></input><br/>
-	  Line Opacity:
+	  <input type="range" min="0" max="1" value="0.79" step="0.01" name="power" list="powers" id="line_opacity"></input>
+    <datalist id="powers">
+      <option value="0">
+      <option value="-30">
+      <option value="30">
+      <option value="+50">
+    </datalist>
+   <br/>
+	  Opacity: <span id="opacity_level">50%</span>
 	</div>
   </div>
   <div id="parallel">
   </div>
-  <div style="width:960px;">
-      <div id="myGrid" style="width:100%;height:300px;"></div>
-  </div>
-  <p><a href="#" id="invert_colors">Invert</a></p>
-  <p><a href="#" id="toggle_labels">Toggle Labels</a></p>
-  <p><a href="#" id="toggle_background">Toggle Background</a></p>
+  <div id="myGrid"></div>
+  <p><a href="#" id="no_ticks">Toggle Labels</a></p>
+  <p><a href="#" id="full_width">Toggle Width</a></p>
+  <p><a href="#" id="inverted">Invert</a></p>
+  <p><a href="#" id="no_background_lines">Toggle Background Lines</a></p>
   <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
-  var dimensions = new Filter();
-
-  dimensions.set({data: foods });
-
-  parallel(dimensions);
-
-  var slicky = new grid({
-    model: dimensions,
-    width: 960,
-    columns: [
-      'name',
-      'group',
-      'protein',
-      'calcium',
-      'sodium',
-      'fiber',
-      'vitaminc',
-      'potassium',
-      'fat',
-      'sugars',
-      'carbohydrate',
-	  'water'
-    ],
-    alias: {
-      'name': 'Name',
-      'group': 'Food Group',
-      'protein': 'Protein (g)',
-      'calcium': 'Calcium (mg)',
-      'sodium': 'Sodium (mg)',
-      'fiber': 'Fiber (g)',
-      'vitaminc': 'Vitamin C (mg)',
-      'potassium': 'Potassium (mg)',
-      'fat': 'Fat (g)',
-      'sugars': 'Sugars (g)',
-      'carbohydrate': 'Carbohydrate (g)',
-	  'water': 'Water (g)'
-    }
-  });
-
-  slicky.update();
-
-  $('#remove_selected').click(function() {
-    dimensions.outliers();
-    parallel(dimensions);
-	return false;
-  });
+  $(function() {
   
-  $('#keep_selected').click(function() {
-    dimensions.inliers();
+    var dimensions = new Filter();
+
+    dimensions.set({data: foods });
+
     parallel(dimensions);
-	return false;
-  });
+
+    var slicky = new grid({
+      model: dimensions,
+      width: 960,
+      columns: [
+        'name',
+        'group',
+        'protein',
+        'calcium',
+        'sodium',
+        'fiber',
+        'vitaminc',
+        'potassium',
+        'fat',
+        'sugars',
+        'carbohydrate',
+        'water'
+      ],
+      alias: {
+        'name': 'Name',
+        'group': 'Food Group',
+        'protein': 'Protein (g)',
+        'calcium': 'Calcium (mg)',
+        'sodium': 'Sodium (mg)',
+        'fiber': 'Fiber (g)',
+        'vitaminc': 'Vitamin C (mg)',
+        'potassium': 'Potassium (mg)',
+        'fat': 'Fat (g)',
+        'sugars': 'Sugars (g)',
+        'carbohydrate': 'Carbohydrate (g)',
+      'water': 'Water (g)'
+      }
+    });
+
+    slicky.update();
+
+    $('#remove_selected').click(function() {
+      dimensions.outliers();
+      parallel(dimensions);
+    return false;
+    });
+    
+    $('#keep_selected').click(function() {
+      dimensions.inliers();
+      parallel(dimensions);
+    return false;
+    });
+    
+    $('#line_opacity').change(function() {
+      var val = Math.pow($(this).val(), 3);
+      $('#parallel .foreground path').css('stroke-opacity', val.toString());
+      $('#opacity_level').html((Math.round(val*10000)/100) + "%");
+    });
+    
+    $('#parallel').resize(function() {
+      parallel(dimensions);
+      var val = Math.pow($('#line_opacity').val(), 3);
+      $('#parallel .foreground path').css('stroke-opacity', val.toString());
+    });
   
-  $('#line_opacity').change(function() {
-    $('#parallel .foreground path').css('stroke-opacity', $(this).val());
   });
 
   </script>

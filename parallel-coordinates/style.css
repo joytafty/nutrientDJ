@@ -20,6 +20,9 @@ a:hover {
   width: 960px;
   margin: 0 auto;
 }
+.widgets {
+  height: 60px;
+}
 .widgets h3 {
   float: left;
   margin: 12px;
@@ -88,6 +91,10 @@ h2 {
   font-size: 16px;
 }
 /*SlickGrid */
+#myGrid {
+  width: 960px;
+  height: 300px;
+}
 .slick-header-column {
   font-weight:bold;
   cursor: move;
@@ -156,6 +163,10 @@ h2 {
   font-size:13px;
 }
 /* SVG Paralllel Coordinates */
+#parallel {
+  width: 960px;
+  height: 360px;
+}
 svg {
   font: 10px sans-serif;
 }
@@ -165,10 +176,6 @@ svg {
   stroke: #e9e9e9;
   stroke-opacity: 1;
   shape-rendering: crispEdges;
-}
-
-.no_background .background path {
-  display: none;
 }
 
 .foreground path {
@@ -198,45 +205,45 @@ svg {
   cursor: move;
 }
 
-/* Invert */
-body.invert {
+/* inverted */
+body.inverted {
   background: #111;
   color: #eee;
 }
-.invert a {
+.inverted a {
   text-decoration: none;
   background: #333;
   color: #eee;
 }
-.invert a:visited {
+.inverted a:visited {
   color: #aaa;
 }
-.invert a:hover {
+.inverted a:hover {
   color: #09f;
 }
-.invert .button {
+.inverted .button {
   border-color: #666;
 }
-.invert .button:hover {
+.inverted .button:hover {
   background: #ddd;
 }
 
-.invert .slick-header-column {
+.inverted .slick-header-column {
   border-right: 1px solid #333 !important;
 }
-.slick-resizable-handle {
+.inverted .slick-resizable-handle {
   background: rgba(255,255,255,0.02);
   width: 8px;
 }
 
-.invert .background path {
+.inverted .background path {
   stroke: #1a1a1a;
 }
-.invert .brush .extent {
+.inverted .brush .extent {
   fill-opacity: .4;
   stroke: #999;
 }
-.invert .axis text {
+.inverted .axis text {
   stroke: none;
   fill: #bbb;
   font-weight: normal;
@@ -245,4 +252,25 @@ body.invert {
     1px -1px 0 #111,
    -1px 1px 0 #111,
     1px 1px 0 #111;
+}
+
+/* full width */
+.full_width #main {
+  width: 100%;
+}
+.full_width #parallel {
+  width: 100%;
+}
+.full_width #myGrid {
+  width: 100%;
+}
+
+/* no ticks */
+.no_ticks #parallel .axis g {
+  display: none;
+}
+
+/* no background lines */
+.no_background_lines .background path {
+  display: none;
 }

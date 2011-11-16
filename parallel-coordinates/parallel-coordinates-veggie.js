@@ -1,24 +1,26 @@
 (function(d3) {
-  var dimensions;
-  
-  var m = [30, 10, 10, 10],
-      w = 960 - m[1] - m[3],
-      h = 360 - m[0] - m[2];
-
-  var x = d3.scale.ordinal().rangePoints([0, w], 1),
-      y = {},
-      dragging = {};
-
-  var line = d3.svg.line(),
-      axis = d3.svg.axis().orient("left"),
-      background,
-      foreground;
 
   window.parallel = function(model) {
+    var dimensions,
+        dragging = {},
+        container = d3.select("#parallel");
+
+    var bounds = [ $(container[0]).width(), $(container[0]).height() ],
+        m = [30, 10, 10, 10],
+        w = bounds[0] - m[1] - m[3],
+        h = bounds[1] - m[0] - m[2];
+
+    var x = d3.scale.ordinal().rangePoints([0, w], 1),
+        y = {};
+
+    var line = d3.svg.line(),
+        axis = d3.svg.axis().orient("left"),
+        background,
+        foreground;
   
     var cars = model.get('data');
 
-    var svg = d3.select("#parallel").html("").append("svg:svg")
+    var svg = container.html("").append("svg:svg")
         .attr("width", w + m[1] + m[3])
         .attr("height", h + m[0] + m[2])
       .append("svg:g")
@@ -134,20 +136,20 @@
         }) ? null : "none";
       });
     }
+    
+    function position(d) {
+      var v = dragging[d];
+      return v == null ? x(d) : v;
+    }
+
+    function transition(g) {
+      return g.transition().duration(500);
+    }
+
+    // Returns the path for a given data point.
+    function path(d) {
+      return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+    }
   };
-
-  function position(d) {
-    var v = dragging[d];
-    return v == null ? x(d) : v;
-  }
-
-  function transition(g) {
-    return g.transition().duration(500);
-  }
-
-  // Returns the path for a given data point.
-  function path(d) {
-    return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
-  }
   
 })(d3);
