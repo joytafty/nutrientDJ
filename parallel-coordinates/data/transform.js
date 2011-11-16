@@ -24,6 +24,7 @@ _(foodgroups).each(function(group) {
              has(205, nuts) && // Carboyhdrate
              has(204, nuts) && // Fat
              has(269, nuts) && // Sugars
+             has(255, nuts) && // Water
              !(like('powder', food.name)) &&
              !(like('dehydrated', food.name)) &&
              !(like('dried', food.name)) &&
@@ -42,6 +43,7 @@ _(foodgroups).each(function(group) {
         potassium: _(food.nutrients).find(function(d) { return d.id == "306" }).amount,
         carbohydrate: _(food.nutrients).find(function(d) { return d.id == "205" }).amount,
         sugars: _(food.nutrients).find(function(d) { return d.id == "269" }).amount,
+        water: _(food.nutrients).find(function(d) { return d.id == "255" }).amount,
         fat: _(food.nutrients).find(function(d) { return d.id == "204" }).amount
       }
       })

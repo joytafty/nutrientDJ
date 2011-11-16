@@ -3,6 +3,7 @@ body {
   font-size: 13px;
   line-height: 1.35em;
   color: #222;
+  background: #f7f7f7;
 }
 a {
   text-decoration: none;
@@ -130,10 +131,6 @@ h2 {
 }
 #parallel-coordinates .axis:hover {
   background: rgba(55,55,55,0.2);
-  -webkit-transition: background 300ms ease-in 200ms;
-  -moz-transition: background 300ms ease-in 200ms;
-  -o-transition: background 300ms ease-in 200ms;
-  transition: background 300ms ease-in 200ms;
 }
 #gray {
   color: #888;
@@ -221,7 +218,7 @@ body.invert {
 }
 
 .invert .background path {
-  stroke: #222;
+  stroke: #1b1b1b;
 }
 .invert .brush .extent {
   fill-opacity: .4;
@@ -229,11 +226,11 @@ body.invert {
 }
 .invert .axis text {
   stroke: none;
-  fill: #eee;
+  fill: #bbb;
   font-weight: normal;
   text-shadow:
-   -1px -1px 0 #222,
-    1px -1px 0 #222,
-   -1px 1px 0 #222,
-    1px 1px 0 #222;
+   -1px -1px 0 #111,
+    1px -1px 0 #111,
+   -1px 1px 0 #111,
+    1px 1px 0 #111;
 }

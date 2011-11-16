@@ -75,6 +75,7 @@
       <div id="myGrid" style="width:100%;height:300px;"></div>
   </div>
   <p><a href="#" id="invert_colors">Invert</a></p>
+  <p><a href="#" id="toggle_labels">Toggle Labels</a></p>
   <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
@@ -115,6 +116,12 @@
 	return false;
   });
   
+  $('#toggle_labels').toggle(function() {
+    $('#parallel .axis g').hide();
+  }, function() {
+    $('#parallel .axis g').show();
+  });
+  
   var dimensions = new Filter();
 
   dimensions.set({data: foods });
@@ -135,7 +142,8 @@
       'potassium',
       'fat',
       'sugars',
-      'carbohydrate'
+      'carbohydrate',
+	  'water'
     ],
     alias: {
       'name': 'Name',
@@ -148,7 +156,8 @@
       'potassium': 'Potassium (mg)',
       'fat': 'Fat (g)',
       'sugars': 'Sugars (g)',
-      'carbohydrate': 'Carbohydrate (g)'
+      'carbohydrate': 'Carbohydrate (g)',
+	  'water': 'Water (g)'
     }
   });
 
