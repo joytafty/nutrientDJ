@@ -76,6 +76,7 @@
   </div>
   <p><a href="#" id="invert_colors">Invert</a></p>
   <p><a href="#" id="toggle_labels">Toggle Labels</a></p>
+  <p><a href="#" id="toggle_background">Toggle Background</a></p>
   <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
@@ -120,6 +121,12 @@
     $('#parallel .axis g').hide();
   }, function() {
     $('#parallel .axis g').show();
+  });
+  
+  $('#toggle_background').toggle(function() {
+    $('#parallel').addClass('no_background');
+  }, function() {
+    $('#parallel').removeClass('no_background');
   });
   
   var dimensions = new Filter();

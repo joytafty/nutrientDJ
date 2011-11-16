@@ -3,7 +3,7 @@ body {
   font-size: 13px;
   line-height: 1.35em;
   color: #222;
-  background: #f7f7f7;
+  background: #fff;
 }
 a {
   text-decoration: none;
@@ -91,16 +91,20 @@ h2 {
 .slick-header-column {
   font-weight:bold;
   cursor: move;
-  border-right: 1px solid #ddd !important;
+  border-right: 1px solid #bbb !important;
 }
 .slick-cell {
   border: none !important;
 }
 .slick-row.odd {
-  background: rgba(0,0,0,0.03);
+  background: rgba(0,0,0,0.05);
 }
 .slick-row {
   height: 20px !important;
+}
+.slick-resizable-handle {
+  background: rgba(0,0,0,0.03);
+  width: 8px;
 }
 
 /* Parallel Coordinates */
@@ -163,6 +167,10 @@ svg {
   shape-rendering: crispEdges;
 }
 
+.no_background .background path {
+  display: none;
+}
+
 .foreground path {
   fill: none;
   stroke: darkolivegreen;
@@ -214,11 +222,15 @@ body.invert {
 }
 
 .invert .slick-header-column {
-  border-right: 1px solid #444 !important;
+  border-right: 1px solid #333 !important;
+}
+.slick-resizable-handle {
+  background: rgba(255,255,255,0.02);
+  width: 8px;
 }
 
 .invert .background path {
-  stroke: #1b1b1b;
+  stroke: #1a1a1a;
 }
 .invert .brush .extent {
   fill-opacity: .4;
