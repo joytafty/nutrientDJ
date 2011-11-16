@@ -16,7 +16,7 @@ a:hover {
   color: blue;
 }
 #main {
-  width: 1360px;
+  width: 960px;
   margin: 0 auto;
 }
 .widgets h3 {
@@ -89,6 +89,7 @@ h2 {
 /*SlickGrid */
 .slick-header-column {
   font-weight:bold;
+  cursor: move;
   border-right: 1px solid #ddd !important;
 }
 .slick-cell {
@@ -153,4 +154,86 @@ h2 {
   color: #888;
   font-size:13px;
 }
+/* SVG Paralllel Coordinates */
+svg {
+  font: 10px sans-serif;
+}
 
+.background path {
+  fill: none;
+  stroke: #e9e9e9;
+  stroke-opacity: 1;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: darkolivegreen;
+  stroke-opacity: .5;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis line, .axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  text-shadow:
+   -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+   -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+  cursor: move;
+}
+
+/* Invert */
+body.invert {
+  background: #111;
+  color: #eee;
+}
+.invert a {
+  text-decoration: none;
+  background: #333;
+  color: #eee;
+}
+.invert a:visited {
+  color: #aaa;
+}
+.invert a:hover {
+  color: #09f;
+}
+.invert .button {
+  border-color: #666;
+}
+.invert .button:hover {
+  background: #ddd;
+}
+
+.invert .slick-header-column {
+  border-right: 1px solid #444 !important;
+}
+
+.invert .background path {
+  stroke: #222;
+}
+.invert .brush .extent {
+  fill-opacity: .4;
+  stroke: #999;
+}
+.invert .axis text {
+  stroke: none;
+  fill: #eee;
+  font-weight: normal;
+  text-shadow:
+   -1px -1px 0 #222,
+    1px -1px 0 #222,
+   -1px 1px 0 #222,
+    1px 1px 0 #222;
+}

@@ -26,7 +26,9 @@ _(foodgroups).each(function(group) {
              has(269, nuts) && // Sugars
              !(like('powder', food.name)) &&
              !(like('dehydrated', food.name)) &&
-             !(like('dried', food.name));
+             !(like('dried', food.name)) &&
+             !(like('adobo fresco', food.name)) &&
+             !(like('dry', food.name));
       })
     .map(function(food) {
       return {

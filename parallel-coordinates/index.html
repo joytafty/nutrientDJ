@@ -26,50 +26,6 @@
   <script src="grid.js"></script>
   <script src="data/food-table.js"></script>
   <link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
-<style type="text/css">
-#main {
-  width: 960px;
-}
-
-svg {
-  font: 10px sans-serif;
-}
-
-.background path {
-  fill: none;
-  stroke: #e9e9e9;
-  stroke-opacity: 1;
-  shape-rendering: crispEdges;
-}
-
-.foreground path {
-  fill: none;
-  stroke: darkolivegreen;
-  stroke-opacity: .5;
-}
-
-.brush .extent {
-  fill-opacity: .3;
-  stroke: #fff;
-  shape-rendering: crispEdges;
-}
-
-.axis line, .axis path {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.axis text {
-  text-shadow:
-   -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-     1px 1px 0 #fff;
-  cursor: move;
-}
-
-    </style>
 </head>
 
 <body>
@@ -118,6 +74,7 @@ svg {
   <div style="width:960px;">
       <div id="myGrid" style="width:100%;height:300px;"></div>
   </div>
+  <p><a href="#" id="invert_colors">Invert</a></p>
   <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
@@ -140,6 +97,22 @@ svg {
     $('.intro').fadeIn();
 	$('#show_instructions').hide();
 	return false; 
+  });
+  
+  if (localStorage['inverted'] === "true") {
+    $('body').addClass('invert');
+  }
+  
+  $('#invert_colors').click(function() {
+    if (localStorage && localStorage['inverted'] != "true") {
+	  localStorage['inverted'] = "true";
+      $('body').addClass('invert');
+	} else {
+	  if (localStorage)
+	  	localStorage['inverted'] = "false";
+      $('body').removeClass('invert');
+	}
+	return false;
   });
   
   var dimensions = new Filter();
