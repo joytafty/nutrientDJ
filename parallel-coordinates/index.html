@@ -30,7 +30,17 @@
 </head>
 
 <body>
-
+<div id="nav">
+  <div class="widget right toggle">
+	  <input type="range" min="0" max="1" value="0.79" step="0.01" name="power" list="powers" id="line_opacity"></input>
+   <br/>
+	  Opacity: <span id="opacity_level">50%</span>
+	</div>
+  <div><a href="#" id="no_background_lines" class="right toggle">Hide Background</a></div>
+  <div><a href="#" id="full_width" class="right toggle">Full Width</a></div>
+  <div><a href="#" id="inverted" class="right toggle">Dark</a></div>
+  <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
+</div>
 <div id="main">
   <h1>Nutrients in Food</h1>
   <p class="intro">
@@ -65,25 +75,10 @@
     <a href="#" id="remove_selected" class="button red filter_control">Remove</a>
     <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
     <div id="pager" class="info"></div>
-	<div class="widget">
-	  <input type="range" min="0" max="1" value="0.79" step="0.01" name="power" list="powers" id="line_opacity"></input>
-    <datalist id="powers">
-      <option value="0">
-      <option value="-30">
-      <option value="30">
-      <option value="+50">
-    </datalist>
-   <br/>
-	  Opacity: <span id="opacity_level">50%</span>
-	</div>
   </div>
   <div id="parallel">
   </div>
   <div id="myGrid"></div>
-  <p><a href="#" id="no_ticks">Toggle Labels</a></p>
-  <p><a href="#" id="full_width">Toggle Width</a></p>
-  <p><a href="#" id="inverted">Invert</a></p>
-  <p><a href="#" id="no_background_lines">Toggle Background Lines</a></p>
   <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
@@ -152,6 +147,10 @@
       parallel(dimensions);
       var val = Math.pow($('#line_opacity').val(), 3);
       $('#parallel .foreground path').css('stroke-opacity', val.toString());
+    });
+    
+    $(window).resize(function() {
+      parallel(dimensions);
     });
   
   });

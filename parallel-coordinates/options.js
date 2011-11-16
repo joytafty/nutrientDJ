@@ -31,6 +31,7 @@ $(function() {
     // initialize on load
     if (localStorage[key] === "true") {
       $('body').addClass(key);
+      $('#' + key).addClass('on');
     }
   
     // alter state
@@ -38,6 +39,7 @@ $(function() {
       if (localStorage && localStorage[key] != "true") {
 	      localStorage[key] = "true";
         $('body').addClass(key);
+        $('#' + key).addClass('on');
         if (func)
           func();
     	} else {
@@ -45,6 +47,7 @@ $(function() {
 	      	localStorage[key] = "false";
         }
         $('body').removeClass(key);
+        $('#' + key).removeClass('on');
         if (func)
           func();
 	    }

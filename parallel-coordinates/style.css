@@ -1,4 +1,6 @@
 body {
+  margin: 0;
+  padding: 0;
   font-family: "Lucida Grande", arial, helvetica, clean, sans-serif;
   font-size: 13px;
   line-height: 1.35em;
@@ -18,9 +20,23 @@ a:hover {
 }
 #main {
   width: 960px;
+  min-width: 760px;
   margin: 0 auto;
 }
+#nav {
+  height: 24px;
+  width: 100%;
+}
+#nav .toggle {
+  margin-right: 8px;
+  padding: 4px;
+  color: #bbb;
+}
+#nav .toggle.on {
+  color: #333;
+}
 .widgets {
+  margin: 0 4%;
   height: 60px;
 }
 .widgets h3 {
@@ -32,7 +48,7 @@ a:hover {
 .button {
   font-size: 13px;
   line-height: 16px;
-  margin: 12px;
+  margin: 12px 4px;
   padding: 2px 8px;
   background: #ddd;
   color: #999;
@@ -43,7 +59,6 @@ a:hover {
   border: 1px solid #ccc;
 }
 .widget {
-  margin: 12px;
   padding: 0px 8px;
   line-height: 11px;
   color: #999;
@@ -166,6 +181,7 @@ h2 {
 #parallel {
   width: 960px;
   height: 360px;
+  margin-bottom: 20px;
 }
 svg {
   font: 10px sans-serif;
@@ -212,7 +228,7 @@ body.inverted {
 }
 .inverted a {
   text-decoration: none;
-  background: #333;
+  background: #272727;
   color: #eee;
 }
 .inverted a:visited {
@@ -222,10 +238,16 @@ body.inverted {
   color: #09f;
 }
 .inverted .button {
-  border-color: #666;
+  border-color: #444;
 }
 .inverted .button:hover {
   background: #ddd;
+}
+.inverted #nav .toggle {
+  color: #555;
+}
+.inverted #nav .toggle.on {
+  color: #ddd;
 }
 
 .inverted .slick-header-column {
