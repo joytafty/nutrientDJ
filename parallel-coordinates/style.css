@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 12px;
   padding: 0;
   font-family: "Lucida Grande", arial, helvetica, clean, sans-serif;
   font-size: 13px;
@@ -24,24 +24,41 @@ a:hover {
   margin: 0 auto;
 }
 #nav {
-  height: 24px;
-  width: 100%;
+  height: 48px;
+  width: 960px;
+  margin: 0 auto;
+  background: rgba(0,0,0,0.1);
+}
+p {
+  margin-left: 12px;
+}
+#nav h1 {
+  float: left;
+  font-size: 24px;
+  padding: 2px 0px;
+  margin: 12px 0 0 12px;
 }
 #nav .toggle {
-  margin-right: 8px;
+  margin: 12px 8px 0 0;
   padding: 4px;
-  color: #bbb;
+  height: 16px;
+  background: rgba(0,0,0,0.05);
+  color: #888;
+}
+#nav a.toggle:hover {
+  background: rgba(0,0,0,0.1);
 }
 #nav .toggle.on {
-  color: #333;
+  color: #222;
+  font-weight: bold;
 }
 .widgets {
-  margin: 0 4%;
+  margin: 0 4% 0 0;
   height: 60px;
 }
 .widgets h3 {
   float: left;
-  margin: 12px;
+  margin: 16px 0 0 12px;
   font-size: 16px;
   line-height: 20px;
 }
@@ -58,8 +75,10 @@ a:hover {
   border-radius: 3px;
   border: 1px solid #ccc;
 }
-.widget {
-  padding: 0px 8px;
+#nav .widget {
+  margin-top: 4px;
+  padding: 2px 8px;
+  height: 36px;
   line-height: 11px;
   color: #999;
   font-size: 11px;
@@ -107,7 +126,7 @@ h2 {
 }
 /*SlickGrid */
 #myGrid {
-  width: 960px;
+  width: 100% !important;  /* vs jquery resizable */
   height: 300px;
 }
 .slick-header-column {
@@ -179,7 +198,7 @@ h2 {
 }
 /* SVG Paralllel Coordinates */
 #parallel {
-  width: 960px;
+  width: 100% !important;  /* vs jquery resizable */
   height: 360px;
   margin-bottom: 20px;
 }
@@ -221,6 +240,22 @@ svg {
   cursor: move;
 }
 
+/* jquery resizable */
+.ui-resizable {
+  padding-bottom: 10px;
+  position: relative;
+}
+.ui-resizable-handle {
+  background: rgba(0,0,0,0.05);
+}
+.ui-resizable-s {
+  height: 10px;
+  width: 100%;
+  cursor: s-resize;
+  position: absolute;
+  bottom: 0px;
+}
+
 /* inverted */
 body.inverted {
   background: #111;
@@ -244,7 +279,10 @@ body.inverted {
   background: #ddd;
 }
 .inverted #nav .toggle {
-  color: #555;
+  color: #666;
+}
+.inverted #nav a.toggle:hover {
+  background: rgba(255,255,255,0.1);
 }
 .inverted #nav .toggle.on {
   color: #ddd;
@@ -279,11 +317,9 @@ body.inverted {
 /* full width */
 .full_width #main {
   width: 100%;
+  margin: 0 12px;
 }
-.full_width #parallel {
-  width: 100%;
-}
-.full_width #myGrid {
+.full_width #nav {
   width: 100%;
 }
 

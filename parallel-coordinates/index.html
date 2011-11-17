@@ -13,7 +13,7 @@
   <script type="text/javascript" src="../lib/underscore.js"></script>
   <script type="text/javascript" src="../lib/backbone.js"></script>
 
-  <script src="../lib/jquery-ui-1.8.11.custom.min.js"></script>
+  <script src="../lib/jquery-ui-1.8.16.custom.min.js"></script>
   <script type="text/javascript" src="filter.js"></script>
   
   <!-- SlickGrid -->
@@ -31,6 +31,7 @@
 
 <body>
 <div id="nav">
+  <h1>Nutrients in Food</h1>
   <div class="widget right toggle">
 	  <input type="range" min="0" max="1" value="0.79" step="0.01" name="power" list="powers" id="line_opacity"></input>
    <br/>
@@ -42,7 +43,6 @@
   <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
 </div>
 <div id="main">
-  <h1>Nutrients in Food</h1>
   <p class="intro">
     An interactive visualization of the <a href="http://www.ars.usda.gov/Services/docs.htm?docid=8964">USDA Nutrient Database</a>.
 	Each food traces a line across the colorized parallel coordinates based on its nutrient content. The lines are colored by food group.
@@ -79,7 +79,6 @@
   <div id="parallel">
   </div>
   <div id="myGrid"></div>
-  <p>Last update: 11/15/2011</p>
   <script type="text/javascript">
   
   $(function() {
@@ -128,13 +127,13 @@
     $('#remove_selected').click(function() {
       dimensions.outliers();
       parallel(dimensions);
-    return false;
+      return false;
     });
     
     $('#keep_selected').click(function() {
       dimensions.inliers();
       parallel(dimensions);
-    return false;
+      return false;
     });
     
     $('#line_opacity').change(function() {
@@ -151,6 +150,15 @@
     
     $(window).resize(function() {
       parallel(dimensions);
+    });
+    
+    $('#parallel').resizable({
+      handles: 's',
+      resize: function () { return false; }
+    });
+    
+    $('#myGrid').resizable({
+      handles: 's'
     });
   
   });

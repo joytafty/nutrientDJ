@@ -19,8 +19,10 @@
         foreground;
   
     var cars = model.get('data');
+    
+    container.select("svg").remove();
 
-    var svg = container.html("").append("svg:svg")
+    var svg = container.append("svg:svg")
         .attr("width", w + m[1] + m[3])
         .attr("height", h + m[0] + m[2])
       .append("svg:g")
