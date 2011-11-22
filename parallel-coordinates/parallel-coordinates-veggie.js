@@ -173,8 +173,8 @@
       
       self.highlight = function(i) {
         if (typeof i == "undefined") {
-          highlighted.remove();
           rebrush();
+          highlighted.remove();
         } else {
           foreground.style("display", function(d, j) {
             return "none";
