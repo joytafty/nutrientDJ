@@ -82,6 +82,22 @@
         var columns = _(this.getColumns()).pluck('id');
         self.trigger('columnsReordered', columns);
       });
+      
+      if (this.selector) {
+        var selected = undefined;
+        this.grid.onMouseEnter.subscribe(function(e,args) {
+          selected = self.grid.getCellFromEvent(e).row;
+          self.selector.select(selected);
+        });
+        this.grid.onMouseLeave.subscribe(function(e,args) {
+          selected = undefined;
+          setTimeout(function() {
+            if (typeof selected == "undefined") {
+              self.selector.deselect(); 
+            }
+          }, 30);
+        });
+      }
     },
     update: function() {
       var self = this;

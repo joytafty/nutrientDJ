@@ -84,13 +84,15 @@
   $(function() {
   
     var dimensions = new Filter();
+    var highlighter = new Selector();
 
     dimensions.set({data: foods });
 
-    parallel(dimensions);
+    var pc = parallel(dimensions);
 
     var slicky = new grid({
       model: dimensions,
+      selector: highlighter,
       width: 960,
       columns: [
         'name',
@@ -132,16 +134,24 @@
     });
 
     slicky.update();
+    pc.render();
+    
+    highlighter.bind('change:selected', function() {
+      var highlighted = this.get('selected');
+      pc.highlight(highlighted);
+    });
 
     $('#remove_selected').click(function() {
       dimensions.outliers();
-      parallel(dimensions);
+      pc.update(dimensions.get('data'));
+      pc.render();
       return false;
     });
     
     $('#keep_selected').click(function() {
       dimensions.inliers();
-      parallel(dimensions);
+      pc.update(dimensions.get('data'));
+      pc.render();
       return false;
     });
     
@@ -152,13 +162,13 @@
     });
     
     $('#parallel').resize(function() {
-      parallel(dimensions);
+      pc.render();
       var val = Math.pow($('#line_opacity').val(), 3);
       $('#parallel .foreground path').css('stroke-opacity', val.toString());
     });
     
     $(window).resize(function() {
-      parallel(dimensions);
+      pc.render();
     });
     
     $('#parallel').resizable({

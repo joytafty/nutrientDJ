@@ -96,4 +96,17 @@
     }
 
   });
+  
+  window.Selector = Backbone.Model.extend({
+    defaults: {
+      selected: null
+    },
+    select: function(i) {
+      this.set({'selected': i});
+    },
+    deselect: function() {
+      this.unset('selected');
+    },
+
+  });
 })();
