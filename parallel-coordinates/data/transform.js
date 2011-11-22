@@ -25,6 +25,11 @@ _(foodgroups).each(function(group) {
              has(204, nuts) && // Fat
              has(269, nuts) && // Sugars
              has(255, nuts) && // Water
+             has(208, nuts) && // Calories
+             has(606, nuts) && // Saturated
+             has(645, nuts) && // Monounsaturated
+             has(646, nuts) && // Polyunsaturated
+//             has(601, nuts) && // Cholesterol
              !(like('powder', food.name)) &&
              !(like('dehydrated', food.name)) &&
              !(like('dried', food.name)) &&
@@ -43,8 +48,13 @@ _(foodgroups).each(function(group) {
         potassium: _(food.nutrients).find(function(d) { return d.id == "306" }).amount,
         carbohydrate: _(food.nutrients).find(function(d) { return d.id == "205" }).amount,
         sugars: _(food.nutrients).find(function(d) { return d.id == "269" }).amount,
+        fat: _(food.nutrients).find(function(d) { return d.id == "204" }).amount,
         water: _(food.nutrients).find(function(d) { return d.id == "255" }).amount,
-        fat: _(food.nutrients).find(function(d) { return d.id == "204" }).amount
+        calories: _(food.nutrients).find(function(d) { return d.id == "208" }).amount,
+        saturated: _(food.nutrients).find(function(d) { return d.id == "606" }).amount,
+        monounsat: _(food.nutrients).find(function(d) { return d.id == "645" }).amount,
+        polyunsat: _(food.nutrients).find(function(d) { return d.id == "646" }).amount,
+//        cholesterol: _(food.nutrients).find(function(d) { return d.id == "601" }).amount,
       }
       })
     .sortBy(function(d) { return d.name; })
