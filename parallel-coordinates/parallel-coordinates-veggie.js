@@ -157,6 +157,16 @@
         });
       }
       
+      function rebrush() {
+        var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
+            extents = actives.map(function(p) { return y[p].brush.extent(); });
+        foreground.style("display", function(d) {
+          return actives.every(function(p, i) {
+            return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+          }) ? null : "none";
+        });
+      }
+      
       function transition(g) {
         return g.transition().duration(500);
       }
@@ -164,7 +174,7 @@
       self.highlight = function(i) {
         if (typeof i == "undefined") {
           highlighted.remove();
-          brush();
+          rebrush();
         } else {
           foreground.style("display", function(d, j) {
             return "none";
@@ -173,7 +183,7 @@
             highlighted.remove();
           }
           highlighted = svg.append("svg:g")
-                           .attr("class", "foreground")
+                           .attr("class", "highlight")
                          .selectAll("path")
                            .data([model.get('filtered')[i]])
                          .enter().append("svg:path")

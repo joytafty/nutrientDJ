@@ -95,7 +95,7 @@
             if (typeof selected == "undefined") {
               self.selector.deselect(); 
             }
-          }, 30);
+          }, 40);
         });
       }
     },

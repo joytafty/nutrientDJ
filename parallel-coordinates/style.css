@@ -217,10 +217,16 @@ svg {
   shape-rendering: crispEdges;
 }
 
-.foreground path {
+.foreground path,
+.highlight path {
   fill: none;
   stroke: darkolivegreen;
+  stroke-width: 1.5;
   stroke-opacity: .5;
+}
+
+.highlight path {
+  stroke-opacity: 1;
 }
 
 .brush .extent {
