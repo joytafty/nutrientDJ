@@ -91,6 +91,9 @@
 
     dimensions.set({data: foods });
 
+    var columns = _(foods[0]).keys();
+    var axes = _(columns).without('name', 'group');
+
     var pc = parallel(dimensions);
     window.pie = piechart(dimensions);
 
@@ -98,43 +101,7 @@
       model: dimensions,
       selector: highlighter,
       width: 960,
-      columns: [
-        'name',
-        'group',
-        'protein',
-        'calcium',
-        'sodium',
-        'fiber',
-        'vitaminc',
-        'potassium',
-        'fat',
-        'sugars',
-        'carbohydrate',
-        'water',
-        'calories',
-        'saturated',
-        'monounsat',
-        'polyunsat'
-      ],
-      alias: {
-        'name': 'Name',
-        'group': 'Food Group',
-        'protein': 'Protein (g)',
-        'calcium': 'Calcium (mg)',
-        'sodium': 'Sodium (mg)',
-        'fiber': 'Fiber (g)',
-        'vitaminc': 'Vitamin C (mg)',
-        'potassium': 'Potassium (mg)',
-        'fat': 'Fat (g)',
-        'sugars': 'Sugars (g)',
-        'carbohydrate': 'Carbohydrate (g)',
-        'calories': 'Calories (g)',
-        'saturated': 'Saturated Fatty Acids (g)',
-        'monounsat': 'Monunsaturated Fatty Acids (g)',
-        'polyunsat': 'Polyunsaturated Fatty Acids (g)',
-        'cholesterol': 'Cholesterol (g)',
-        'water': 'Water (g)'
-      }
+      columns: columns
     });
 
     slicky.update();

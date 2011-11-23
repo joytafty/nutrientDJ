@@ -11,8 +11,6 @@
                             })
                             .value();
 
-    console.log(data);
-
     var w = 100,
         h = 100,
         r = Math.min(w, h) / 2,
