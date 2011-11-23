@@ -211,8 +211,9 @@ svg {
 }
 
 .background path {
+  display: none;
   fill: none;
-  stroke: #e9e9e9;
+  stroke: #e7e7e7;
   stroke-opacity: 1;
   shape-rendering: crispEdges;
 }
@@ -342,6 +343,6 @@ body.inverted {
 }
 
 /* no background lines */
-.no_background_lines .background path {
-  display: none;
+.shadows .background path {
+  display: inherit;
 }

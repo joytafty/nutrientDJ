@@ -22,7 +22,7 @@ $(function() {
   
   toggleCSS('inverted');
   toggleCSS('no_ticks');
-  toggleCSS('no_background_lines');
+  toggleCSS('shadows');
   toggleCSS('full_width', function() {
     $('#parallel').trigger('resize');
   });
