@@ -70,6 +70,7 @@ p {
   background: #ddd;
   color: #999;
   text-decoration: none;
+  text-align: center;
   font-weight: bold;
   float: right;
   border-radius: 3px;
@@ -124,6 +125,15 @@ h2 {
 .intro li {
   font-size: 16px;
 }
+
+/* Pie Charts */
+#totals .in {
+  fill: #888;
+}
+#totals .out {
+  fill: #ccc;
+}
+
 /*SlickGrid */
 #myGrid {
   width: 100% !important;  /* vs jquery resizable */
@@ -284,6 +294,7 @@ body.inverted {
   color: #09f;
 }
 .inverted .button {
+  background: #272727;
   border-color: #444;
 }
 .inverted .button:hover {
@@ -297,6 +308,13 @@ body.inverted {
 }
 .inverted #nav .toggle.on {
   color: #ddd;
+}
+
+.inverted #totals .in {
+  fill: #777;
+}
+.inverted #totals .out {
+  fill: #333;
 }
 
 .inverted .slick-header-column {

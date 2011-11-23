@@ -29,7 +29,7 @@
           id: col,
           name: function() { if (self.alias) { return self.alias[col]; } else { return col; } }(), // how to do aliasing?
           field: col,
-          width: function() { if (col == "name") { return 400; } else if (col == "group") { return 200; } else { return self.width/self.columns.length } }()
+          width: function() { if (col == "name") { return 400; } else if (col == "group") { return 180; } else { return 80; }}()
         }
       });
       

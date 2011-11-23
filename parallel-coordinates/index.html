@@ -74,7 +74,8 @@
   </p>
   <div class="widgets">
     <h3>Weight per 100g, colored by food group</h3>
-    <div id="pie" class="button"></div>
+    <div id="totals" class="button">Total Selected<br/></div>
+    <div id="pie" class="button">Group Breakdown<br/></div>
     <a href="#" id="remove_selected" class="button red filter_control">Remove</a>
     <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
     <div id="pager" class="info"></div>
@@ -94,8 +95,20 @@
     var columns = _(foods[0]).keys();
     var axes = _(columns).without('name', 'group');
 
-    var pc = parallel(dimensions);
-    window.pie = piechart(dimensions);
+    var foodgroups =
+      ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils",
+       "Poultry Products", "Soups, Sauces, and Gravies", "Sausages and Luncheon Meats",
+       "Breakfast Cereals", "Fruits and Fruit Juices", "Vegetables and Vegetable Products",
+       "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
+       "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
+       "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
+
+    var pc = parallel(dimensions, foodgroups);
+    var pie = piegroups(foods, foodgroups, 'group');
+    var totals = pietotals(
+      ['in', 'out'],
+      [_(foods).size(), 0]
+    );
 
     var slicky = new grid({
       model: dimensions,
@@ -106,6 +119,15 @@
 
     slicky.update();
     pc.render();
+
+    dimensions.bind('change:filtered', function() {
+      var data = dimensions.get('data');
+      var filtered = dimensions.get('filtered');
+      var data_size = _(data).size();
+      var filtered_size = _(filtered).size();
+      pie.update(filtered);
+      totals.update([filtered_size, data_size - filtered_size]);
+    });
     
     highlighter.bind('change:selected', function() {
       var highlighted = this.get('selected');
