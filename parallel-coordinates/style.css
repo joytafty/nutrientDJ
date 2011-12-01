@@ -233,7 +233,7 @@ svg {
   fill: none;
   stroke: darkolivegreen;
   stroke-width: 1.5;
-  stroke-opacity: .5;
+  stroke-opacity: .15;
 }
 
 .highlight path {
