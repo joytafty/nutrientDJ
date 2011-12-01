@@ -70,6 +70,7 @@ p {
   background: #ddd;
   color: #999;
   text-decoration: none;
+  text-align: center;
   font-weight: bold;
   float: right;
   border-radius: 3px;
@@ -124,6 +125,15 @@ h2 {
 .intro li {
   font-size: 16px;
 }
+
+/* Pie Charts */
+#totals .in {
+  fill: #888;
+}
+#totals .out {
+  fill: #ccc;
+}
+
 /*SlickGrid */
 #myGrid {
   width: 100% !important;  /* vs jquery resizable */
@@ -211,8 +221,9 @@ svg {
 }
 
 .background path {
+  display: none;
   fill: none;
-  stroke: #e9e9e9;
+  stroke: #e7e7e7;
   stroke-opacity: 1;
   shape-rendering: crispEdges;
 }
@@ -283,6 +294,7 @@ body.inverted {
   color: #09f;
 }
 .inverted .button {
+  background: #272727;
   border-color: #444;
 }
 .inverted .button:hover {
@@ -296,6 +308,13 @@ body.inverted {
 }
 .inverted #nav .toggle.on {
   color: #ddd;
+}
+
+.inverted #totals .in {
+  fill: #777;
+}
+.inverted #totals .out {
+  fill: #333;
 }
 
 .inverted .slick-header-column {
@@ -342,6 +361,6 @@ body.inverted {
 }
 
 /* no background lines */
-.no_background_lines .background path {
-  display: none;
+.shadows .background path {
+  display: inherit;
 }

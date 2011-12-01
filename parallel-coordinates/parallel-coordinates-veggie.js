@@ -1,6 +1,6 @@
 (function(d3) {
 
-  window.parallel = function(model) {
+  window.parallel = function(model, coloring) {
     var self = {},
         dimensions,
         dragging = {},
@@ -54,15 +54,11 @@
           .attr("d", path);
 
       // TODO: factor out
-      var foodgroups = ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils",
-                        "Poultry Products", "Soups, Sauces, and Gravies", "Sausages and Luncheon Meats",
-                        "Breakfast Cereals", "Fruits and Fruit Juices", "Vegetables and Vegetable Products",
-                        "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
-                        "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
-                        "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
+      // var foodgroups = _(data).chain().groupBy(group).keys().value();
+
       var color = d3.scale.category20();
       var colors = {};
-      _(foodgroups).each(function(group, i) {
+      _(coloring).each(function(group, i) {
         colors[group] = color(i);
       });
 
