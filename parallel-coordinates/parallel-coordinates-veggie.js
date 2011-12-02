@@ -7,7 +7,7 @@
         highlighted = null,
         container = d3.select("#parallel");
 
-    var line = d3.svg.line(),
+    var line = d3.svg.line().interpolate('cardinal').tension(0.85),
         axis = d3.svg.axis().orient("left"),
         background,
         foreground;
@@ -119,8 +119,8 @@
           .attr("class", "brush")
           .each(function(d) { d3.select(this).call(y[d].brush = d3.svg.brush().y(y[d]).on("brush", brush)); })
         .selectAll("rect")
-          .attr("x", -8)
-          .attr("width", 16);
+          .attr("x", -12)
+          .attr("width", 24);
       
       function position(d) {
         var v = dragging[d];

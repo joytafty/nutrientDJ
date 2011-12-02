@@ -261,6 +261,10 @@ svg {
   cursor: move;
 }
 
+.dimension {
+  background: blue;
+}
+
 /* jquery resizable */
 .ui-resizable {
   padding-bottom: 10px;
