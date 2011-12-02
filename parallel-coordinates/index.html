@@ -128,7 +128,7 @@
       pie.update(filtered);
       totals.update([filtered_size, data_size - filtered_size]);
       
-      if ($('#line_opacity').val() > 0.08) {
+      if (filtered_size < 300 || $('#line_opacity').val() > 0.08) {
         var opacity = _([1.8/Math.sqrt(filtered_size,2), 100]).min();
         $('#line_opacity').val(opacity).change();
       }
