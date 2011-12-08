@@ -1,6 +1,6 @@
 (function(d3) {
 
-  window.parallel = function(model, coloring) {
+  window.parallel = function(model, colors) {
     var self = {},
         dimensions,
         dragging = {},
@@ -52,15 +52,6 @@
           .data(cars)
         .enter().append("svg:path")
           .attr("d", path);
-
-      // TODO: factor out
-      // var foodgroups = _(data).chain().groupBy(group).keys().value();
-
-      var color = d3.scale.category20();
-      var colors = {};
-      _(coloring).each(function(group, i) {
-        colors[group] = color(i);
-      });
 
       // Add blue foreground lines for focus.
       foreground = svg.append("svg:g")

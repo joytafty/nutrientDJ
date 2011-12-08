@@ -8,6 +8,15 @@ function like(str, name) {
   return name.toLowerCase().indexOf(str) != -1;
 };
 
+function get(obj, key) {
+  if (!obj)
+    return null;
+  if (key in obj)
+    return obj[key];
+  else
+    return null;
+}
+
 var transformed = [];
 
 _(foodgroups).each(function(group) {
@@ -15,22 +24,7 @@ _(foodgroups).each(function(group) {
     .chain()
     .filter(function(food) {
       var nuts = food.nutrients;
-      return has(203, nuts) && // Protein
-             has(301, nuts) && // Calcium
-             has(307, nuts) && // Sodium
-             has(291, nuts) && // Fiber
-             has(401, nuts) && // Vitamin C
-             has(306, nuts) && // Potassium
-             has(205, nuts) && // Carboyhdrate
-             has(204, nuts) && // Fat
-             has(269, nuts) && // Sugars
-             has(255, nuts) && // Water
-             has(208, nuts) && // Calories
-             has(606, nuts) && // Saturated
-             has(645, nuts) && // Monounsaturated
-             has(646, nuts) && // Polyunsaturated
-//             has(601, nuts) && // Cholesterol
-             !(like('powder', food.name)) &&
+      return !(like('powder', food.name)) &&
              !(like('dehydrated', food.name)) &&
              !(like('dried', food.name)) &&
              !(like('adobo fresco', food.name)) &&
@@ -40,20 +34,20 @@ _(foodgroups).each(function(group) {
       return {
         name: food.name,
         group: group.name,
-        "protein (g)": _(food.nutrients).find(function(d) { return d.id == "203" }).amount,
-        "calcium (mg)": _(food.nutrients).find(function(d) { return d.id == "301" }).amount,
-        "sodium (mg)": _(food.nutrients).find(function(d) { return d.id == "307" }).amount,
-        "fiber (g)": _(food.nutrients).find(function(d) { return d.id == "291" }).amount,
-        "vitaminc (mg)": _(food.nutrients).find(function(d) { return d.id == "401" }).amount,
-        "potassium (mg)": _(food.nutrients).find(function(d) { return d.id == "306" }).amount,
-        "carbohydrate (g)": _(food.nutrients).find(function(d) { return d.id == "205" }).amount,
-        "sugars (g)": _(food.nutrients).find(function(d) { return d.id == "269" }).amount,
-        "fat (g)": _(food.nutrients).find(function(d) { return d.id == "204" }).amount,
-        "water (g)": _(food.nutrients).find(function(d) { return d.id == "255" }).amount,
-        "calories (g)": _(food.nutrients).find(function(d) { return d.id == "208" }).amount,
-        "saturated (g)": _(food.nutrients).find(function(d) { return d.id == "606" }).amount,
-        "monounsat (g)": _(food.nutrients).find(function(d) { return d.id == "645" }).amount,
-        "polyunsat (g)": _(food.nutrients).find(function(d) { return d.id == "646" }).amount,
+        "protein (g)": get(_(food.nutrients).find(function(d) { return d.id == "203" }), 'amount'),
+        "calcium (g)": get(_(food.nutrients).find(function(d) { return d.id == "301" }), 'amount') / 1000,      // mg
+        "sodium (g)": get(_(food.nutrients).find(function(d) { return d.id == "307" }), 'amount') / 1000,       // mg
+        "fiber (g)": get(_(food.nutrients).find(function(d) { return d.id == "291" }), 'amount'),
+        "vitaminc (g)": get(_(food.nutrients).find(function(d) { return d.id == "401" }), 'amount') / 1000,     // mg
+        "potassium (g)": get(_(food.nutrients).find(function(d) { return d.id == "306" }), 'amount') / 1000,    // mg
+        "carbohydrate (g)": get(_(food.nutrients).find(function(d) { return d.id == "205" }), 'amount'),
+        "sugars (g)": get(_(food.nutrients).find(function(d) { return d.id == "269" }), 'amount'),
+        "fat (g)": get(_(food.nutrients).find(function(d) { return d.id == "204" }), 'amount'),
+        "water (g)": get(_(food.nutrients).find(function(d) { return d.id == "255" }), 'amount'),
+        "calories": get(_(food.nutrients).find(function(d) { return d.id == "208" }), 'amount'),
+        "saturated (g)": get(_(food.nutrients).find(function(d) { return d.id == "606" }), 'amount'),
+        "monounsat (g)": get(_(food.nutrients).find(function(d) { return d.id == "645" }), 'amount'),
+        "polyunsat (g)": get(_(food.nutrients).find(function(d) { return d.id == "646" }), 'amount'),
 //        cholesterol: _(food.nutrients).find(function(d) { return d.id == "601" }).amount,
       }
       })

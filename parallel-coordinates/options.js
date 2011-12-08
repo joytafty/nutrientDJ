@@ -23,9 +23,6 @@ $(function() {
   toggleCSS('inverted');
   toggleCSS('no_ticks');
   toggleCSS('shadows');
-  toggleCSS('full_width', function() {
-    $('#parallel').trigger('resize');
-  });
   
   function toggleCSS(key, func) {
     // initialize on load

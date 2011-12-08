@@ -1,5 +1,5 @@
 body {
-  margin: 12px;
+  margin: 0;
   padding: 0;
   font-family: "Lucida Grande", arial, helvetica, clean, sans-serif;
   font-size: 13px;
@@ -9,25 +9,23 @@ body {
 }
 a {
   text-decoration: none;
-  background: #fff8d0;
-  color: #222;
 }
 a:visited {
   color: #777;
 }
 a:hover {
-  color: blue;
+  text-decoration: underline;
 }
 #main {
-  width: 960px;
+  width: 100%;
   min-width: 760px;
-  margin: 0 auto;
+  margin: 8px auto;
 }
 #nav {
-  height: 48px;
-  width: 960px;
+  height: 64px;
+  width: 100%;
   margin: 0 auto;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.25);
 }
 p {
   margin-left: 12px;
@@ -42,15 +40,36 @@ p {
   margin: 12px 8px 0 0;
   padding: 4px;
   height: 16px;
-  background: rgba(0,0,0,0.05);
-  color: #888;
+  background: rgba(0,0,0,0.1);
+  color: #666;
 }
 #nav a.toggle:hover {
-  background: rgba(0,0,0,0.1);
+  color: #222;
+  background: rgba(0,0,0,0.15);
 }
 #nav .toggle.on {
   color: #222;
   font-weight: bold;
+}
+#legend { 
+  float: left;
+  clear: left;
+  margin: 0 200px 0 12px;
+  font-size: 11px;
+  line-height: 1.6em;
+}
+#legend .item {
+  float: left;
+  margin-right: 10px;
+}
+#legend .color {
+  height: 10px;
+  width: 10px;
+  opacity: 0.7;
+}
+#legend div {
+  display: inline-block;
+  margin: 0 2px;
 }
 .widgets {
   margin: 0 4% 0 0;
@@ -58,7 +77,7 @@ p {
 }
 .widgets h3 {
   float: left;
-  margin: 16px 0 0 12px;
+  margin: 12px 0 0 12px;
   font-size: 16px;
   line-height: 20px;
 }
@@ -76,12 +95,11 @@ p {
   border-radius: 3px;
   border: 1px solid #ccc;
 }
-#nav .widget {
+.widget {
   margin-top: 4px;
   padding: 2px 8px;
   height: 36px;
   line-height: 11px;
-  color: #999;
   font-size: 11px;
   text-align: center;
   float: right;
@@ -110,23 +128,31 @@ p {
 .left {
   float: left;
 }
+.clear {
+  clear: both;
+}
+.clear.left {
+  clear: left;
+}
+.clear.right {
+  clear: right;
+}
 .gone {
   display: none;
 }
 h2 {
   color: #333;
 }
-.intro,
-.outtro {
-  font-size: 16px;
+.intro {
+  font-size: 13px;
   line-height: 1.3em;
-  width: 540px;
-}
-.intro li {
-  font-size: 16px;
+  margin: 6px 0 0 12px;
 }
 
 /* Pie Charts */
+#pie {
+  opacity: 0.8;
+}
 #totals .in {
   fill: #888;
 }
@@ -137,7 +163,7 @@ h2 {
 /*SlickGrid */
 #myGrid {
   width: 100% !important;  /* vs jquery resizable */
-  height: 300px;
+  height: 220px;
 }
 .slick-header-column {
   font-weight:bold;
@@ -213,7 +239,7 @@ h2 {
 /* SVG Paralllel Coordinates */
 #parallel {
   width: 100% !important;  /* vs jquery resizable */
-  height: 260px;
+  height: 220px;
   margin-bottom: 20px;
 }
 svg {
@@ -223,7 +249,7 @@ svg {
 .background path {
   display: none;
   fill: none;
-  stroke: #e7e7e7;
+  stroke: #d4d4d4;
   stroke-opacity: 1;
   shape-rendering: crispEdges;
 }
@@ -241,8 +267,8 @@ svg {
 }
 
 .brush .extent {
-  fill-opacity: .3;
-  stroke: #fff;
+  fill-opacity: .2;
+  stroke: fff;
   shape-rendering: crispEdges;
 }
 
@@ -283,12 +309,11 @@ svg {
 
 /* inverted */
 body.inverted {
-  background: #111;
+  background: #161616;
   color: #eee;
 }
 .inverted a {
   text-decoration: none;
-  background: #272727;
   color: #eee;
 }
 .inverted a:visited {
@@ -333,11 +358,11 @@ body.inverted {
 }
 
 .inverted .background path {
-  stroke: #1a1a1a;
+  stroke: #272727;
 }
 .inverted .brush .extent {
-  fill-opacity: .4;
-  stroke: #999;
+  fill-opacity: .2;
+  stroke: #000;
 }
 .inverted .axis text {
   stroke: none;
@@ -348,15 +373,6 @@ body.inverted {
     1px -1px 0 #111,
    -1px 1px 0 #111,
     1px 1px 0 #111;
-}
-
-/* full width */
-.full_width #main {
-  width: 100%;
-  margin: 0 12px;
-}
-.full_width #nav {
-  width: 100%;
 }
 
 /* no ticks */

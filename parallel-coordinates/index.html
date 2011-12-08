@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-  <title>Living Matter in Parallel Coordinates</title>
+  <title>Nutrient Contents - Parallel Coordinates</title>
         
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.5.0"></script>
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js?2.5.0"></script>
@@ -33,52 +33,30 @@
 
 <body>
 <div id="nav">
-  <h1>Living Matter in Parallel Coordinates</h1>
+  <h1>Nutrient Contents - Parallel Coordinates</h1>
   <div class="widget right toggle">
 	  <input type="range" min="0" max="1" value="0.15" step="0.01" name="power" list="powers" id="line_opacity"></input>
    <br/>
 	  Opacity: <span id="opacity_level">15%</span>
 	</div>
   <div><a href="#" id="shadows" class="right toggle">Shadows</a></div>
-  <div><a href="#" id="full_width" class="right toggle">Full Width</a></div>
   <div><a href="#" id="inverted" class="right toggle">Dark</a></div>
   <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
+  <p class="intro left clear">
+    An interactive visualization of the <a href="http://www.ars.usda.gov/Services/docs.htm?docid=8964">USDA Nutrient Database</a>.
+    For information on parallel coordinates, read this <a href="http://eagereyes.org/techniques/parallel-coordinates">tutorial</a>.
+  </p>
 </div>
 <div id="main">
-  <p class="intro">
-    An interactive visualization of the <a href="http://www.ars.usda.gov/Services/docs.htm?docid=8964">USDA Nutrient Database</a>.
-	Each food traces a line across the colorized parallel coordinates based on its nutrient content. The lines are colored by food group.
-  </p>
-  <p class="intro">
-	If you are unfamiliar with parallel coordinates, read this <a href="http://eagereyes.org/techniques/parallel-coordinates">tutorial</a>.
-  </p>
-  <h3 class="intro">First, select some data...</h3>
-  <ul class="intro">
-	<li>Click and drag along an axis to <strong>create a selection</strong></li>
-	<li>To <strong>move a selection</strong>, drag it up and down</li>
-	<li>To <strong>remove a selection</strong>, click the axis line behind it</li>
-  </ul>
-  <h3 class="intro">Then...</h3>
-  <ul class="intro">
-	<li><strong>Keep</strong> data you're interested in</li>
-	<li><strong>Remove</strong> data you're not interested in, such as outliers</li>
-  </ul>
-  <p class="intro">
-    Refresh the page to start over.
-  </p>
-  <p class="intro">
-	When you're done with these instructions, <a href="#" id="hide_instructions">hide them</a>.
-  </p>
-  <p class="outtro">
-	<a href="#" id="show_instructions" class="gone">Show instructions.</a>
-  </p>
   <div class="widgets">
-    <h3>Weight per 100g, colored by food group</h3>
-    <div id="totals" class="button">Total Selected<br/></div>
-    <div id="pie" class="button">Group Breakdown<br/></div>
+    <h3>Per 100g of Food</h3>
+    <div id="totals" class="widget right">Total Selected<br/></div>
+    <div id="pie" class="widget right">Group Breakdown<br/></div>
     <a href="#" id="remove_selected" class="button red filter_control">Remove</a>
     <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
     <div id="pager" class="info"></div>
+        <div id="legend">
+    </div>
   </div>
   <div id="parallel">
   </div>
@@ -97,14 +75,43 @@
 
     var foodgroups =
       ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils",
-       "Poultry Products", "Soups, Sauces, and Gravies", "Sausages and Luncheon Meats",
-       "Breakfast Cereals", "Fruits and Fruit Juices", "Vegetables and Vegetable Products",
+       "Poultry Products", "Soups, Sauces, and Gravies", "Vegetables and Vegetable Products",
+       "Sausages and Luncheon Meats", "Breakfast Cereals", "Fruits and Fruit Juices",
        "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
        "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
        "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
+    
+    var colors = {
+      "Dairy and Egg Products" : '#1f77b4',
+      "Spices and Herbs" : '#aec7e8',
+      "Baby Foods" : '#ff7f0e',
+      "Fats and Oils" : '#ffbb78',
+      "Poultry Products" : '#d62728',
+      "Soups, Sauces, and Gravies" : '#98df8a',
+      "Vegetables and Vegetable Products" : '#2ca02c',
+      "Sausages and Luncheon Meats" : '#ff9896',
+      "Breakfast Cereals" : '#9467bd',
+      "Fruits and Fruit Juices" : '#c5b0d5',
+      "Nut and Seed Products" : '#8c564b',
+      "Beverages" : '#c49c94',
+      "Finfish and Shellfish Products" : '#e377c2',
+      "Legumes and Legume Products" : '#f7b6d2',
+      "Baked Products" : '#7f7f7f',
+      "Sweets" : '#c7c7c7',
+      "Cereal Grains and Pasta" : ' #bcbd22',
+      "Fast Foods" : '#dbdb8d',
+      "Meals, Entrees, and Sidedishes" : '#17becf',
+      "Snacks" : '#9edae5',
+      "Ethnic Foods" : '#e7ba52',
+      "Restaurant Foods" : '#555'
+    }
+    
+    _(foodgroups).each(function(group) {
+      $('#legend').append("<div class='item'><div class='color' style='background: " + colors[group] + "';></div><div class='key'>" + group + "</div></div>");
+    });
 
-    var pc = parallel(dimensions, foodgroups);
-    var pie = piegroups(foods, foodgroups, 'group');
+    var pc = parallel(dimensions, colors);
+    var pie = piegroups(foods, foodgroups, colors, 'group');
     var totals = pietotals(
       ['in', 'out'],
       [_(foods).size(), 0]
@@ -113,7 +120,7 @@
     var slicky = new grid({
       model: dimensions,
       selector: highlighter,
-      width: 960,
+      width: $('body').width(),
       columns: columns
     });
 
@@ -129,7 +136,7 @@
       totals.update([filtered_size, data_size - filtered_size]);
       
       if (filtered_size < 300 || $('#line_opacity').val() > 0.08) {
-        var opacity = _([1.8/Math.sqrt(filtered_size,2), 100]).min();
+        var opacity = _([2/Math.sqrt(filtered_size,2), 100]).min();
         $('#line_opacity').val(opacity).change();
       }
     });
@@ -143,6 +150,7 @@
       dimensions.outliers();
       pc.update(dimensions.get('data'));
       pc.render();
+      dimensions.trigger('change:filtered');
       return false;
     });
     
@@ -150,6 +158,7 @@
       dimensions.inliers();
       pc.update(dimensions.get('data'));
       pc.render();
+      dimensions.trigger('change:filtered');
       return false;
     });
     

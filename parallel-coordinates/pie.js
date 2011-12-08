@@ -1,6 +1,6 @@
 (function(d3) {
 
-  window.piegroups = function(data, keys, group) {
+  window.piegroups = function(data, keys, colors, group) {
     var self = {};
 
     // var keys = _(data).chain().groupBy(group).keys().value();
@@ -8,7 +8,6 @@
     var w = 100,
         h = 80,
         r = Math.min(w, h) / 2,
-        color = d3.scale.category20(),
         donut = d3.layout.pie().sort(null),
         arc = d3.svg.arc().innerRadius(r - 28).outerRadius(r - 6);
 
@@ -21,7 +20,7 @@
     var arcs = svg.selectAll("path")
         .data(donut(count(data)))
       .enter().append("svg:path")
-        .attr("fill", function(d, i) { return color(i); })
+        .attr("fill", function(d, i) { return colors[keys[i]]; })
         .attr("d", arc)
         .each(function(d, i) {
           d3.select(this).append("svg:title").text(keys[i]);
