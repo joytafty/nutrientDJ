@@ -25,7 +25,7 @@ a:hover {
   height: 64px;
   width: 100%;
   margin: 0 auto;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.12);
 }
 p {
   margin-left: 12px;
@@ -163,7 +163,7 @@ h2 {
 /*SlickGrid */
 #myGrid {
   width: 100% !important;  /* vs jquery resizable */
-  height: 220px;
+  height: 260px;
 }
 .slick-header-column {
   font-weight:bold;
@@ -238,11 +238,12 @@ h2 {
 }
 /* SVG Paralllel Coordinates */
 #parallel {
-  width: 100% !important;  /* vs jquery resizable */
+  width: 100%;  /* vs jquery resizable */
   height: 220px;
+  margin: 0 auto;
   margin-bottom: 20px;
 }
-svg {
+#parallel svg {
   font: 10px sans-serif;
 }
 
@@ -268,7 +269,7 @@ svg {
 
 .brush .extent {
   fill-opacity: .2;
-  stroke: fff;
+  stroke: #fff;
   shape-rendering: crispEdges;
 }
 
@@ -310,7 +311,7 @@ svg {
 /* inverted */
 body.inverted {
   background: #161616;
-  color: #eee;
+  color: #e9e9e9;
 }
 .inverted a {
   text-decoration: none;
@@ -362,7 +363,7 @@ body.inverted {
 }
 .inverted .brush .extent {
   fill-opacity: .2;
-  stroke: #000;
+  stroke: #ddd;
 }
 .inverted .axis text {
   stroke: none;

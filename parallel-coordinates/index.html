@@ -40,6 +40,7 @@
 	  Opacity: <span id="opacity_level">15%</span>
 	</div>
   <div><a href="#" id="shadows" class="right toggle">Shadows</a></div>
+  <div><a href="#" id="resize" class="right toggle">Resize</a></div>
   <div><a href="#" id="inverted" class="right toggle">Dark</a></div>
   <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
   <p class="intro left clear">
@@ -123,7 +124,16 @@
       width: $('body').width(),
       columns: columns
     });
-
+    
+    // vertical full screen
+    var parallel_height = $(window).height() - 64 - 12 - 120 - 320;
+    if (parallel_height < 120) parallel_height = 120;  // min height
+    if (parallel_height > 340) parallel_height = 340;  // max height
+    $('#parallel').css({
+        height: parallel_height + 'px',
+        width: $(window).width() + 'px'
+    });
+    
     slicky.update();
     pc.render();
 
@@ -169,13 +179,10 @@
     });
     
     $('#parallel').resize(function() {
+      // vertical full screen
       pc.render();
-      var val = Math.pow($('#line_opacity').val(), 3);
+      var val = $('#line_opacity').val();
       $('#parallel .foreground path').css('stroke-opacity', val.toString());
-    });
-    
-    $(window).resize(function() {
-      pc.render();
     });
     
     $('#parallel').resizable({
