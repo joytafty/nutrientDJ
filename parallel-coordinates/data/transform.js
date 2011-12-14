@@ -27,7 +27,55 @@ _(foodgroups).each(function(group) {
       return !(like('powder', food.name)) &&
              !(like('dehydrated', food.name)) &&
              !(like('dried', food.name)) &&
+             !(like('raw', food.name)) &&
+             !(like('like', food.name)) &&
+             !(like('variety', food.name)) &&
+             !(like('loin', food.name)) &&
+             !(like('reduced', food.name)) &&
+             !(like('loin', food.name)) &&
+             !(like('diced', food.name)) &&
+             !(like('campbell', food.name)) &&
+             !(like('prepared', food.name)) &&
+             !(like('fat', food.name)) &&
+             !(like('frozen', food.name)) &&
+             !(like('gluten', food.name)) &&
+             !(like('archway', food.name)) &&
+             !(like('silk', food.name)) &&
+             !(like('vita', food.name)) &&
+             !(like('breyers', food.name)) &&
+             !(like('canned', food.name)) &&
+             !(like('imitation', food.name)) &&
+             !(like('substitute', food.name)) &&
              !(like('adobo fresco', food.name)) &&
+             !(like('agents', food.name)) &&
+             !(like('salt, table', food.name)) &&
+             !(like('broilers', food.name)) &&
+             !(like('cured', food.name)) &&
+             !(like('chuck', food.name)) &&
+             !(like('domestic', food.name)) &&
+             !(like('stewing', food.name)) &&
+             !(like('cooked', food.name)) &&
+             !(like('with', food.name)) &&
+             !(like('fast', food.name)) &&
+             !(like('meal', food.name)) &&
+             !(like('tablets', food.name)) &&
+             !(like('crude', food.name)) &&
+             !(like('acerola', food.name)) &&
+             !(like('usda', food.name)) &&
+             !(like('low', food.name)) &&
+             !(like('yeast', food.name)) &&
+             !(like('ready-to-eat', food.name)) &&
+             !(like('ready-to-serve', food.name)) &&
+             !(like('flour', food.name)) &&
+             !(like('formulated bar', food.name)) &&
+             !(like('louis rich', food.name)) &&
+             !(like('classes', food.name)) &&
+             !(like('roasters', food.name)) &&
+             !(like('young', food.name)) &&
+             !(like('homemade', food.name)) &&
+             !(like('soy protein', food.name)) &&
+             !(like('soy sauce', food.name)) &&
+             !(like('hips', food.name)) &&
              !(like('dry', food.name));
       })
     .map(function(food) {

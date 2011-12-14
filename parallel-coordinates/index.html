@@ -35,12 +35,11 @@
 <div id="nav">
   <h1>Nutrient Contents - Parallel Coordinates</h1>
   <div class="widget right toggle">
-	  <input type="range" min="0" max="1" value="0.15" step="0.01" name="power" list="powers" id="line_opacity"></input>
+	  <input type="range" min="0" max="1" value="0.2" step="0.01" name="power" list="powers" id="line_opacity"></input>
    <br/>
-	  Opacity: <span id="opacity_level">15%</span>
+	  Opacity: <span id="opacity_level">20%</span>
 	</div>
   <div><a href="#" id="shadows" class="right toggle">Shadows</a></div>
-  <div><a href="#" id="resize" class="right toggle">Resize</a></div>
   <div><a href="#" id="inverted" class="right toggle">Dark</a></div>
   <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
   <p class="intro left clear">
@@ -75,17 +74,17 @@
     var axes = _(columns).without('name', 'group');
 
     var foodgroups =
-      ["Dairy and Egg Products", "Spices and Herbs", "Baby Foods", "Fats and Oils",
+      ["Dairy and Egg Products", /*"Spices and Herbs", "Baby Foods",*/ "Fats and Oils",
        "Poultry Products", "Soups, Sauces, and Gravies", "Vegetables and Vegetable Products",
        "Sausages and Luncheon Meats", "Breakfast Cereals", "Fruits and Fruit Juices",
        "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
        "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
-       "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", "Ethnic Foods", "Restaurant Foods"];
+       "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", /*"Ethnic Foods",*/ "Restaurant Foods"];
     
     var colors = {
-      "Dairy and Egg Products" : '#1f77b4',
+      "Dairy and Egg Products" : '#ff7f0e',
       "Spices and Herbs" : '#aec7e8',
-      "Baby Foods" : '#ff7f0e',
+      "Baby Foods" : '#555',
       "Fats and Oils" : '#ffbb78',
       "Poultry Products" : '#d62728',
       "Soups, Sauces, and Gravies" : '#98df8a',
@@ -104,7 +103,7 @@
       "Meals, Entrees, and Sidedishes" : '#17becf',
       "Snacks" : '#9edae5',
       "Ethnic Foods" : '#e7ba52',
-      "Restaurant Foods" : '#555'
+      "Restaurant Foods" : '#1f77b4'
     }
     
     _(foodgroups).each(function(group) {
@@ -145,10 +144,8 @@
       pie.update(filtered);
       totals.update([filtered_size, data_size - filtered_size]);
       
-      if (filtered_size < 300 || $('#line_opacity').val() > 0.08) {
-        var opacity = _([2/Math.sqrt(filtered_size,2), 100]).min();
-        $('#line_opacity').val(opacity).change();
-      }
+      var opacity = _([2/Math.pow(filtered_size,0.37), 100]).min();
+      $('#line_opacity').val(opacity).change();
     });
     
     highlighter.bind('change:selected', function() {
