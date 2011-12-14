@@ -58,36 +58,22 @@
   var dimensions = new Filter();
 
   dimensions.set({data: foods});
+  
+  var foodgroups =
+    ["Dairy and Egg Products", /*"Spices and Herbs", "Baby Foods",*/ "Fats and Oils",
+     "Poultry Products", "Soups, Sauces, and Gravies", "Vegetables and Vegetable Products",
+     "Sausages and Luncheon Meats", "Breakfast Cereals", "Fruits and Fruit Juices",
+     "Nut and Seed Products", "Beverages", "Finfish and Shellfish Products",
+     "Legumes and Legume Products", "Baked Products", "Sweets", "Cereal Grains and Pasta",
+     "Fast Foods", "Meals, Entrees, and Sidedishes", "Snacks", /*"Ethnic Foods",*/ "Restaurant Foods"];
+     
+  var columns = _(foods[0]).keys();
 
   var parallel = new Parallel_coordinates ({
     title: 'Multidimensional Query - Parallel Coordinates',
     model: dimensions,
     el: document.getElementById('parallel-coordinates'),
-    columns: [
-      'protein',
-      'calcium',
-      'sodium',
-      'fiber',
-      'vitaminc',
-      'potassium',
-      'fat',
-      'sugars',
-      'carbohydrate'
-    ],
-    alias: {
-      'protein': 'Protein (g)',
-      'calcium': 'Calcium (mg)',
-      'sodium': 'Sodium (mg)',
-      'fiber': 'Fiber (g)',
-      'vitaminc': 'Vitamin C (mg)',
-      'potassium': 'Potassium (mg)',
-      'fat': 'Fat (g)',
-      'sugars': 'Sugars (g)',
-      'carbohydrate': 'Carbohydrate (g)'
-    },
-    type: {
-      'four': 'category'
-    },
+    columns: _(columns).without('name','group'),
     width: 1360,
     height: 400,
     gutter: { x: 100, y: 50 },
@@ -96,30 +82,7 @@
   var slicky = new grid({
     model: dimensions,
     width: 1360,
-    columns: [
-      'name',
-      'protein',
-      'calcium',
-      'sodium',
-      'fiber',
-      'vitaminc',
-      'potassium',
-      'fat',
-      'sugars',
-      'carbohydrate'
-    ],
-    alias: {
-      'name': 'Name',
-      'protein': 'Protein (g)',
-      'calcium': 'Calcium (mg)',
-      'sodium': 'Sodium (mg)',
-      'fiber': 'Fiber (g)',
-      'vitaminc': 'Vitamin C (mg)',
-      'potassium': 'Potassium (mg)',
-      'fat': 'Fat (g)',
-      'sugars': 'Sugars (g)',
-      'carbohydrate': 'Carbohydrate (g)'
-    }
+    columns: columns
   });
 
   parallel.update();

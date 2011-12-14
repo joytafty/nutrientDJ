@@ -284,12 +284,14 @@
 
         this.el.appendChild(axis.el);
 
+        /*
         $(axis.el).hover(function() {
           self.coloring = $(this).attr('rel');
           self.update();
         }, function() {
-          //self.update();
+          self.update();
         });
+        */
       };
 
       $(this.el).css({
@@ -317,8 +319,7 @@
           cols = this.columns,
           n = this.columns.length,
           w = this.width,
-          h = this.height,
-          alias = this.alias;
+          h = this.height;
 
       var data = this.model.get('data');
       var filtered = this.model.get('filtered');
@@ -342,17 +343,12 @@
         };
         self.axes[col].range = self.range[col];
       });
-      
+
       ctx.textAlign = "center";
 
       // Draw columns
       var space = (w-2-this.gutter.x)/(n-1);
       _(cols).each(function(col,i) {
-        if (typeof alias[col] == 'string') {
-          var name = alias[col];
-        } else {
-          var name = col;
-        }
         self.cols.push({
           col: col,
           x: space*i
@@ -361,7 +357,7 @@
         //ctx.fillRect(space*i-1, self.gutter.y-12, 2, h-(2*self.gutter.y)+24);
         ctx.fillStyle = text_fill;
         ctx.font = "bold 12px Helvetica";
-        ctx.fillText(name, space*i+(self.gutter.x/2), 12);
+        ctx.fillText(col, space*i+(self.gutter.x/2), 12);
         ctx.font = "12px Helvetica";
         ctx.fillText(self.range[col].min, space*i+(self.gutter.x/2), h-24);
         ctx.fillText(self.range[col].max, space*i+(self.gutter.x/2), 28);
