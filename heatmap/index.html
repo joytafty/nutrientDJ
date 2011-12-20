@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Heatmap</title>
+        
+
+  <script type="text/javascript" src="../lib/jquery.js"></script>
+  <script type="text/javascript" src="../lib/underscore.js"></script>
+  <script type="text/javascript" src="../lib/backbone.js"></script>
+
+  <script type="text/javascript" src="js/heatmap.js"></script>
+  <style type="text/css">
+    body {
+      font-family: monospace;
+      color: #efefef;
+      background: #1a1a1a;
+    }
+    #heatmap {
+      float: left;
+    }
+    #stats {
+      float: left;
+    }
+    ul {
+      list-style: none;
+    }
+  </style>
+  
+</head>
+
+<body>
+<canvas id="heatmap" height=600 width=900></canvas>
+<div id="stats">
+  <ul>
+    <li>
+      <strong>x</strong>:
+      <span id="x">n/a</span>
+    </li>
+    <li>
+      <strong>y</strong>:
+      <span id="y">n/a</span>
+    </li>
+    <li>
+      <strong>i</strong>:
+      <span id="i">n/a</span>
+    </li>
+    <li>
+      <strong>j</strong>:
+      <span id="j">n/a</span>
+    </li>
+    <li>
+      <strong>val</strong>:
+      <span id="val" style="color:#6f9;font-weight:bold;">n/a</span>
+    </li>
+  </ul>
+</div>
+<script>
+  var data = _(_.range(100)).map(function(row) {
+    return _(_.range(150)).map(function(col) {
+      if (Math.random() < 0.6)
+        return 0;
+      return Math.random();
+    });
+  });
+  var b = heatmap('heatmap', data);
+
+</script>
+</body>
+</html>
