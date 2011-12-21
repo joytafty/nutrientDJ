@@ -8,6 +8,7 @@ function heatmap(id, data) {
   self.canvas = document.getElementById(id);
   self.ctx = self.canvas.getContext('2d');
 
+  // render heatmap
   _(data).each(function(row,j) {
     _(row).each(function(val,i) {
       self.ctx.fillStyle = colorize(val);
@@ -15,7 +16,49 @@ function heatmap(id, data) {
     });
   });
 
-  self.canvas.onmousemove = function(e) { showValues(e, self.data) };
+  return self;
+};
+
+function linegraph(id, data) {
+  var self = {};
+  self.data = data || [];
+  self.bg = $('#' + id + ' .background')[0];
+  self.bgctx = self.bg.getContext('2d');
+  self.fg = $('#' + id + ' .foreground')[0];
+  self.fgctx = self.fg.getContext('2d');
+
+  // render
+  self.bgctx.strokeStyle = 'hsla(0,0%,50%,0.4)';
+  self.bgctx.beginPath();
+  _(data).each(function(row) {
+    _(row).each(function(val,j) {
+      if (j == 0)
+        self.bgctx.moveTo(totsize*j,120-val*120);
+      else
+        self.bgctx.lineTo(totsize*j,120-val*120);
+    });
+  });
+  self.bgctx.stroke();
+
+  self.highlight = function(pos) {
+    self.fgctx.strokeStyle = '#fb5';
+    self.fgctx.lineWidth = 2.2;
+    self.fgctx.clearRect(0,0,900,120);
+    self.fgctx.beginPath();
+     _(data[pos.i]).each(function(val,j) {
+      if (j == 0)
+        self.fgctx.moveTo(totsize*j,120-val*120);
+      else
+        self.fgctx.lineTo(totsize*j,120-val*120);
+    });   
+    self.fgctx.stroke();
+    self.fgctx.beginPath();
+    self.fgctx.strokeStyle = '#6f9';
+    self.fgctx.lineWidth = 1;
+    self.fgctx.moveTo(totsize*pos.j, 0);
+    self.fgctx.lineTo(totsize*pos.j, 120);
+    self.fgctx.stroke();
+  };
 
   return self;
 };
@@ -54,15 +97,3 @@ function lookup(pos, data) {
   }
   return undefined;                 // couldn't find anything
 };
-
-// display indices and value
-function showValues(e, data) {
-  var pos = indices(totsize, e);
-  var val = lookup(pos, data);
-  document.getElementById('x').innerHTML = pos.x;
-  document.getElementById('y').innerHTML = pos.y;
-  document.getElementById('i').innerHTML = pos.i;
-  document.getElementById('j').innerHTML = pos.j;
-  document.getElementById('val').innerHTML = val;
-};
-
