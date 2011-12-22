@@ -3,7 +3,7 @@
   
   var m = [30, 10, 10, 10],
       w = 960 - m[1] - m[3],
-      h = 360 - m[0] - m[2];
+      h = 220 - m[0] - m[2];
 
   var x = d3.scale.ordinal().rangePoints([0, w], 1),
       y = {},
@@ -27,6 +27,7 @@
     // Extract the list of dimensions and create a scale for each.
     x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
       return d != "name" && d != "group" &&
+             d != "symbol" &&
              d != "Eqid" && d != "Src" && d != "Datetime" && d != "Region" &&   // Earthquake csv
              (y[d] = d3.scale.linear()
           .domain(d3.extent(cars, function(p) { return +p[d]; }))
