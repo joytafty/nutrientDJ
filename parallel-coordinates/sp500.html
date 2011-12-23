@@ -78,12 +78,16 @@
     });
 
     function doit(data) {
+      data = _(data).map(function(d) {
+        d.group = sectors[d.symbol];
+        return d;
+      });
       dimensions.set({data: data});
 
       var columns = _(data[0]).keys();
       var axes = _(columns).without('name', 'group');
 
-      var sectors =
+      var groups =
       ["Consumer Discretionary",
       "Consumer Staples",
       "Energy",
@@ -109,12 +113,12 @@
         "Utilities" : '#c5b0d5'
       }
       
-      _(sectors).each(function(group) {
+      _(groups).each(function(group) {
         $('#legend').append("<div class='item'><div class='color' style='background: " + colors[group] + "';></div><div class='key'>" + group + "</div></div>");
       });
 
       var pc = parallel(dimensions, colors);
-      var pie = piegroups(data, sectors, colors, 'group');
+      var pie = piegroups(data, groups, colors, 'group');
       var totals = pietotals(
         ['in', 'out'],
         [_(data).size(), 0]
