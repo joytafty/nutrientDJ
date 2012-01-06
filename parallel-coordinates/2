@@ -5,6 +5,7 @@
       m = [30, 10, 10, 10],
       w = bounds[0] - m[1] - m[3],
       h = bounds[1] - m[0] - m[2];
+      console.log(w,h);
 
   var x = d3.scale.ordinal().rangePoints([0, w], 1),
       y = {},

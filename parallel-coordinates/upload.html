@@ -7,7 +7,6 @@
         
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.5.0"></script>
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js?2.5.0"></script>
-  <script type="text/javascript" src="parallel-coordinates-d3.js"></script>
 
   <script type="text/javascript" src="../lib/jquery.js"></script>
   <script type="text/javascript" src="../lib/underscore.js"></script>
@@ -27,10 +26,11 @@
   <link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
 <style type="text/css">
 #main {
-  width: 960px;
+  width: 100%;
 }
 
 #parallel {
+  width: 100%;
   height: 220px;
 }
 
@@ -85,11 +85,11 @@ svg {
   </div>
   <div id="parallel">
   </div>
-  <div style="width:960px;">
+  <div style="width:100%;">
       <div id="pager" style="width:100%;height:20px;"></div>
       <div id="myGrid" style="width:100%;height:280px;"></div>
   </div>
-  <p>Last update: 11/08/2011</p>
+  <script type="text/javascript" src="parallel-coordinates-d3.js"></script>
   <script type="text/javascript">
   
   var reader = new FileReader();
@@ -119,7 +119,6 @@ svg {
 
     var slicky = new grid({
       model: filter_link,
-      width: 960,
       columns: dimensions
     });
 
