@@ -1,4 +1,4 @@
-ra,dec,err_maj,err_min,err_ang,,j_m,j_msig,h_m,h_msig,k_m,k_msig,rd_flg,bl_flg,cc_flg,extd_flg,id_opt,b_m_opt,r_m_opt,dist_opt,phi_opt,nopt_mchs
+ra,dec,err_maj,err_min,err_ang,j_m,j_msig,h_m,h_msig,k_m,k_msig,rd_flg,bl_flg,cc_flg,extd_flg,id_opt,b_m_opt,r_m_opt,dist_opt,phi_opt,nopt_mchs
 344.739799,25.591398,0.19,0.18,105,16.464,0.128,15.675,0.128,15.088,0.123,222,111,000,0,112519887918,20.00,17.40,0.28,125,1
 344.238563,24.931463,0.13,0.12,90,12.958,0.036,12.528,0.034,12.513,0.033,222,111,000,0,112519870060,15.80,14.00,0.24,12,1
 344.178223,28.895193,0.16,0.12,0,14.561,0.041,13.946,0.043,13.615,0.045,222,111,000,0,112519867810,20.00,17.40,0.34,212,1
