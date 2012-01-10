@@ -5,8 +5,8 @@
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <title>Parallel Coordinates</title>
         
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.5.0"></script>
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js?2.5.0"></script>
+  <script type="text/javascript" src="../lib/d3/d3.js"></script>
+  <script type="text/javascript" src="../lib/d3/d3.csv.js"></script>
 
   <script type="text/javascript" src="../lib/jquery.js"></script>
   <script type="text/javascript" src="../lib/underscore.js"></script>
@@ -49,7 +49,6 @@
 	</div>
   <div><a href="#" id="no_ticks" class="right toggle">Hide Ticks</a></div>
   <p class="intro left clear">
-    An interactive visualization of a subset of the <a href="http://www.ipac.caltech.edu/2mass/releases/sampler/explsup.html">2MASS Sampler Data</a>.
   </p>
 </div>
 <div id="main">
@@ -63,7 +62,7 @@
 
 
 
-  d3.csv("data/2mass.csv", function(data) {
+  d3.csv("data/hmda-30000.csv", function(data) {
     var dimensions = d3.keys(data[0]);
     
 
@@ -88,15 +87,27 @@
 
       var scene = new THREE.Scene();
       var lineGeo = new THREE.Geometry();
-      
-      var x = -300; 
-      var last = 0;
-      for (k in data[0]) {
-        lineGeo.vertices.push(
-          v(x,last,0), v(x+=50,data[0][k],0)
-        );
-        last = data[0][k];
-      }
+      var range = {};
+      _(dimensions).each(function(col) {
+        var min = _(data).chain().pluck(col).min().value(),
+            max = _(data).chain().pluck(col).max().value();
+        range[col] = {
+          min: min,
+          max: max,
+          size: max-min
+        };
+      });
+      _(data).each(function(d) {
+        var x = 0; 
+        var last = 0;
+        for (k in d) {
+          var curr = scaleY((range[k].max-d[k])/range[k].size);
+          lineGeo.vertices.push(
+            v(scaleX(x),last,0), v(scaleX(x+=1),curr,0)
+          );
+          last = curr;
+        }
+      });
 
       var lineMat = new THREE.LineBasicMaterial({
         color: 0xFFDD00,
@@ -114,13 +125,19 @@
       function v(x,y,z){ 
         return new THREE.Vertex(new THREE.Vector3(x,y,z)); 
       };
+      function scaleX(x) {
+        return (x/dimensions.length)*width-width/2;
+      };
+      function scaleY(y) {
+        if (!_.isNumber(y)) return -height/2;
+        return y*height-height/2;
+      };
 
     })();
 
     
     /*************/
     /* End WEBGL */
-
 
 
     var filter_link = new Filter();
