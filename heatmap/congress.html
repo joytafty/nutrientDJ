@@ -12,107 +12,141 @@
   <script type="text/javascript" src="js/heatmap.js"></script>
   <style type="text/css">
     body {
-      font-family: monospace;
-      color: #efefef;
-      background: #1a1a1a;
+      margin: 0;
+      padding: 0;
+      font-family: Georgia;
+      background: #efefef;
+      color: #1a1a1a;
+      font-size: 13px;
     }
     #heatmap {
       float: left;
+      background: #444;
+    }
+    #heatmap-wrap {
+      margin-top: 120px;
+      padding: 8px;
+      float: left;
+      background: #aaa;
+      display: none;
     }
     #stats {
-      float: left;
-    }
-    #scatter {
-      height: 120px;
-      width: 900px;
-      position: relative;
-      float: left;
-      clear: both;
-    }
-    #scatter .background,
-    #scatter .foreground {
       position: absolute;
+      display: none;
+      border-radius: 5px;
+      background: white;
+      background: rgba( 255, 255, 255, 0.9);
+      padding: 8px;
     }
-    #scatter .background {
-      z-index: 1;
+    #stats ul {
+      margin: 0;
+      padding: 0;
     }
-    #scatter .foreground {
-      z-index: 2;
+    #topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 120px;
+      width: 100%;
+      background: white;
+      background: rgba( 255, 255, 255, 0.9);
     }
     ul {
       list-style: none;
+    }
+    h1 {
+      text-align: center;
+      margin: 12px 0 6px;
+      padding: 0;
+    }
+    p {
+      margin: 8px 12px;
     }
   </style>
   
 </head>
 
 <body>
-  <h1>Congress Votes Test</h1>
+<div id="topbar">
+  <h1>Congress Votes 1990</h1>
   <p>
-    This is a visualization of the <a href="http://clerk.house.gov/evs/1990/index.asp">roll call votes of the 101st Congress</a>.
+    This is a visualization of the <a href="http://clerk.house.gov/evs/1990/index.asp">roll call votes of the 101st Congress</a>.<br/>
+    Each row is a legislator. Each column is a roll call vote. A description for each roll will be in the next version.
   </p>
   <p>
-    Each row is a legislator. Each column is a roll call vote. I am working on a tooltip that will give you the name of the legislator and vote issue as you hover over the matrix plot.
+    Green: Yes |
+    Red: No |
+    Yellow: Present |
+    Magenta: Not Voting |
+    Grey: Not in Congress at the time
   </p>
-  <p>
-    Green - Yes<br/>
-    Red - No<br/>
-    Yellow - Present<br/>
-    Grey - Not Voting<br/>
-  </p>
-<canvas id="heatmap" height=300 width=900></canvas>
+</div>
 <div id="stats">
   <ul>
     <li>
-      <strong>x</strong>:
-      <span id="x">n/a</span>
+      <strong>Legislator</strong>:
+      <span id="legislator">n/a</span>
     </li>
     <li>
-      <strong>y</strong>:
-      <span id="y">n/a</span>
-    </li>
-    <li>
-      <strong>i</strong>:
-      <span id="i">n/a</span>
-    </li>
-    <li>
-      <strong>j</strong>:
+      <strong>Roll</strong>:
       <span id="j">n/a</span>
     </li>
     <li>
-      <strong>val</strong>:
-      <span id="val" style="color:#6f9;font-weight:bold;">n/a</span>
+      <strong>Vote</strong>:
+      <span id="val">n/a</span>
     </li>
   </ul>
 </div>
+<div id="heatmap-wrap">
+  <canvas id="heatmap" height=300 width=900></canvas>
+</div>
 <script>
+var legislators = [],
+    votes = [];
+
+var vote_key = {
+  0: 'Nay',
+  1: 'Yea',
+  3: 'Not Voting',
+  4: 'Present'
+};
+
+var colors = {
+  null: '#444',
+  undefined: '#444',
+  0: 'red',
+  1: 'green',
+  3: 'magenta',
+  4: 'yellow'
+};
+
   $.getJSON('data/congress-1990.json', function(data) {
+    _(data).each(function(v,k) {
+      legislators.push(k);
+      votes.push(v);
+    });
 
-    $('#heatmap').attr('height', _.size(data)*4);
-    $('#heatmap').attr('width', _.size(data['Ackerman'])*4);
+    $('#heatmap').attr('height', _.size(data)*5);
+    $('#heatmap').attr('width', _.size(data['Ackerman'])*5);
 
-    var b = heatmap('heatmap', data, {
+    var b = heatmap('heatmap', votes, {
       colorize: function(val) {
-        var colors = {
-          0: 'red',
-          1: 'green',
-          3: 'grey',
-          4: 'yellow'
-        };
         return colors[val];
       },
-      dotsize: 3,
+      dotsize: 4,
       gutsize: 1,
     });
 
+    $('#heatmap-wrap').fadeIn();
+
     b.canvas.onmousemove = function(e) {
-      var pos = indices(totsize, e);
-      var val = lookup(pos, data);
-      document.getElementById('x').innerHTML = pos.x;
-      document.getElementById('y').innerHTML = pos.y;
-      document.getElementById('i').innerHTML = pos.i;
-      document.getElementById('j').innerHTML = pos.j;
-      document.getElementById('val').innerHTML = val;
+      $('#stats').offset({top: e.offsetY+52, left: e.offsetX});
+      $('#stats').show();
+      var pos = indices(5, e);
+      var val = lookup(pos, votes);
+      document.getElementById('legislator').innerHTML = legislators[pos.i];
+      document.getElementById('j').innerHTML = pos.j+1;
+      document.getElementById('val').innerHTML = vote_key[val];
     };
   });
 

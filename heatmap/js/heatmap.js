@@ -13,23 +13,12 @@ function heatmap(id, data, options) {
   self.colorize = options.colorize || default_colorize;
 
   // render heatmap
-  if (_.isArray(data)) {
-    _(data).each(function(row,j) {
-      _(row).each(function(val,i) {
-        self.ctx.fillStyle = self.colorize(val);
-        self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
-      });
+  _(data).each(function(row,j) {
+    _(row).each(function(val,i) {
+      self.ctx.fillStyle = self.colorize(val);
+      self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
     });
-  } else {
-    var j = 0
-    _(data).each(function(row,k) {
-      _(row).each(function(val,i) {
-        self.ctx.fillStyle = self.colorize(val);
-        self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
-      });
-      j++;
-    });
-  }
+  });
 
   return self;
 };
