@@ -2,19 +2,34 @@ var dotsize = 5;
 var gutsize = 1;
 var totsize = dotsize + gutsize;
 
-function heatmap(id, data) {
+function heatmap(id, data, options) {
   var self = {};
+  var dotsize = options.dotsize || dotsize;
+  var gutsize = options.gutsize || gutsize;
+  var totsize = dotsize + gutsize;
   self.data = data || [];
   self.canvas = document.getElementById(id);
   self.ctx = self.canvas.getContext('2d');
+  self.colorize = options.colorize || default_colorize;
 
   // render heatmap
-  _(data).each(function(row,j) {
-    _(row).each(function(val,i) {
-      self.ctx.fillStyle = colorize(val);
-      self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
+  if (_.isArray(data)) {
+    _(data).each(function(row,j) {
+      _(row).each(function(val,i) {
+        self.ctx.fillStyle = self.colorize(val);
+        self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
+      });
     });
-  });
+  } else {
+    var j = 0
+    _(data).each(function(row,k) {
+      _(row).each(function(val,i) {
+        self.ctx.fillStyle = self.colorize(val);
+        self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
+      });
+      j++;
+    });
+  }
 
   return self;
 };
@@ -66,7 +81,7 @@ function linegraph(id, data) {
 /* utility functions */
 
 // colorize based on value
-function colorize(val) {
+function default_colorize(val) {
   return 'hsla(0,' + (100*val) +'%,50%,' + val + ')';
 };
 

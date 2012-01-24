@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Heatmap</title>
+        
+
+  <script type="text/javascript" src="../lib/jquery.js"></script>
+  <script type="text/javascript" src="../lib/underscore.js"></script>
+  <script type="text/javascript" src="../lib/backbone.js"></script>
+
+  <script type="text/javascript" src="js/heatmap.js"></script>
+  <style type="text/css">
+    body {
+      font-family: monospace;
+      color: #efefef;
+      background: #1a1a1a;
+    }
+    #heatmap {
+      float: left;
+    }
+    #stats {
+      float: left;
+    }
+    #scatter {
+      height: 120px;
+      width: 900px;
+      position: relative;
+      float: left;
+      clear: both;
+    }
+    #scatter .background,
+    #scatter .foreground {
+      position: absolute;
+    }
+    #scatter .background {
+      z-index: 1;
+    }
+    #scatter .foreground {
+      z-index: 2;
+    }
+    ul {
+      list-style: none;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <h1>Congress Votes Test</h1>
+  <p>
+    Green - Yes<br/>
+    Red - No<br/>
+    Yellow - Present<br/>
+    Grey - Not Voting<br/>
+  </p>
+<canvas id="heatmap" height=300 width=900></canvas>
+<div id="stats">
+  <ul>
+    <li>
+      <strong>x</strong>:
+      <span id="x">n/a</span>
+    </li>
+    <li>
+      <strong>y</strong>:
+      <span id="y">n/a</span>
+    </li>
+    <li>
+      <strong>i</strong>:
+      <span id="i">n/a</span>
+    </li>
+    <li>
+      <strong>j</strong>:
+      <span id="j">n/a</span>
+    </li>
+    <li>
+      <strong>val</strong>:
+      <span id="val" style="color:#6f9;font-weight:bold;">n/a</span>
+    </li>
+  </ul>
+</div>
+<script>
+  $.getJSON('data/congress-1990.json', function(data) {
+
+    $('#heatmap').attr('height', _.size(data)*4);
+    $('#heatmap').attr('width', _.size(data['Ackerman'])*4);
+
+    var b = heatmap('heatmap', data, {
+      colorize: function(val) {
+        var colors = {
+          0: 'red',
+          1: 'green',
+          3: 'grey',
+          4: 'yellow'
+        };
+        return colors[val];
+      },
+      dotsize: 3,
+      gutsize: 1,
+    });
+
+    b.canvas.onmousemove = function(e) {
+      var pos = indices(totsize, e);
+      var val = lookup(pos, data);
+      document.getElementById('x').innerHTML = pos.x;
+      document.getElementById('y').innerHTML = pos.y;
+      document.getElementById('i').innerHTML = pos.i;
+      document.getElementById('j').innerHTML = pos.j;
+      document.getElementById('val').innerHTML = val;
+    };
+  });
+
+</script>
+</body>
+</html>
