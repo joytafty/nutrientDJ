@@ -1,11 +1,14 @@
-var dotsize = 5;
-var gutsize = 1;
-var totsize = dotsize + gutsize;
+var defaults = {
+  dotsize: 5,
+  gutsize: 1,
+  totsize: 6
+}
 
 function heatmap(id, data, options) {
   var self = {};
-  var dotsize = options.dotsize || dotsize;
-  var gutsize = options.gutsize || gutsize;
+  var options = options || {};
+  var dotsize = 'dotsize' in options ? options['dotsize'] : defaults.dotsize;
+  var gutsize = 'gutsize' in options ? options['gutsize'] : defaults.gutsize;
   var totsize = dotsize + gutsize;
   self.data = data || [];
   self.canvas = document.getElementById(id);
@@ -37,9 +40,9 @@ function linegraph(id, data) {
   _(data).each(function(row) {
     _(row).each(function(val,j) {
       if (j == 0)
-        self.bgctx.moveTo(totsize*j,120-val*120);
+        self.bgctx.moveTo(defaults.totsize*j,120-val*120);
       else
-        self.bgctx.lineTo(totsize*j,120-val*120);
+        self.bgctx.lineTo(defaults.totsize*j,120-val*120);
     });
   });
   self.bgctx.stroke();
@@ -51,16 +54,16 @@ function linegraph(id, data) {
     self.fgctx.beginPath();
      _(data[pos.i]).each(function(val,j) {
       if (j == 0)
-        self.fgctx.moveTo(totsize*j,120-val*120);
+        self.fgctx.moveTo(defaults.totsize*j,120-val*120);
       else
-        self.fgctx.lineTo(totsize*j,120-val*120);
+        self.fgctx.lineTo(defaults.totsize*j,120-val*120);
     });   
     self.fgctx.stroke();
     self.fgctx.beginPath();
     self.fgctx.strokeStyle = '#6f9';
     self.fgctx.lineWidth = 1;
-    self.fgctx.moveTo(totsize*pos.j, 0);
-    self.fgctx.lineTo(totsize*pos.j, 120);
+    self.fgctx.moveTo(defaults.totsize*pos.j, 0);
+    self.fgctx.lineTo(defaults.totsize*pos.j, 120);
     self.fgctx.stroke();
   };
 
@@ -76,8 +79,8 @@ function default_colorize(val) {
 
 // invert mapping to get indices
 function indices(totsize, e) {
-  var x = e.offsetX;
-  var y = e.offsetY;
+  var x = e.pageX - $(e.target).offset().left;
+  var y = e.pageY - $(e.target).offset().top;
   var j = Math.floor(x/totsize);
   var i = Math.floor(y/totsize);
   return {

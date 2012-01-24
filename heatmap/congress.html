@@ -24,7 +24,7 @@
       background: #444;
     }
     #heatmap-wrap {
-      margin-top: 120px;
+      margin-top: 90px;
       padding: 8px;
       float: left;
       background: #aaa;
@@ -34,8 +34,9 @@
       position: absolute;
       display: none;
       border-radius: 5px;
+      width: 180px;
       background: white;
-      background: rgba( 255, 255, 255, 0.9);
+      background: rgba( 255, 255, 255, 0.94);
       padding: 8px;
     }
     #stats ul {
@@ -46,7 +47,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      height: 120px;
+      height: 90px;
       width: 100%;
       background: white;
       background: rgba( 255, 255, 255, 0.9);
@@ -55,8 +56,8 @@
       list-style: none;
     }
     h1 {
-      text-align: center;
-      margin: 12px 0 6px;
+      font-size: 15px;
+      margin: 6px 0 0px 12px;
       padding: 0;
     }
     p {
@@ -140,7 +141,7 @@ var colors = {
     $('#heatmap-wrap').fadeIn();
 
     b.canvas.onmousemove = function(e) {
-      $('#stats').offset({top: e.offsetY+52, left: e.offsetX});
+      $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
       $('#stats').show();
       var pos = indices(5, e);
       var val = lookup(pos, votes);

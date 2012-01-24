@@ -87,7 +87,7 @@
   var c = linegraph('scatter', data);
 
   b.canvas.onmousemove = function(e) {
-    var pos = indices(totsize, e);
+    var pos = indices(6, e);
     var val = lookup(pos, data);
     document.getElementById('x').innerHTML = pos.x;
     document.getElementById('y').innerHTML = pos.y;
