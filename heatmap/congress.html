@@ -14,20 +14,18 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: Georgia;
-      background: #efefef;
-      color: #1a1a1a;
+      font-family: Arial;
+      background: #333;
+      color: #f9f9f9;
       font-size: 13px;
     }
     #heatmap {
       float: left;
-      background: #444;
     }
     #heatmap-wrap {
       margin-top: 90px;
       padding: 8px;
       float: left;
-      background: #aaa;
       display: none;
     }
     #stats {
@@ -35,9 +33,11 @@
       display: none;
       border-radius: 5px;
       width: 180px;
+      color: #1a1a1a;
       background: white;
-      background: rgba( 255, 255, 255, 0.94);
+      background: rgba( 255, 255, 255, 0.9);
       padding: 8px;
+      z-index: 8;
     }
     #stats ul {
       margin: 0;
@@ -49,8 +49,14 @@
       left: 0;
       height: 90px;
       width: 100%;
+      color: #f9f9f9;
       background: white;
-      background: rgba( 255, 255, 255, 0.9);
+      background: rgba( 15, 15, 45, 0.80);
+      border-bottom: 1px solid #111;
+      z-index: 4;
+    }
+    a {
+      color: #fd2;
     }
     ul {
       list-style: none;
@@ -63,6 +69,11 @@
     p {
       margin: 8px 12px;
     }
+    #loading {
+      margin-top: 180px;
+      font-size: 48px;
+      text-align:center;
+    }
   </style>
   
 </head>
@@ -72,14 +83,17 @@
   <h1>Congress Votes 1990</h1>
   <p>
     This is a visualization of the <a href="http://clerk.house.gov/evs/1990/index.asp">roll call votes of the 101st Congress</a>.<br/>
-    Each row is a legislator. Each column is a roll call vote. A description for each roll will be in the next version.
+    Each row is a legislator. Each column is a roll call vote. Click to sort by column. A description for each roll will be in the next version.
   </p>
   <p>
-    Green: Yes |
-    Red: No |
-    Yellow: Present |
-    Magenta: Not Voting |
-    Grey: Not in Congress at the time
+    Key:
+    <strong>
+      <span style="color:#0b0">Yea</span> |
+      <span style="color:#e30">Nay</span> |
+      <span style="color:yellow">Present</span> |
+      <span style="color:#2be">Not Voting</span> |
+      <span style="color:#999">Not in Congress at the time</a>
+    </strong>
   </p>
 </div>
 <div id="stats">
@@ -98,11 +112,13 @@
     </li>
   </ul>
 </div>
+<h2 id="loading">Loading 1990 US House Votes...</h2>
 <div id="heatmap-wrap">
   <canvas id="heatmap" height=300 width=900></canvas>
 </div>
 <script>
-var legislators = [],
+var data = [],
+    legislators = [],
     votes = [];
 
 var vote_key = {
@@ -113,22 +129,30 @@ var vote_key = {
 };
 
 var colors = {
-  null: '#444',
-  undefined: '#444',
-  0: 'red',
-  1: 'green',
-  3: 'magenta',
+  null: '#777',
+  undefined: '#777',
+  0: '#e30',
+  1: '#0b0',
+  3: '#2be',
   4: 'yellow'
 };
 
-  $.getJSON('data/congress-1990.json', function(data) {
-    _(data).each(function(v,k) {
+  $.getJSON('data/congress-1990.json', function(raw_data) {
+    _(raw_data).each(function(v,k) {
       legislators.push(k);
       votes.push(v);
     });
 
-    $('#heatmap').attr('height', _.size(data)*5);
-    $('#heatmap').attr('width', _.size(data['Ackerman'])*5);
+    // reorganize data into [{}, {}, {}]
+    data = _(raw_data).map(function(v,k) {
+      return {
+        legislator: k,
+        votes: v
+      }
+    });
+
+    $('#heatmap').attr('height', _.size(legislators)*5);
+    $('#heatmap').attr('width', _.size(votes[0])*5);
 
     var b = heatmap('heatmap', votes, {
       colorize: function(val) {
@@ -138,7 +162,7 @@ var colors = {
       gutsize: 1,
     });
 
-    $('#heatmap-wrap').fadeIn();
+    b.render();
 
     b.canvas.onmousemove = function(e) {
       $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
@@ -149,6 +173,33 @@ var colors = {
       document.getElementById('j').innerHTML = pos.j+1;
       document.getElementById('val').innerHTML = vote_key[val];
     };
+
+    b.canvas.onclick = function(e) {
+      var pos = indices(5, e);
+      var val = lookup(pos, votes);
+
+      // alphabetical sort
+      //var sorted_data = _(data).sortBy(function(d,v) { return d['legislator'] });
+
+      // sort data by that column
+      var sorted_data = _(data).sortBy(function(d,v) {
+        var vote = d['votes'][pos.j + 1]
+        if (_.isNull(vote)) {
+          return -1;
+        } else {
+          return vote;
+        }
+      });
+
+      legislators = _(sorted_data).pluck('legislator');
+      votes = _(sorted_data).pluck('votes');
+      data = sorted_data;
+      b.update(votes);
+      b.render();
+    };
+
+    $('#loading').hide();
+    $('#heatmap-wrap').fadeIn();
   });
 
 </script>

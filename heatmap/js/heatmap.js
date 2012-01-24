@@ -16,12 +16,18 @@ function heatmap(id, data, options) {
   self.colorize = options.colorize || default_colorize;
 
   // render heatmap
-  _(data).each(function(row,j) {
-    _(row).each(function(val,i) {
-      self.ctx.fillStyle = self.colorize(val);
-      self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
+  self.render = function() {
+    _(self.data).each(function(row,j) {
+      _(row).each(function(val,i) {
+        self.ctx.fillStyle = self.colorize(val);
+        self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
+      });
     });
-  });
+  }
+
+  self.update = function(data) {
+    self.data = data;
+  };
 
   return self;
 };
