@@ -207,8 +207,8 @@ var colors = {
 
     $('#hires').click(function() {
       // resize
-      $('#heatmap').attr('height', _.size(legislators)*3);
-      $('#heatmap').attr('width', _.size(votes[0])*3);
+      $('#heatmap').attr('height', _.size(legislators)*2);
+      $('#heatmap').attr('width', _.size(votes[0])*2);
 
       b = heatmap('heatmap', votes, {
         colorize: function(val) {
@@ -220,6 +220,41 @@ var colors = {
 
       // rerender
       b.render();
+
+      // REFACTOR
+      b.canvas.onmousemove = function(e) {
+        $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
+        $('#stats').show();
+        var pos = indices(2, e);
+        var val = lookup(pos, votes);
+        document.getElementById('legislator').innerHTML = legislators[pos.i];
+        document.getElementById('j').innerHTML = pos.j+1;
+        document.getElementById('val').innerHTML = vote_key[val];
+      };
+
+      b.canvas.onclick = function(e) {
+        var pos = indices(2, e);
+        var val = lookup(pos, votes);
+
+        // alphabetical sort
+        //var sorted_data = _(data).sortBy(function(d,v) { return d['legislator'] });
+
+        // sort data by that column
+        var sorted_data = _(data).sortBy(function(d,v) {
+          var vote = d['votes'][pos.j + 1]
+          if (_.isNull(vote)) {
+            return -1;
+          } else {
+            return vote;
+          }
+        });
+
+        legislators = _(sorted_data).pluck('legislator');
+        votes = _(sorted_data).pluck('votes');
+        data = sorted_data;
+        b.update(votes);
+        b.render();
+      };
       return false;
     });
 
