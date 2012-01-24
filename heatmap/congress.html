@@ -74,12 +74,19 @@
       font-size: 48px;
       text-align:center;
     }
+    #options {
+      float: right;
+      padding: 6px;
+    }
   </style>
   
 </head>
 
 <body>
 <div id="topbar">
+  <div id="options">
+    <a href="#" id="hires">hires</a>
+  </div>
   <h1>Congress Votes 1990</h1>
   <p>
     This is a visualization of the <a href="http://clerk.house.gov/evs/1990/index.asp">roll call votes of the 101st Congress</a>.<br/>
@@ -197,6 +204,24 @@ var colors = {
       b.update(votes);
       b.render();
     };
+
+    $('#hires').click(function() {
+      // resize
+      $('#heatmap').attr('height', _.size(legislators)*3);
+      $('#heatmap').attr('width', _.size(votes[0])*3);
+
+      b = heatmap('heatmap', votes, {
+        colorize: function(val) {
+          return colors[val];
+        },
+        dotsize: 2,
+        gutsize: 0.00001,
+      });
+
+      // rerender
+      b.render();
+      return false;
+    });
 
     $('#loading').hide();
     $('#heatmap-wrap').fadeIn();

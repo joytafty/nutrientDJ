@@ -15,6 +15,12 @@ function heatmap(id, data, options) {
   self.ctx = self.canvas.getContext('2d');
   self.colorize = options.colorize || default_colorize;
 
+  self.ctx.clearRect(
+    0,
+    0,
+    _.size(self.data),
+    _.size(self.data[0])
+  );
   // render heatmap
   self.render = function() {
     _(self.data).each(function(row,j) {
