@@ -13,6 +13,12 @@ var initDefaults = {
     1: '#0b0',
     3: '#2be',
     4: 'yellow'
+  },
+  size: {
+    width: 5,
+    height: 5,
+    dotsize: 4,
+    gutsize: 1
   }
 }
 function initHeat(options) {
@@ -23,6 +29,7 @@ function initHeat(options) {
 
   var vote_key = _.extend(initDefaults.vote_key, options),
       colors = _.extend(initDefaults.colors, options),
+      size = _.extend(initDefaults.size, options),
       year = _.extend(d=initDefaults.year, options);
 
   //Init options in dom
@@ -51,19 +58,46 @@ function initHeat(options) {
       }
     });
 
-    $('#heatmap').attr('height', _.size(legislators)*5);
-    $('#heatmap').attr('width', _.size(votes[0])*5);
+    draw();   
+
+    $('#hires').click(function() {
+      if (size.width == 5) {
+        size = {
+          width:2,
+          height:2,
+          dotsize:2,
+          gutsize:0.00001
+        };
+        draw();
+        $('#hires').text('Zoom In');      
+      } else {
+        size = initDefaults.size;
+        draw();      
+        $('#hires').text('Zoom Out');      
+      }
+      return false;
+    });
+    
+    $('#loading').hide();
+    $('#heatmap-wrap').fadeIn();
+  });
+
+  function draw() {
+    $('#heatmap').attr('height', _.size(legislators)*size.height);
+    $('#heatmap').attr('width', _.size(votes[0])*size.width);
 
     var b = heatmap('heatmap', votes, {
       colorize: function(val) {
         return colors[val];
       },
-      dotsize: 4,
-      gutsize: 1,
+      dotsize: size.dotsize,
+      gutsize: size.gutsize,
     });
 
     b.render();
-
+    heatEvents(b); 
+  };
+  function heatEvents(b) {
     b.canvas.onmousemove = function(e) {
       $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
       $('#stats').show();
@@ -100,64 +134,5 @@ function initHeat(options) {
       b.render();
       $('#heatmap-wrap').fadeIn();
     };
-
-    $('#hires').click(function() {
-      // resize
-      $('#heatmap').attr('height', _.size(legislators)*2);
-      $('#heatmap').attr('width', _.size(votes[0])*2);
-
-      b = heatmap('heatmap', votes, {
-        colorize: function(val) {
-          return colors[val];
-        },
-        dotsize: 2,
-        gutsize: 0.00001,
-      });
-
-      // rerender
-      b.render();
-
-      // REFACTOR
-      b.canvas.onmousemove = function(e) {
-        $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
-        $('#stats').show();
-        var pos = indices(2, e);
-        var val = lookup(pos, votes);
-        document.getElementById('legislator').innerHTML = legislators[pos.i];
-        document.getElementById('j').innerHTML = pos.j+1;
-        document.getElementById('val').innerHTML = vote_key[val];
-      };
-
-      b.canvas.onclick = function(e) {
-        var pos = indices(2, e);
-        var val = lookup(pos, votes);
-
-        $('#heatmap-wrap').fadeOut(1.6);
-
-        // alphabetical sort
-        //var sorted_data = _(data).sortBy(function(d,v) { return d['legislator'] });
-
-        // sort data by that column
-        var sorted_data = _(data).sortBy(function(d,v) {
-          var vote = d['votes'][pos.j + 1]
-          if (_.isNull(vote)) {
-            return -1;
-          } else {
-            return vote;
-          }
-        });
-
-        legislators = _(sorted_data).pluck('legislator');
-        votes = _(sorted_data).pluck('votes');
-        data = sorted_data;
-        b.update(votes);
-        b.render();
-        $('#heatmap-wrap').fadeIn(0.7);
-      };
-      return false;
-    });
-    
-    $('#loading').hide();
-    $('#heatmap-wrap').fadeIn();
-  });
+  };
 };
