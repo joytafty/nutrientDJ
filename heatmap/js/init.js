@@ -1,150 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+var initDefaults = {
+  year: 2011,
+  vote_key: {
+    0: 'Nay',
+    1: 'Yea',
+    3: 'Not Voting',
+    4: 'Present'
+  },
+  colors: {
+    null: '#777',
+    undefined: '#777',
+    0: '#e30',
+    1: '#0b0',
+    3: '#2be',
+    4: 'yellow'
+  }
+}
+function initHeat(options) {
+  var options = options || {},
+      data = [],
+      legislators = [],
+      votes = [];
 
-<head>
-  <title>101st Congress Votes</title>
-        
+  var vote_key = _.extend(initDefaults.vote_key, options),
+      colors = _.extend(initDefaults.colors, options),
+      year = _.extend(d=initDefaults.year, options);
 
-  <script type="text/javascript" src="../lib/jquery.js"></script>
-  <script type="text/javascript" src="../lib/underscore.js"></script>
-  <script type="text/javascript" src="../lib/backbone.js"></script>
+  //Init options in dom
+  $('.date').each(function() {
+    $(this).text(year);
+  });
+  _.each(colors, function(c, k) {
+    if (k == "null" || k == "undefined") {
+      $('.color5').css({"color":c});
+    } else {
+      $('.color'+k).css({"color":c});
+    } 
+  }); 
 
-  <script type="text/javascript" src="js/heatmap.js"></script>
-  <style type="text/css">
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial;
-      background: #333;
-      color: #f9f9f9;
-      font-size: 13px;
-    }
-    #heatmap {
-      float: left;
-    }
-    #heatmap-wrap {
-      margin-top: 90px;
-      padding: 8px;
-      float: left;
-      display: none;
-    }
-    #stats {
-      position: absolute;
-      display: none;
-      border-radius: 5px;
-      width: 180px;
-      color: #1a1a1a;
-      background: white;
-      background: rgba( 255, 255, 255, 0.9);
-      padding: 8px;
-      z-index: 8;
-    }
-    #stats ul {
-      margin: 0;
-      padding: 0;
-    }
-    #topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 90px;
-      width: 100%;
-      color: #f9f9f9;
-      background: white;
-      background: rgba( 15, 15, 45, 0.80);
-      border-bottom: 1px solid #111;
-      z-index: 4;
-    }
-    a {
-      color: #fd2;
-    }
-    ul {
-      list-style: none;
-    }
-    h1 {
-      font-size: 15px;
-      margin: 6px 0 0px 12px;
-      padding: 0;
-    }
-    p {
-      margin: 8px 12px;
-    }
-    #loading {
-      margin-top: 180px;
-      font-size: 48px;
-      text-align:center;
-    }
-    #options {
-      float: right;
-      padding: 6px;
-    }
-  </style>
-  
-</head>
-
-<body>
-<div id="topbar">
-  <div id="options">
-    <a href="#" id="hires">hires</a>
-  </div>
-  <h1>Congress Votes 1990</h1>
-  <p>
-    This is a visualization of the <a href="http://clerk.house.gov/evs/1990/index.asp">roll call votes of the 101st Congress</a>.<br/>
-    Each row is a legislator. Each column is a roll call vote. Click to sort by column. A description for each roll will be in the next version.
-  </p>
-  <p>
-    Key:
-    <strong>
-      <span style="color:#0b0">Yea</span> |
-      <span style="color:#e30">Nay</span> |
-      <span style="color:yellow">Present</span> |
-      <span style="color:#2be">Not Voting</span> |
-      <span style="color:#999">Not in Congress at the time</a>
-    </strong>
-  </p>
-</div>
-<div id="stats">
-  <ul>
-    <li>
-      <strong>Legislator</strong>:
-      <span id="legislator">n/a</span>
-    </li>
-    <li>
-      <strong>Roll</strong>:
-      <span id="j">n/a</span>
-    </li>
-    <li>
-      <strong>Vote</strong>:
-      <span id="val">n/a</span>
-    </li>
-  </ul>
-</div>
-<h2 id="loading">Loading 1990 US House Votes...</h2>
-<div id="heatmap-wrap">
-  <canvas id="heatmap" height=300 width=900></canvas>
-</div>
-<script>
-var data = [],
-    legislators = [],
-    votes = [];
-
-var vote_key = {
-  0: 'Nay',
-  1: 'Yea',
-  3: 'Not Voting',
-  4: 'Present'
-};
-
-var colors = {
-  null: '#777',
-  undefined: '#777',
-  0: '#e30',
-  1: '#0b0',
-  3: '#2be',
-  4: 'yellow'
-};
-
-  $.getJSON('data/congress-1990.json', function(raw_data) {
+  $.getJSON('data/congress-' + year + '.json', function(raw_data) {
     _(raw_data).each(function(v,k) {
       legislators.push(k);
       votes.push(v);
@@ -263,11 +156,8 @@ var colors = {
       };
       return false;
     });
-
+    
     $('#loading').hide();
     $('#heatmap-wrap').fadeIn();
   });
-
-</script>
-</body>
-</html>
+};
