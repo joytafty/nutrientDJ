@@ -1,39 +1,40 @@
-var initDefaults = {
-  year: 1990,
-  vote_key: {
+function initHeat(opts) {
+
+  var options = _.extend({
+    year: 1990,
+    mapEl: '#heatmap-wrap',
+    loadingEl: '#loading'
+  }, opts);
+
+  options.vote_key = _.extend({
     0: 'Nay',
     1: 'Yea',
     3: 'Not Voting',
     4: 'Present'
-  },
-  colors: {
+  }, opts.vote_key);
+
+  options.colors = _.extend({
     null: '#777',
     undefined: '#777',
     0: '#e30',
     1: '#0b0',
     3: '#2be',
     4: 'yellow'
-  },
-  size: {
+  }, opts.colors);
+
+  options.size = _.extend({
     width: 5,
     height: 5,
     dotsize: 4,
     gutsize: 1
-  }
-}
-function initHeat(options) {
-  var options = options || {},
-      data = [],
+  }, opts.size);
+  
+  var data = [],
       legislators = [],
       votes = [];
 
-  var vote_key = _.extend(initDefaults.vote_key, options),
-      colors = _.extend(initDefaults.colors, options),
-      size = _.extend(initDefaults.size, options),
-      year = _.extend(d=initDefaults.year, options);
-
   //Init options in dom
-  _.each(colors, function(c, k) {
+  _.each(options.colors, function(c, k) {
     if (k == "null" || k == "undefined") {
       $('.color5').css({"color":c});
     } else {
@@ -41,7 +42,7 @@ function initHeat(options) {
     } 
   }); 
 
-  $.getJSON('data/congress-' + year + '.json', function(raw_data) {
+  $.getJSON('data/congress-' + options.year + '.json', function(raw_data) {
     _(raw_data).each(function(v,k) {
       legislators.push(k);
       votes.push(v);
@@ -58,8 +59,9 @@ function initHeat(options) {
     draw();   
 
     $('#hires').click(function() {
-      if (size.width == 5) {
-        size = {
+      $(options.mapEl).hide();
+      if (options.size.width == 5) {
+        options.size = {
           width:2,
           height:2,
           dotsize:2,
@@ -68,31 +70,38 @@ function initHeat(options) {
         draw();
         $('#hires').text('Zoom In');      
       } else {
-        size = initDefaults.size;
+        options.size = {
+          width: 5,
+          height: 5,
+          dotsize: 4,
+          gutsize: 1
+        };
         draw();      
         $('#hires').text('Zoom Out');      
-      }
+      } 
       return false;
-    });
-    
+    });  
   });
 
   function draw() {
-    $('#heatmap').attr('height', _.size(legislators)*size.height);
-    $('#heatmap').attr('width', _.size(votes[0])*size.width);
+    $('#heatmap').attr('height', _.size(legislators)*options.size.height);
+    $('#heatmap').attr('width', _.size(votes[0])*options.size.width);
 
     var b = heatmap('heatmap', votes, {
       colorize: function(val) {
-        return colors[val];
+        return options.colors[val];
       },
-      dotsize: size.dotsize,
-      gutsize: size.gutsize,
+      dotsize: options.size.dotsize,
+      gutsize: options.size.gutsize
     });
 
     b.render();
-    heatEvents(b); 
+    bindEvents(b);
+    $(options.loadingEl).hide();
+    $(options.mapEl).fadeIn();
   };
-  function heatEvents(b) {
+  
+  function bindEvents(b) {
     b.canvas.onmousemove = function(e) {
       $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
       $('#stats').show();
@@ -100,14 +109,14 @@ function initHeat(options) {
       var val = lookup(pos, votes);
       document.getElementById('legislator').innerHTML = legislators[pos.i];
       document.getElementById('j').innerHTML = pos.j+1;
-      document.getElementById('val').innerHTML = vote_key[val];
+      document.getElementById('val').innerHTML = options.vote_key[val];
     };
 
     b.canvas.onclick = function(e) {
       var pos = indices(5, e);
       var val = lookup(pos, votes);
 
-      $('#heatmap-wrap').fadeOut('slow');
+      $(options.mapEl).fadeOut('slow');
 
       // alphabetical sort
       //var sorted_data = _(data).sortBy(function(d,v) { return d['legislator'] });
@@ -127,7 +136,7 @@ function initHeat(options) {
       data = sorted_data;
       b.update(votes);
       b.render();
-      $('#heatmap-wrap').fadeIn();
+      $(options.mapEl).fadeIn();
     };
   };
 };
