@@ -12,7 +12,11 @@
 <div id="topbar">
   <div id="options">
     <label for="year">Year:</label>
-    <select id="yearSelect"></select>
+    <select id="yearSelect">
+      <option value="1990">1990</option>
+      <option value="1991">1991</option>
+      <option value="2011">2011</option>
+    </select>
     <a href="#" id="hires">Zoom Out</a>
   </div>
   <h1>Congress Votes <span class="date"></span></h1>
@@ -53,17 +57,37 @@
 </div>
 <script type="text/javascript" src="js/init.js"></script>
 <script>
-  initHeat({
-    year:2011,
-    colors:{
-      "Boehner":"#0b0",
-      "Pelosi":"#e30"
-    },
-    vote_key:{
-      "Boehner":"Boehner",
-      "Pelosi":"Pelosi"
-    }
+function render() {
+  var val = $('#yearSelect').val();
+  $('.date').each(function() {
+    $(this).text(val);
   });
+  if (val == 2011) {
+    initHeat({
+      year:val,
+      colors:{
+        "Boehner":"#0b0",
+        "Pelosi":"#e30"
+      },
+      vote_key:{
+        "Boehner":"Boehner",
+        "Pelosi":"Pelosi"
+      }
+    });
+  } else {
+    initHeat({
+      year:val 
+    });
+  }
+  $('#loading').fadeOut();
+  $('#heatmap-wrap').fadeIn();
+};
+render();
+$('#yearSelect').change(function() {
+  $('#heatmap-wrap').hide();
+  $('#loading').show();
+  render();  
+});
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 var initDefaults = {
-  year: 2011,
+  year: 1990,
   vote_key: {
     0: 'Nay',
     1: 'Yea',
@@ -33,9 +33,6 @@ function initHeat(options) {
       year = _.extend(d=initDefaults.year, options);
 
   //Init options in dom
-  $('.date').each(function() {
-    $(this).text(year);
-  });
   _.each(colors, function(c, k) {
     if (k == "null" || k == "undefined") {
       $('.color5').css({"color":c});
@@ -78,8 +75,6 @@ function initHeat(options) {
       return false;
     });
     
-    $('#loading').hide();
-    $('#heatmap-wrap').fadeIn();
   });
 
   function draw() {
