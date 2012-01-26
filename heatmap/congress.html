@@ -84,6 +84,8 @@
 </div>
 <script type="text/javascript" src="js/init.js"></script>
 <script>
+var resolution = parseInt($('#resolution').val());
+
 function render() {
   var val = $('#yearSelect').val();
   $('.date').each(function() {
@@ -92,8 +94,16 @@ function render() {
 
   $('#roll-link').attr('href', "http://clerk.house.gov/evs/" + val + "/index.asp");
 
+  var options = {};
+
+
+  options.size = _.extend({
+    dotsize: resolution,
+    gutsize: resolution < 4 ? 0.00001 : 1
+  }, options);
+
   if (val == 2011) {
-    initHeat({
+    _.extend({
       year:val,
       colors:{
         "Boehner":"#0b0",
@@ -103,19 +113,29 @@ function render() {
         "Boehner":"Boehner",
         "Pelosi":"Pelosi"
       }
-    });
+    }, options);
   } else {
-    initHeat({
+    _.extend({
       year:val 
-    });
+    }, options);
   }
+
+  initHeat(options);
 };
+
 render();
+
 $('#yearSelect').change(function() {
   $('#heatmap-wrap').hide();
   $('#loading').show();
   render();  
 });
+
+$('#resolution').change(function() {
+  resolution = parseInt($('#resolution').val());
+  $(options.mapEl).hide();
+  render();
+});  
 </script>
 </body>
 </html>

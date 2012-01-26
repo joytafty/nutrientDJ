@@ -56,24 +56,6 @@ function initHeat(opts) {
 
     draw();   
 
-    $('#resolution').change(function() {
-      var resolution = parseInt($('#resolution').val());
-      $(options.mapEl).hide();
-      if (resolution < 4) {
-        options.size = {
-          dotsize: resolution,
-          gutsize: 0.00001
-        };
-        draw();
-      } else {
-        options.size = {
-          dotsize: resolution,
-          gutsize: 1
-        };
-        draw();      
-      } 
-      return false;
-    });  
   });
 
   function draw() {
