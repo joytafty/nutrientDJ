@@ -23,8 +23,6 @@ function initHeat(opts) {
   }, opts.colors);
 
   options.size = _.extend({
-    width: 5,
-    height: 5,
     dotsize: 4,
     gutsize: 1
   }, opts.size);
@@ -58,34 +56,29 @@ function initHeat(opts) {
 
     draw();   
 
-    $('#hires').click(function() {
+    $('#resolution').change(function() {
+      var resolution = parseInt($('#resolution').val());
       $(options.mapEl).hide();
-      if (options.size.width == 5) {
+      if (resolution < 4) {
         options.size = {
-          width:2,
-          height:2,
-          dotsize:2,
-          gutsize:0.00001
+          dotsize: resolution,
+          gutsize: 0.00001
         };
         draw();
-        $('#hires').text('Zoom In');      
       } else {
         options.size = {
-          width: 5,
-          height: 5,
-          dotsize: 4,
+          dotsize: resolution,
           gutsize: 1
         };
         draw();      
-        $('#hires').text('Zoom Out');      
       } 
       return false;
     });  
   });
 
   function draw() {
-    $('#heatmap').attr('height', _.size(legislators)*options.size.height);
-    $('#heatmap').attr('width', _.size(votes[0])*options.size.width);
+    $('#heatmap').attr('height', _.size(legislators)*options.size.dotsize+options.size.gutsize);
+    $('#heatmap').attr('width', _.size(votes[0])*options.size.dotsize+options.size.gutsize);
 
     var b = heatmap('heatmap', votes, {
       colorize: function(val) {
@@ -105,7 +98,7 @@ function initHeat(opts) {
     b.canvas.onmousemove = function(e) {
       $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
       $('#stats').show();
-      var pos = indices(5, e);
+      var pos = indices(options.size.dotsize+options.size.gutsize, e);
       var val = lookup(pos, votes);
       document.getElementById('legislator').innerHTML = legislators[pos.i];
       document.getElementById('j').innerHTML = pos.j+1;
@@ -113,7 +106,7 @@ function initHeat(opts) {
     };
 
     b.canvas.onclick = function(e) {
-      var pos = indices(5, e);
+      var pos = indices(options.size.dotsize+options.size.gutsize, e);
       var val = lookup(pos, votes);
 
       $(options.mapEl).fadeOut('slow');

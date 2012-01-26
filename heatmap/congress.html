@@ -15,13 +15,40 @@
     <select id="yearSelect">
       <option value="1990">1990</option>
       <option value="1991">1991</option>
+      <option value="1992">1992</option>
+      <option value="1993">1993</option>
+      <option value="1994">1994</option>
+      <option value="1995">1995</option>
+      <option value="1996">1996</option>
+      <option value="1997">1997</option>
+      <option value="1998">1998</option>
+      <option value="1999">1999</option>
+      <option value="2000">2000</option>
+      <option value="2001">2001</option>
+      <option value="2002">2002</option>
+      <option value="2003">2003</option>
+      <option value="2004">2004</option>
+      <option value="2005">2005</option>
+      <option value="2006">2006</option>
+      <option value="2007">2007</option>
+      <option value="2008">2008</option>
+      <option value="2009">2009</option>
+      <option value="2010">2010</option>
       <option value="2011">2011</option>
     </select>
-    <a href="#" id="hires">Zoom Out</a>
+    <label for="resolution">Resolution:</label>
+    <select id="resolution">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="4" selected="selected">4</option>
+      <option value="8">8</option>
+      <option value="12">12</option>
+      <option value="20">20</option>
+    </select>
   </div>
   <h1>Congress Votes <span class="date"></span></h1>
   <p>
-    This is a visualization of the <a href="http://clerk.house.gov/evs/2011/index.asp">roll call votes of the 101st Congress</a>.<br/>
+  This is a visualization of the <a id="roll-link" href="http://clerk.house.gov/evs/1990/index.asp">roll call votes of <span class="date">1990</span> Congress</a>.<br/>
     Each row is a legislator. Each column is a roll call vote. Click to sort by column. A description for each roll will be in the next version.
   </p>
   <p>
@@ -62,6 +89,9 @@ function render() {
   $('.date').each(function() {
     $(this).text(val);
   });
+
+  $('#roll-link').attr('href', "http://clerk.house.gov/evs/" + val + "/index.asp");
+
   if (val == 2011) {
     initHeat({
       year:val,
