@@ -85,6 +85,44 @@
 <script type="text/javascript" src="js/init.js"></script>
 <script>
 var resolution = parseInt($('#resolution').val());
+var heat = {},
+    options = {};
+
+options.size = _.extend({
+  dotsize: resolution,
+  gutsize: resolution < 4 ? 0.00001 : 1
+}, options);
+
+options.colors = {
+  null: '#777',
+  undefined: '#777',
+  0: '#e30',
+  1: '#0b0',
+  3: '#2be',
+  4: 'yellow'
+};
+
+options.vote_key = {
+  0: 'Nay',
+  1: 'Yea',
+  3: 'Not Voting',
+  4: 'Present'
+}
+ 
+if (val == 2011) {
+  _.extend({
+    colors:{
+      "Boehner":"#0b0",
+      "Pelosi":"#e30"
+    },
+    vote_key:{
+      "Boehner":"Boehner",
+      "Pelosi":"Pelosi"
+    }
+  }, options);
+}
+
+heat = initHeat(options);
 
 function render() {
   var val = $('#yearSelect').val();
@@ -94,36 +132,66 @@ function render() {
 
   $('#roll-link').attr('href', "http://clerk.house.gov/evs/" + val + "/index.asp");
 
-  var options = {};
+  $.getJSON('data/congress-' + val + '.json', function(raw_data) {
+    var data,
+        legislators = [],
+        votes = [];
 
+    _(raw_data).each(function(v,k) {
+      legislators.push(k);
+      votes.push(v);
+    });
 
-  options.size = _.extend({
-    dotsize: resolution,
-    gutsize: resolution < 4 ? 0.00001 : 1
-  }, options);
-
-  if (val == 2011) {
-    _.extend({
-      year:val,
-      colors:{
-        "Boehner":"#0b0",
-        "Pelosi":"#e30"
-      },
-      vote_key:{
-        "Boehner":"Boehner",
-        "Pelosi":"Pelosi"
+    // reorganize data into [{}, {}, {}]
+    data = _(raw_data).map(function(v,k) {
+      return {
+        legislator: k,
+        votes: v
       }
-    }, options);
-  } else {
-    _.extend({
-      year:val 
-    }, options);
-  }
+    });
 
-  initHeat(options);
+    $('#heatmap').attr('height', votes.length*options.size.dotsize+options.size.gutsize);
+    $('#heatmap').attr('width', votes[0].length*options.size.dotsize+options.size.gutsize);
+
+    heat.data(votes);
+
+    heat.draw();
+
+    heat.move = function(leg, col, vote) {
+      document.getElementById('legislator').innerHTML = legislators[leg];
+      document.getElementById('j').innerHTML = col+1;
+      document.getElementById('val').innerHTML = options.vote_key[vote];
+    };
+
+    heat.click = function(leg, col, vote) {
+      $(options.mapEl).fadeOut('slow');
+
+      // alphabetical sort
+      //var sorted_data = _(data).sortBy(function(d,v) { return d['legislator'] });
+
+      // sort data by that column
+      var sorted_data = _(data).sortBy(function(d,v) {
+        var vote = d['votes'][col + 1]
+        if (_.isNull(vote)) {
+          return -1;
+        } else {
+          return vote;
+        }
+      });
+
+      legislators = _(sorted_data).pluck('legislator');
+      votes = _(sorted_data).pluck('votes');
+      data = sorted_data;
+      heat.data(votes);
+      heat.draw();
+      $(options.mapEl).fadeIn();
+
+    };
+  });
 };
 
 render();
+
 
 $('#yearSelect').change(function() {
   $('#heatmap-wrap').hide();
@@ -134,7 +202,13 @@ $('#yearSelect').change(function() {
 $('#resolution').change(function() {
   resolution = parseInt($('#resolution').val());
   $(options.mapEl).hide();
-  render();
+  heat.options({
+    size: {
+      dotsize: resolution,
+      gutsize: resolution < 4 ? 0.00001 : 1
+    }
+  });
+  heat.draw();
 });  
 </script>
 </body>
