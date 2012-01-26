@@ -52,6 +52,9 @@ function initHeat(opts) {
   }); 
 
   heat.draw = function() {
+    $('#heatmap').attr('height', data.length*options.size.dotsize+options.size.gutsize);
+    $('#heatmap').attr('width', data[0].length*options.size.dotsize+options.size.gutsize);
+
     var b = heatmap('heatmap', data, {
       colorize: function(val) {
         return options.colors[val];

@@ -150,9 +150,6 @@ function render() {
       }
     });
 
-    $('#heatmap').attr('height', votes.length*options.size.dotsize+options.size.gutsize);
-    $('#heatmap').attr('width', votes[0].length*options.size.dotsize+options.size.gutsize);
-
     heat.data(votes);
 
     heat.draw();
