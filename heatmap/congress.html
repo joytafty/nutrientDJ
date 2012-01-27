@@ -250,7 +250,11 @@ var sort_order = {
                .map(function(d) {
                  return {
                    legislator: d['legislator'],
-                   votes: _.without(d['votes'], null, 3, 4).sort().
+                   votes: _.without(d['votes'], null, 3, 4).sort().reverse()
+                 }
+               })
+               .sortBy(function(d) {
+                 return _.filter(d['votes'], function(v) { return v == 1 }).length
                })
                .value();
   }
