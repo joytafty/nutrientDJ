@@ -68,8 +68,6 @@ function initHeat(opts) {
     $(options.mapEl).fadeIn();
 
     b.canvas.onmousemove = function(e) {
-      $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
-      $('#stats').show();
       var pos = indices(options.size.dotsize+options.size.gutsize, e);
       var val = lookup(pos, data);
       heat.move(pos.i, pos.j, val);
