@@ -50,6 +50,7 @@
       <option value="random" selected="selected">Random</option>
       <option value="totals-leg">Totals by Legislator</option>
       <option value="totals-leg-sort">Totals by Legislator, Sorted</option>
+      <option value="totals-reverse-leg-sort">Totals (Reversed) by Legislator, Sorted</option>
       <!--
       <option value="totals-roll">Totals by Roll Call</option>
       <option value="totals-roll-sort">Totals by Roll Call, Sorted</option>
@@ -164,7 +165,7 @@ function render() {
 
     heat.draw();
 
-    heat.move = function(leg, col, vote) {
+    heat.move = function(e, leg, col, vote) {
       $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
       $('#stats').show();
       document.getElementById('legislator').innerHTML = legislators[leg];
@@ -243,7 +244,17 @@ var sort_order = {
                  return _.filter(d['votes'], function(v) { return v == 0 }).length
                })
                .value();
+  },
+  'totals-reverse-leg-sort' : function(v) {
+    return _(v).chain()
+               .map(function(d) {
+                 return {
+                   legislator: d['legislator'],
+                   votes: _.without(d['votes'], null, 3, 4).sort().
+               })
+               .value();
   }
+
 };
 
 $('#sort-order').change(function() {

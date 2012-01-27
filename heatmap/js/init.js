@@ -53,7 +53,10 @@ function initHeat(opts) {
 
   heat.draw = function() {
     $('#heatmap').attr('height', data.length*options.size.dotsize+options.size.gutsize);
-    $('#heatmap').attr('width', data[0].length*options.size.dotsize+options.size.gutsize);
+    $('#heatmap').attr('width', _(data).chain()
+                                       .map(function(d) { return d.length})
+                                       .max()
+                                       .value()*options.size.dotsize+options.size.gutsize);
 
     var b = heatmap('heatmap', data, {
       colorize: function(val) {
@@ -70,7 +73,7 @@ function initHeat(opts) {
     b.canvas.onmousemove = function(e) {
       var pos = indices(options.size.dotsize+options.size.gutsize, e);
       var val = lookup(pos, data);
-      heat.move(pos.i, pos.j, val);
+      heat.move(e, pos.i, pos.j, val);
     };
 
     b.canvas.onclick = function(e) {
