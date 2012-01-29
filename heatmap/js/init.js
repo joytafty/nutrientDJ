@@ -53,11 +53,15 @@ function initHeat(opts) {
   }); 
 
   heat.draw = function() {
-    $(options.heatEl).attr('height', data.length*options.size.dotsize+options.size.gutsize);
-    $(options.heatEl).attr('width', _(data).chain()
-                                       .map(function(d) { return d.length})
-                                       .max()
-                                       .value()*options.size.dotsize+options.size.gutsize);
+    var height = data.length*options.size.dotsize+options.size.gutsize;
+    var width = _(data).chain()
+                       .map(function(d) { return d.length})
+                       .max()
+                       .value()*options.size.dotsize+options.size.gutsize;
+    $('#heatmap').attr('height', parseInt(height));
+    $('#party').attr('height', parseInt(height));
+    $('#heatmap').attr('width', parseInt(width));
+    $('#results').attr('width', parseInt(width));
 
     var b = heatmap('heatmap', data, {
       colorize: function(val) {
