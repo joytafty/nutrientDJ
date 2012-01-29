@@ -91,7 +91,9 @@
 </div>
 <h2 id="loading">Loading <span class="date"></span>  US House Votes...</h2>
 <div id="heatmap-wrap">
+  <canvas id="heatmapY" height=300 width=1></canvas>
   <canvas id="heatmap" height=300 width=900></canvas>
+  <canvas id="heatmapX" height=1 width=900></canvas>
 </div>
 <script type="text/javascript" src="js/init.js"></script>
 <script>
@@ -119,7 +121,7 @@ options.vote_key = {
   1: 'Yea',
   3: 'Not Voting',
   4: 'Present'
-}
+};
  
 if (val == 2011) {
   _.extend({
@@ -160,9 +162,8 @@ function render() {
         votes: v
       }
     });
-
+    
     heat.data(votes);
-
     heat.draw();
 
     heat.move = function(e, leg, col, vote) {
@@ -195,13 +196,11 @@ function render() {
       heat.data(votes);
       heat.draw();
       $(options.mapEl).fadeIn();
-
     };
   });
 };
 
 render();
-
 
 $('#yearSelect').change(function() {
   $('#heatmap-wrap').hide();
@@ -221,6 +220,15 @@ $('#resolution').change(function() {
   });
   heat.draw();
 });  
+
+$('#sort-order').change(function() {
+  var sorted = sort_order[$(this).val()](data);
+  heat.data( _(sorted).pluck('votes') );
+  heat.draw();
+  heat.move = function() {};
+  heat.click = function() {};
+  $('#stats').hide();
+});
 
 var sort_order = {
   'random' : function(v) { return v },
@@ -261,14 +269,6 @@ var sort_order = {
 
 };
 
-$('#sort-order').change(function() {
-  var sorted = sort_order[$(this).val()](data);
-  heat.data( _(sorted).pluck('votes') );
-  heat.draw();
-  heat.move = function() {};
-  heat.click = function() {};
-  $('#stats').hide();
-});
 </script>
 </body>
 </html>

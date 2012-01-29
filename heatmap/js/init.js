@@ -11,7 +11,8 @@ function initHeat(opts) {
   var options = _.extend({
     year: 1990,
     mapEl: '#heatmap-wrap',
-    loadingEl: '#loading'
+    loadingEl: '#loading',
+    heatEL: '#heatmap'
   }, opts);
 
   options.vote_key = _.extend({
@@ -52,8 +53,8 @@ function initHeat(opts) {
   }); 
 
   heat.draw = function() {
-    $('#heatmap').attr('height', data.length*options.size.dotsize+options.size.gutsize);
-    $('#heatmap').attr('width', _(data).chain()
+    $(options.heatEl).attr('height', data.length*options.size.dotsize+options.size.gutsize);
+    $(options.heatEl).attr('width', _(data).chain()
                                        .map(function(d) { return d.length})
                                        .max()
                                        .value()*options.size.dotsize+options.size.gutsize);
@@ -87,4 +88,11 @@ function initHeat(opts) {
   heat.click = function(row, col, val) { };
 
   return heat;
+};
+function initX(opts) {
+  var heat = {};
+
+  heat.draw = function() {
+    $('#heatmapX').attr('height', 
+  };
 };
