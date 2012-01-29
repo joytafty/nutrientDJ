@@ -93,10 +93,17 @@
 <div id="heatmap-wrap">
   <canvas id="heatmap" height=300 width=900></canvas>
 </div>
+<div id="party-wrap">
+  <canvas id="party" height=300 width=8></canvas>
+</div>
+<div id="results-wrap">
+  <canvas id="results" height=8 width=900></canvas>
+</div>
 <script type="text/javascript" src="js/init.js"></script>
 <script>
 var resolution = parseInt($('#resolution').val());
 var heat = {},
+    meta = {},
     data = [],
     options = {};
 
@@ -108,7 +115,10 @@ options.size = _.extend({
 options.colors = {
   null: '#777',
   undefined: '#777',
+  "Failed": '#e30',
   0: '#e30',
+  "Passed": '#0b0',
+  "Agreed to": '#0b0',
   1: '#0b0',
   3: '#2be',
   4: 'yellow'
@@ -136,6 +146,25 @@ if (val == 2011) {
 
 heat = initHeat(options);
 
+function parties(data, meta) {
+  var color = {
+    "R": "red",
+    "D": "blue"
+  }
+  var party = _(data).chain()
+                     .pluck('legislator')
+                     .map(function(leg) {
+                       return meta[leg]['party'] 
+                     })
+                     .value();
+  var canvas = document.getElementById('party');
+  var ctx = canvas.getContext('2d');
+  _(party).each(function(d,i) {
+    ctx.fillStyle = color[d];
+    ctx.fillRect(0,i,8,1);
+  });
+};
+
 function render() {
   var val = $('#yearSelect').val();
   $('.date').each(function() {
@@ -147,6 +176,7 @@ function render() {
   $.getJSON('data/congress-' + val + '.json', function(raw_data) {
     var legislators = [],
         votes = [];
+    meta.legislator = {};
 
     _(raw_data).each(function(v,k) {
       legislators.push(k);
@@ -159,6 +189,23 @@ function render() {
         legislator: k,
         votes: v
       }
+    });
+
+    // legislator party widget
+    $.getJSON('data/' + val + '-legislators-detailed', function(raw_data) {
+      meta.legislator = raw_data;
+      parties(data, meta.legislator);
+    });
+
+    // results widget
+    $.getJSON('data/' + val + '-legislation', function(raw_data) {
+      window.results = _(raw_data).pluck('vote-result');
+      var canvas = document.getElementById('results');
+      var ctx = canvas.getContext('2d');
+      _(results).each(function(d,i) {
+        ctx.fillStyle = options.colors[d];
+        ctx.fillRect(i,0,1,8);
+      });
     });
 
     heat.data(votes);
@@ -194,6 +241,7 @@ function render() {
       data = sorted_data;
       heat.data(votes);
       heat.draw();
+      parties(data, meta.legislator);
       $(options.mapEl).fadeIn();
 
     };

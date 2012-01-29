@@ -15,6 +15,20 @@ body {
   float: left;
   display: none;
 }
+#results {
+  float:left;
+}
+#results-wrap {
+  padding: 8px;
+  float: left;
+  clear: left;
+  display: none;
+}
+#party-wrap {
+  margin-top: 90px;
+  padding: 8px;
+  float: left;
+}
 #stats {
   position: absolute;
   display: none;
