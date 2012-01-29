@@ -80,12 +80,32 @@
       <span id="legislator">n/a</span>
     </li>
     <li>
+      <strong>Vote</strong>:
+      <span id="val" style="font-weight:bold">n/a</span>
+    </li>
+    <li>
       <strong>Roll</strong>:
       <span id="j">n/a</span>
     </li>
     <li>
-      <strong>Vote</strong>:
-      <span id="val">n/a</span>
+      <strong>Question</strong>:
+      <span id="question">n/a</span>
+    </li>
+    <li>
+      <strong>Legislation Number</strong>:<br/>
+      <span id="legis-num">n/a</span>
+    </li>
+    <li>
+      <strong>Description</strong>:<br/>
+      <span id="vote-desc">n/a</span>
+    </li>
+    <li>
+      <strong>Date</strong>:
+      <span id="action-date">n/a</span>
+    </li>
+    <li>
+      <strong>Result</strong>:
+      <span id="vote-result" style="font-weight:bold">n/a</span>
     </li>
   </ul>
 </div>
@@ -117,9 +137,9 @@ options.colors = {
   undefined: '#777',
   "Failed": '#e30',
   0: '#e30',
-  "Passed": '#0b0',
-  "Agreed to": '#0b0',
-  1: '#0b0',
+  "Passed": '#090',
+  "Agreed to": '#090',
+  1: '#090',
   3: '#2be',
   4: 'yellow'
 };
@@ -219,7 +239,18 @@ function render() {
       $('#stats').show();
       $('#legislator').html(legislators[leg]);
       $('#j').html(col+1);
-      $('#val').html(options.vote_key[vote]);
+      $('#val').html(options.vote_key[vote])
+      $('#val').css({
+        'color': options.colors[vote] 
+      });
+      $('#question').html(meta['roll'][col+1]['question']);
+      $('#legis-num').html(meta['roll'][col+1]['legis-num']);
+      $('#vote-desc').html(meta['roll'][col+1]['vote-desc']);
+      $('#action-date').html(meta['roll'][col+1]['action-date']);
+      $('#vote-result').html(meta['roll'][col+1]['vote-result']);
+      $('#vote-result').css({
+        'color': options.colors[ meta['roll'][col+1]['vote-result'] ]
+      });
     };
 
 		heat.out = function(e) {
