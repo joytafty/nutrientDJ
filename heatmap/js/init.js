@@ -93,10 +93,3 @@ function initHeat(opts) {
 
   return heat;
 };
-function initX(opts) {
-  var heat = {};
-
-  heat.draw = function() {
-    $('#heatmapX').attr('height', 
-  };
-};
