@@ -29,15 +29,16 @@ body {
   float: left;
 }
 #stats {
-  position: absolute;
+  position: fixed;
+	top:90px;
   display: none;
-  border-radius: 5px;
   width: 180px;
   color: #1a1a1a;
   background: white;
   background: rgba( 255, 255, 255, 0.9);
   padding: 8px;
   z-index: 8;
+	right:0;
 }
 #stats ul {
   margin: 0;

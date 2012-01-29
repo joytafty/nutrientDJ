@@ -165,6 +165,16 @@ function parties(data, meta) {
   });
 };
 
+function results(data) {
+		var results = _(data).pluck('vote-result');
+		var canvas = document.getElementById('results');
+		var ctx = canvas.getContext('2d');
+		_(results).each(function(d,i) {
+			ctx.fillStyle = options.colors[d];
+			ctx.fillRect(i,0,1,8);
+		});
+};
+
 function render() {
   var val = $('#yearSelect').val();
   $('.date').each(function() {
@@ -176,7 +186,6 @@ function render() {
   $.getJSON('data/congress-' + val + '.json', function(raw_data) {
     var legislators = [],
         votes = [];
-    meta.legislator = {};
 
     _(raw_data).each(function(v,k) {
       legislators.push(k);
@@ -199,25 +208,23 @@ function render() {
 
     // results widget
     $.getJSON('data/' + val + '-legislation', function(raw_data) {
-      window.results = _(raw_data).pluck('vote-result');
-      var canvas = document.getElementById('results');
-      var ctx = canvas.getContext('2d');
-      _(results).each(function(d,i) {
-        ctx.fillStyle = options.colors[d];
-        ctx.fillRect(i,0,1,8);
-      });
+		  meta.roll = raw_data;
+      results(meta.roll);
     });
 
     heat.data(votes);
     heat.draw();
 
     heat.move = function(e, leg, col, vote) {
-      $('#stats').offset({top: e.pageY-70, left: e.pageX-20});
       $('#stats').show();
-      document.getElementById('legislator').innerHTML = legislators[leg];
-      document.getElementById('j').innerHTML = col+1;
-      document.getElementById('val').innerHTML = options.vote_key[vote];
+      $('#legislator').html(legislators[leg]);
+      $('#j').html(col+1);
+      $('#val').html(options.vote_key[vote]);
     };
+
+		heat.out = function(e) {
+			$('#stats').hide();
+		};
 
     heat.click = function(leg, col, vote) {
       $(options.mapEl).fadeOut('slow');
@@ -240,6 +247,7 @@ function render() {
       data = sorted_data;
       heat.data(votes);
       heat.draw();
+			results(meta.roll); // xxx
       parties(data, meta.legislator);
       $(options.mapEl).fadeIn();
     };

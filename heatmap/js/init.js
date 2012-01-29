@@ -81,6 +81,10 @@ function initHeat(opts) {
       heat.move(e, pos.i, pos.j, val);
     };
 
+		b.canvas.onmouseout = function(e) {
+			heat.out(e);
+		};
+
     b.canvas.onclick = function(e) {
       var pos = indices(options.size.dotsize+options.size.gutsize, e);
       var val = lookup(pos, data);
@@ -88,8 +92,9 @@ function initHeat(opts) {
     };
   };
 
-  heat.move = function(row, col, val) { };
+  heat.move = function(e, row, col, val) { };
   heat.click = function(row, col, val) { };
+	heat.out = function(e) {};
 
   return heat;
 };
