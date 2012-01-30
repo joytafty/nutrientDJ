@@ -126,6 +126,7 @@
 <script type="text/javascript" src="js/init.js"></script>
 <script>
 var resolution = parseInt($('#resolution').val());
+var val = parseInt($('#yearSelect').val());
 var heat = {},
     meta = {},
     data = [],
@@ -192,7 +193,7 @@ heat = initHeat(options);
 
 function parties(data, meta) {
   var color = {
-    "R": "ef8a62",
+    "R": "#ef8a62",
     "D": "#67a9cf",
     "I": "#f7f7f7"
   }
@@ -221,7 +222,6 @@ function results(data) {
 };
 
 function render() {
-  var val = $('#yearSelect').val();
   $('.date').each(function() {
     $(this).text(val);
   });
@@ -290,7 +290,7 @@ function render() {
 
       // sort data by that column
       var sorted_data = _(data).sortBy(function(d,v) {
-        var vote = d['votes'][col + 1]
+        var vote = d['votes'][col]
         if (_.isNull(vote)) {
           return -1;
         } else {
@@ -313,6 +313,7 @@ function render() {
 render();
 
 $('#yearSelect').change(function() {
+  val = $(this).val();
   $('#heatmap-wrap').hide();
   $('#loading').show();
   $('#sort-order').val('random');
