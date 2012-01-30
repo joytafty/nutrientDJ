@@ -6,10 +6,7 @@ var defaults = {
 
 function heatmap(id, data, options) {
   var self = {};
-  var options = options || {};
-  var dotsize = 'dotsize' in options ? options['dotsize'] : defaults.dotsize;
-  var gutsize = 'gutsize' in options ? options['gutsize'] : defaults.gutsize;
-  var totsize = dotsize + gutsize;
+  var options = _.extend(defaults, options);
   self.data = data || [];
   self.canvas = document.getElementById(id);
   self.ctx = self.canvas.getContext('2d');
@@ -26,7 +23,7 @@ function heatmap(id, data, options) {
     _(self.data).each(function(row,j) {
       _(row).each(function(val,i) {
         self.ctx.fillStyle = self.colorize(val);
-        self.ctx.fillRect(totsize*i,totsize*j,dotsize,dotsize);
+        self.ctx.fillRect(options.totsize*i,options.totsize*j,options.dotsize,options.dotsize);
       });
     });
   }

@@ -34,12 +34,13 @@ body {
 }
 #stats {
   position: fixed;
-	top:90px;
+	top:98px;
   display: none;
-  width: 380px;
+  line-height:1.4em;
+	width: 380px;
   color: #1a1a1a;
   background: white;
-  background: rgba( 255, 255, 255, 0.9);
+  background: rgba( 255, 255, 255, 0.8);
   padding: 8px;
   z-index: 8;
 	right:0;

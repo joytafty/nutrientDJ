@@ -22,8 +22,9 @@ function initHeat(opts) {
   }, opts.colors);
 
   options.size = _.extend({
-    dotsize: 4,
-    gutsize: 1
+    dotsize: function() {return 4},
+    gutsize: function() {return 1},
+		totsize: function() {return options.size.dotsize() + options.size.gutsize()}
   }, opts.size);
 
   // get or set data
@@ -53,24 +54,25 @@ function initHeat(opts) {
   }); 
 
   heat.draw = function() {
-    var height = data.length*options.size.dotsize+options.size.gutsize;
+    var height = data.length*options.size.dotsize()+options.size.gutsize();
     var width = _(data).chain()
                        .map(function(d) { return d.length})
                        .max()
-                       .value()*options.size.dotsize+options.size.gutsize;
+                       .value()*options.size.dotsize()+options.size.gutsize();
     $('#heatmap').attr('height', parseInt(height));
     $('#party').attr('height', parseInt(height));
-    $('#party').attr('width', parseInt(options.size.dotsize*4));
+    $('#party').attr('width', parseInt(options.size.dotsize()*4));
     $('#heatmap').attr('width', parseInt(width));
-		$(options.mapEl).css({"padding-left": options.size.dotsize*4+16});
+		$(options.mapEl).css({"padding-left": options.size.dotsize()*4+16});
     $('#results').attr('width', parseInt(width));
 
     var b = heatmap('heatmap', data, {
       colorize: function(val) {
         return options.colors[val];
       },
-      dotsize: options.size.dotsize,
-      gutsize: options.size.gutsize
+      dotsize: options.size.dotsize(),
+      gutsize: options.size.gutsize(),
+			totsize: options.size.totsize()
     });
 
     b.render();
@@ -78,7 +80,7 @@ function initHeat(opts) {
     $(options.mapEl).fadeIn();
 
     b.canvas.onmousemove = function(e) {
-      var pos = indices(options.size.dotsize+options.size.gutsize, e);
+      var pos = indices(options.size.dotsize()+options.size.gutsize(), e);
       var val = lookup(pos, data);
       heat.move(e, pos.i, pos.j, val);
     };
@@ -88,7 +90,7 @@ function initHeat(opts) {
 		};
 
     b.canvas.onclick = function(e) {
-      var pos = indices(options.size.dotsize+options.size.gutsize, e);
+      var pos = indices(options.size.dotsize()+options.size.gutsize(), e);
       var val = lookup(pos, data);
       heat.click(pos.i, pos.j, val);
     };

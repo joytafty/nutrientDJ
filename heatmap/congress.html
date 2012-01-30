@@ -130,9 +130,16 @@ var heat = {},
     options = {};
 
 options.size = _.extend({
-  dotsize: resolution,
-  gutsize: resolution < 4 ? 0.00001 : 1,
-	totsize: function() {return options.size.dotsize+options.size.gutsize} 
+  dotsize: function() {return resolution},
+  gutsize: function() {
+		if (resolution < 4) {
+			return 0.00001;
+		} else if (resolution < 12) {
+			return 1;
+		} else {
+			return 2;
+		}},
+	totsize: function() {return options.size.dotsize()+options.size.gutsize()} 
 }, options);
 
 options.colors = {
@@ -184,7 +191,7 @@ function parties(data, meta) {
   var ctx = canvas.getContext('2d');
   _(party).each(function(d,i) {
     ctx.fillStyle = color[d];
-		ctx.fillRect(0,options.size.totsize()*i,options.size.dotsize*4,options.size.dotsize);
+		ctx.fillRect(0,options.size.totsize()*i,options.size.dotsize(),options.size.dotsize());
   });
 };
 
@@ -194,7 +201,7 @@ function results(data) {
 		var ctx = canvas.getContext('2d');
 		_(results).each(function(d,i) {
 			ctx.fillStyle = options.colors[d];
-			ctx.fillRect(options.size.totsize()*i,0,options.size.dotsize,options.size.dotsize*4);
+			ctx.fillRect(options.size.totsize()*i,0,options.size.dotsize(),options.size.dotsize()*4);
 		});
 };
 
@@ -300,14 +307,7 @@ $('#yearSelect').change(function() {
 $('#resolution').change(function() {
   resolution = parseInt($('#resolution').val());
   $(options.mapEl).hide();
-  options.size.dotsize = resolution;
-	options.size.gutsize = resolution < 4 ? 0.00001 : 1;
-	heat.options({
-    size: {
-      dotsize: resolution,
-      gutsize: resolution < 4 ? 0.00001 : 1
-    }
-  });
+	heat.options({"size": options.size});
   heat.draw();
 	parties(data, meta.legislator);
 });  
