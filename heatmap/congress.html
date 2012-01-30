@@ -35,6 +35,7 @@
       <option value="2009">2009</option>
       <option value="2010">2010</option>
       <option value="2011">2011</option>
+      <option value="2012">2012</option>
     </select>
     <label for="resolution">Resolution:</label>
     <select id="resolution">
@@ -191,8 +192,9 @@ heat = initHeat(options);
 
 function parties(data, meta) {
   var color = {
-    "R": "red",
-    "D": "blue"
+    "R": "ef8a62",
+    "D": "#67a9cf",
+    "I": "#f7f7f7"
   }
   var party = _(data).chain()
                      .pluck('legislator')
