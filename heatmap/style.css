@@ -14,6 +14,7 @@ body {
   padding: 8px;
   float: left;
   display: none;
+	padding-left:20px;
 }
 #results {
   float:left;
@@ -26,7 +27,10 @@ body {
 #party-wrap {
   margin-top: 90px;
   padding: 8px;
-  float: left;
+	position: absolute;
+	left:0;
+  background:#333;
+	opacity:.8;
 }
 #stats {
   position: fixed;

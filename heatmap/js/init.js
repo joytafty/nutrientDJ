@@ -60,9 +60,10 @@ function initHeat(opts) {
                        .value()*options.size.dotsize+options.size.gutsize;
     $('#heatmap').attr('height', parseInt(height));
     $('#party').attr('height', parseInt(height));
+    $('#party').attr('width', parseInt(options.size.dotsize*4));
     $('#heatmap').attr('width', parseInt(width));
+		$(options.mapEl).css({"padding-left": options.size.dotsize*4+16});
     $('#results').attr('width', parseInt(width));
-		$('.wrapper').width(parseInt(width + 40 + ((options.size.dotsize+options.size.gutsize)*6)));
 
     var b = heatmap('heatmap', data, {
       colorize: function(val) {
@@ -97,5 +98,10 @@ function initHeat(opts) {
   heat.click = function(row, col, val) { };
 	heat.out = function(e) {};
 
+	$(window).scroll(function() {
+		if ($(window).scrollLeft() != 0) {
+			$('#party-wrap').hide().css("left", parseInt($(window).scrollLeft())).fadeIn();
+		}
+	});
   return heat;
 };

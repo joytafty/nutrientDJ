@@ -136,15 +136,15 @@ options.size = _.extend({
 }, options);
 
 options.colors = {
-  null: '#777',
-  undefined: '#777',
+  null: '#333',
+  undefined: '#333',
   "Failed": '#e30',
-  0: '#e30',
+  0: '#BF3200',
   "Passed": '#090',
   "Agreed to": '#090',
-  1: '#090',
-  3: '#2be',
-  4: 'yellow'
+  1: '#68AD45',
+  3: '#666',
+  4: '#A6AD79'
 };
 
 options.vote_key = {
@@ -190,7 +190,7 @@ function parties(data, meta) {
 
 function results(data) {
 		var results = _(data).pluck('vote-result');
-		var canvas = $('#results');
+		var canvas = document.getElementById('results');
 		var ctx = canvas.getContext('2d');
 		_(results).each(function(d,i) {
 			ctx.fillStyle = options.colors[d];
