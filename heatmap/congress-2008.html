@@ -7,40 +7,16 @@
   <script type="text/javascript" src="../lib/backbone.js"></script>
   <script type="text/javascript" src="js/heatmap.js"></script>
   <link rel="stylesheet" href="style.css" type="text/css" />
+  <link rel="stylesheet" href="style-2008.css" type="text/css" />
 </head>
 <body>
 <div id="topbar">
   <div id="options">
-    <label for="year">Year:</label>
-    <select id="yearSelect">
-      <option value="1990">1990</option>
-      <option value="1991">1991</option>
-      <option value="1992">1992</option>
-      <option value="1993">1993</option>
-      <option value="1994">1994</option>
-      <option value="1995">1995</option>
-      <option value="1996">1996</option>
-      <option value="1997">1997</option>
-      <option value="1998">1998</option>
-      <option value="1999">1999</option>
-      <option value="2000">2000</option>
-      <option value="2001">2001</option>
-      <option value="2002">2002</option>
-      <option value="2003">2003</option>
-      <option value="2004">2004</option>
-      <option value="2005">2005</option>
-      <option value="2006">2006</option>
-      <option value="2007">2007</option>
-      <option value="2008">2008</option>
-      <option value="2009">2009</option>
-      <option value="2010">2010</option>
-      <option value="2011">2011</option>
-    </select>
     <label for="resolution">Resolution:</label>
     <select id="resolution">
-      <option value="1" selected="selected">1</option>
+      <option value="1">1</option>
       <option value="2">2</option>
-      <option value="4">4</option>
+      <option value="4" selected="selected">4</option>
       <option value="8">8</option>
       <option value="12">12</option>
       <option value="20">20</option>
@@ -51,10 +27,6 @@
       <option value="totals-leg">Totals by Legislator</option>
       <option value="totals-leg-sort">Totals by Legislator, Sorted</option>
       <option value="totals-reverse-leg-sort">Totals (Reversed) by Legislator, Sorted</option>
-      <!--
-      <option value="totals-roll">Totals by Roll Call</option>
-      <option value="totals-roll-sort">Totals by Roll Call, Sorted</option>
-      -->
     </select>
   </div>
   <h1>Congress Votes <span class="date"></span></h1>
@@ -91,11 +63,11 @@
 </div>
 <h2 id="loading">Loading <span class="date"></span>  US House Votes...</h2>
 <div class="wrapper">
-	<div id="heatmap-wrap">
-		<canvas id="heatmap" height=300 width=900></canvas>
-	</div>
 	<div id="party-wrap">
 		<canvas id="party" height=300 width=8></canvas>
+	</div>
+	<div id="heatmap-wrap">
+		<canvas id="heatmap" height=300 width=900></canvas>
 	</div>
 	<div id="results-wrap">
 		<canvas id="results" height=8 width=900></canvas>
@@ -111,13 +83,13 @@ var heat = {},
 
 options.size = _.extend({
   dotsize: resolution,
-  gutsize: resolution < 4 ? 0.00001 : 1,
-	totsize: function() {return options.size.dotsize+options.size.gutsize} 
+  gutsize: resolution < 4 ? 0.00001 : 1
+	totsize: function() {return options.size.dotsize+options.size.gutsize}
 }, options);
 
 options.colors = {
-  null: '#777',
-  undefined: '#777',
+  null: '#333',
+  undefined: '#333',
   "Failed": '#e30',
   0: '#e30',
   "Passed": '#0b0',
@@ -160,26 +132,26 @@ function parties(data, meta) {
                        return meta[leg]['party'] 
                      })
                      .value();
-  var canvas = document.getElementById('party');
+  var canvas = $('#party');
   var ctx = canvas.getContext('2d');
   _(party).each(function(d,i) {
     ctx.fillStyle = color[d];
-		ctx.fillRect(0,options.size.totsize()*i,options.size.dotsize*4,options.size.dotsize);
-  });
+    ctx.fillRect(0,options.size.totsize()*i,options.size.dotsize*4,options.size.dotsize);
+	});
 };
 
 function results(data) {
 		var results = _(data).pluck('vote-result');
-		var canvas = $('#results');
+		var canvas = document.getElementById('results');
 		var ctx = canvas.getContext('2d');
 		_(results).each(function(d,i) {
 			ctx.fillStyle = options.colors[d];
-			ctx.fillRect(options.size.totsize()*i,0,options.size.dotsize,options.size.dotsize*4);
-		});
+		  ctx.fillRect(options.size.totsize()*i,0,options.size.dotsize,options.size.dotsize*4);
+	  });
 };
 
 function render() {
-  var val = $('#yearSelect').val();
+  var val = 2008;
   $('.date').each(function() {
     $(this).text(val);
   });
@@ -258,13 +230,6 @@ function render() {
 };
 
 render();
-
-$('#yearSelect').change(function() {
-  $('#heatmap-wrap').hide();
-  $('#loading').show();
-  $('#sort-order').val('random');
-  render();  
-});
 
 $('#resolution').change(function() {
   resolution = parseInt($('#resolution').val());

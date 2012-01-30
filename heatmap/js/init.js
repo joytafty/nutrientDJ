@@ -62,6 +62,7 @@ function initHeat(opts) {
     $('#party').attr('height', parseInt(height));
     $('#heatmap').attr('width', parseInt(width));
     $('#results').attr('width', parseInt(width));
+		$('.wrapper').width(parseInt(width + 40 + ((options.size.dotsize+options.size.gutsize)*6)));
 
     var b = heatmap('heatmap', data, {
       colorize: function(val) {
