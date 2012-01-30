@@ -113,6 +113,7 @@
 <div class="wrapper">
 	<div id="heatmap-wrap">
 		<canvas id="heatmap" height=300 width=900></canvas>
+		<canvas id="hover" height=300 width=900></canvas>
 	</div>
 	<div id="party-wrap">
 		<canvas id="party" height=300 width=8></canvas>
@@ -146,11 +147,23 @@ options.colors = {
   null: '#333',
   undefined: '#333',
   "Failed": '#e30',
-  0: '#BF3200',
+  0: '#A54326',
   "Passed": '#090',
   "Agreed to": '#090',
   1: '#68AD45',
   3: '#666',
+  4: '#A6AD79'
+};
+
+options.hoverColors = {
+  null: '#333',
+  undefined: '#333',
+  "Failed": '#e30',
+  0: '#DD3700',
+  "Passed": '#090',
+  "Agreed to": '#090',
+  1: '#2CC934',
+  3: '#777',
   4: '#A6AD79'
 };
 
@@ -191,7 +204,7 @@ function parties(data, meta) {
   var ctx = canvas.getContext('2d');
   _(party).each(function(d,i) {
     ctx.fillStyle = color[d];
-		ctx.fillRect(0,options.size.totsize()*i,options.size.dotsize(),options.size.dotsize());
+		ctx.fillRect(0,options.size.totsize()*i,resolution < 4 ? options.size.dotsize()*4 : options.size.dotsize(),options.size.dotsize());
   });
 };
 

@@ -15,11 +15,11 @@ function initHeat(opts) {
     heatEL: '#heatmap'
   }, opts);
 
-  options.vote_key = _.extend({
-  }, opts.vote_key);
+  options.vote_key = _.extend({}, opts.vote_key);
 
-  options.colors = _.extend({
-  }, opts.colors);
+  options.colors = _.extend({}, opts.colors);
+
+	options.hoverColors = _.extend({}, opts.hoverColors);
 
   options.size = _.extend({
     dotsize: function() {return 4},
@@ -60,10 +60,13 @@ function initHeat(opts) {
                        .max()
                        .value()*options.size.dotsize()+options.size.gutsize();
     $('#heatmap').attr('height', parseInt(height));
+    $('#heatmap').attr('width', parseInt(width));
+    $('#hover').attr('height', parseInt(height));
+    $('#hover').attr('width', parseInt(width));
     $('#party').attr('height', parseInt(height));
     $('#party').attr('width', parseInt(options.size.dotsize()*4));
-    $('#heatmap').attr('width', parseInt(width));
 		$(options.mapEl).css({"padding-left": options.size.dotsize()*4+16});
+		$('#hover').css({"left": options.size.dotsize()*4+16});
     $('#results').attr('width', parseInt(width));
 
     var b = heatmap('heatmap', data, {
@@ -79,21 +82,43 @@ function initHeat(opts) {
     $(options.loadingEl).hide();
     $(options.mapEl).fadeIn();
 
-    b.canvas.onmousemove = function(e) {
+		var c = document.getElementById('hover'),
+				hoverCtx = c.getContext('2d');
+
+    c.onmousemove = function(e) {
       var pos = indices(options.size.dotsize()+options.size.gutsize(), e);
       var val = lookup(pos, data);
-      heat.move(e, pos.i, pos.j, val);
+      c.crossHover(pos);
+			heat.move(e, pos.i, pos.j, val);
     };
 
-		b.canvas.onmouseout = function(e) {
+		c.onmouseout = function(e) {
 			heat.out(e);
+			hoverCtx.clearRect(0, 0, parseInt(width), parseInt(height));
 		};
 
-    b.canvas.onclick = function(e) {
+    c.onclick = function(e) {
       var pos = indices(options.size.dotsize()+options.size.gutsize(), e);
       var val = lookup(pos, data);
       heat.click(pos.i, pos.j, val);
     };
+
+		c.crossHover = function(pos) {
+			hoverCtx.clearRect(0, 0, parseInt(width), parseInt(height));
+	  	_(data[pos.i]).each(function(row, j) {
+				var val = lookup({i:pos.i, j:j}, data);
+				hoverCtx.fillStyle = options.hoverColors[val];
+				hoverCtx.fillRect(options.size.totsize()*j, options.size.totsize()*pos.i, options.size.dotsize(), options.size.dotsize());
+			});
+			var h = _.map(data, function(i) {
+				return i[pos.j]
+			});
+			_(h).each(function(column, i) {
+				var val = lookup({i:i, j:pos.j}, data);
+				hoverCtx.fillStyle = options.hoverColors[val];
+				hoverCtx.fillRect(options.size.totsize()*pos.j, options.size.totsize()*i, options.size.dotsize(), options.size.dotsize());
+			});
+		};
   };
 
   heat.move = function(e, row, col, val) { };
