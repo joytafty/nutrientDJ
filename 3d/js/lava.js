@@ -131,4 +131,45 @@ composer.render( 0.01 );
 
 }
 
+/* Keyboard */
 
+var keyboard = new THREEx.KeyboardState();
+
+var movement = {};
+var x = 0;
+
+camera.lookAt({
+  x: 0,
+  y: 0,
+  z: 1
+});
+
+movement = {
+  'up': function() {
+    camera.position.z -= 0.03;
+  },
+  'down': function() {
+    camera.position.z += 0.03;
+  },
+  'left': function() {
+    x -= 0.07;
+    camera.lookAt({
+      x: x,
+      y: 0,
+      z: 1
+    });
+  },
+  'right': function() {
+    x += 0.07;
+    camera.lookAt({
+      x: x,
+      y: 0,
+      z: 1
+    });
+  },
+};
+
+function check_keyboard() {
+  for ( key in movement )
+    if( keyboard.pressed(key) )  movement[key]();
+}
