@@ -1,5 +1,4 @@
 function chord(data) {
-    // From http://mkweb.bcgsc.ca/circos/guide/tables/
     var chord = d3.layout.chord()
       .padding(.05)
       .sortSubgroups(d3.descending)

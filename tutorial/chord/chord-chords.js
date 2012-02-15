@@ -3,9 +3,11 @@ d3.chart = d3.chart || {};
 d3.chart.chord = function(container) {
     var self = {};
 
+    var svg;
+
     var chord = d3.layout.chord()
       .padding(.05)
-      .sortSubgroups(d3.descending)
+      .sortSubgroups(d3.descending);
 
     var w = 340,
         h = 340,
@@ -14,19 +16,53 @@ d3.chart.chord = function(container) {
 
     var fill = d3.scale.category20c();
 
+    var arc_svg = d3.svg.arc().innerRadius(r0).outerRadius(r1)
+    var chord_svg = d3.svg.chord().radius(r0);
+
     self.update = function(data) {
-      chord.matrix(data);
-      self.render();
+       if (!chord.matrix()) {
+           chord.matrix(data);
+           self.render();
+       } else {
+           var old = {
+               groups: chord.groups(),
+               chords: chord.chords()
+           };
+           chord.matrix(data);
+           self.transition(old);
+       }
     };
 
     self.clear = function() {
         d3.select(container).selectAll('svg').remove();
     };
 
+    self.transition = function(old) {
+        svg.selectAll(".ticks")
+              .transition()
+              .duration(200)
+              .attr("opacity", 0);
+
+        svg.selectAll(".arc")
+          .data(chord.groups)
+          .transition()
+          .duration(1500)
+          .attrTween("d", arcTween(arc_svg, old));
+
+        svg.selectAll(".chord")
+          .selectAll("path")
+          .data(chord.chords)
+          .transition()
+          .duration(1500)
+          .attrTween("d", chordTween(chord_svg, old));
+
+        setTimeout(self.drawTicks, 1100);
+    };
+
     self.render = function() {
         self.clear();
 
-        var svg = d3.select(container)
+        svg = d3.select(container)
           .append("svg")
             .attr("width", w)
             .attr("height", h)
@@ -37,13 +73,31 @@ d3.chart.chord = function(container) {
           .selectAll("path")
             .data(chord.groups)
           .enter().append("path")
+            .attr("class", "arc")
             .style("fill", function(d) { return fill(d.index); })
             .style("stroke", function(d) { return fill(d.index); })
-            .attr("d", d3.svg.arc().innerRadius(r0).outerRadius(r1))
+            .attr("d", arc_svg)
             .on("mouseover", fade(.1, svg))
             .on("mouseout", fade(1, svg));
 
+        svg.append("g")
+            .attr("class", "chord")
+          .selectAll("path")
+            .data(chord.chords)
+          .enter().append("path")
+            .style("fill", function(d) { return fill(d.target.index); })
+            .attr("d", chord_svg)
+            .style("opacity", 1);
+
+        self.drawTicks();
+    };
+
+    self.drawTicks = function() {
+        svg.selectAll(".ticks").remove();
+
         var ticks = svg.append("g")
+          .attr("class", "ticks")
+          .attr("opacity", 0.1)
           .selectAll("g")
             .data(chord.groups)
           .enter().append("g")
@@ -73,14 +127,10 @@ d3.chart.chord = function(container) {
             })
             .text(function(d) { return d.label; });
 
-        svg.append("g")
-            .attr("class", "chord")
-          .selectAll("path")
-            .data(chord.chords)
-          .enter().append("path")
-            .style("fill", function(d) { return fill(d.target.index); })
-            .attr("d", d3.svg.chord().radius(r0))
-            .style("opacity", 1);
+        svg.selectAll(".ticks").transition()
+          .duration(340)
+          .attr("opacity", 1);
+
     };
 
     return self;
@@ -110,4 +160,24 @@ function fade(opacity, svg) {
       .transition()
         .style("opacity", opacity);
   };
+}
+
+// Interpolate the arcs
+function arcTween(arc_svg, old) {
+    return function(d,i) {
+        var i = d3.interpolate(old.groups[i], d);
+        return function(t) {
+            return arc_svg(i(t));
+        }
+    }
+}
+
+// Interpolate the chords
+function chordTween(chord_svg, old) {
+    return function(d,i) {
+        var i = d3.interpolate(old.chords[i], d);
+        return function(t) {
+            return chord_svg(i(t));
+        }
+    }
 }
