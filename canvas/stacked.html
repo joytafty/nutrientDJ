@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<canvas id="stacked" height="200" width="600"></canvas>
+<script type="text/javascript" src="../lib/underscore.js"></script>
+<script type="text/javascript" src="../lib/d3/d3.js"></script>
+<script type="text/javascript" src="../lib/d3/d3.layout.js"></script>
+<script>
+/* original data */
+var data = [
+    [3,12,15,8,2,90,11,13,46,3,5,3,1,59,2,65,35,12,9,2],
+    [21,74,26,67,29,2,37,17,21,6,33,39,89,100,10,30,92,66,63,42],
+    [28,2,27,88,97,86,8,56,37,26,1,62,7,40,16,3,59,23,3,5],
+    [20,1,49,3,36,18,25,21,95,3,42,40,15,2,25,1,14,24,16,95],
+    [93,74,1,81,1,2,50,15,37,13,12,2,77,19,101,1,7,90,33,48],
+    [71,1,89,75,25,89,15,51,1,22,3,32,34,23,7,8,61,68,65,97],
+    [41,2,48,8,100,12,6,22,88,55,28,13,9,55,13,42,12,5,90,21],
+    [28,39,67,83,56,16,70,2,25,9,2,20,24,4,71,36,9,4,98,86]
+]
+
+/* transform to {x,y} format for d3.layout */
+var data_xy = _(data).map(function(row) {
+    return _(row).map(function(d, i) {
+        return {
+            x: i,
+            y: d
+        };
+    });
+});
+
+/* use d3.layout to add y0 offsets */
+var data_stacked = d3.layout.stack()(data_xy);
+var scale = d3.scale.category10();
+
+/* set up canvas, get tallest column height */
+var canvas = document.getElementById('stacked');
+var ctx = canvas.getContext('2d');
+var w = 600,
+    h = 200;
+    my = d3.max(data_stacked, function(d) {
+        return d3.max(d, function(d) {
+            return d.y0 + d.y;
+        });
+    });
+
+/* render to canvas */
+_(data_stacked).each(function(row, i) {
+    ctx.fillStyle = scale(i);
+    _(row).each(function(d) {
+        ctx.fillRect( 12*d.x, h-(d.y+d.y0)*h/my, 10, h*d.y/my);
+    });
+});
+</script>
