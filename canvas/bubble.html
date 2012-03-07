@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<canvas id="bubble" height="400" width="400"></canvas>
+<script type="text/javascript" src="../lib/underscore.js"></script>
+<script>
+/* generate some data triplets */
+var data = _(_.range(10)).map(function() {
+  return [Math.random(), Math.random(), Math.random(), 'pink'];
+});
+
+/* set up canvas, get tallest column height */
+var canvas = document.getElementById('bubble');
+var ctx = canvas.getContext('2d');
+var w = 400,
+    h = 400,
+    max_r = 40;
+
+/* render to canvas */
+_(data).each(bubble);
+
+/* d is of form [x, y, r, color] */
+function bubble(d) {
+  ctx.fillStyle = d[3];
+  ctx.beginPath();
+  ctx.arc( w*d[0],
+           h*d[1],
+           max_r*d[2],
+           0,
+           2*Math.PI);
+  ctx.closePath();
+  ctx.fill();
+};
+</script>

@@ -52,6 +52,7 @@
     <h3>Per 100g of Food</h3>
     <div id="totals" class="widget right">Total Selected<br/></div>
     <div id="pie" class="widget right">Group Breakdown<br/></div>
+    <a href="#" id="export_selected" class="button green filter_control">Export</a>
     <a href="#" id="remove_selected" class="button red filter_control">Remove</a>
     <a href="#" id="keep_selected" class="button green filter_control">Keep</a>
     <div id="pager" class="info"></div>
@@ -169,6 +170,31 @@
       return false;
     });
     
+    $('#export_selected').click(function() {
+      var data = dimensions.get('filtered');
+      var keys = _.keys(data[0]);
+      var csv = _(keys).map(function(d) { return '"' + addslashes(d) + '"'; }).join(",");
+      _(data).each(function(row) {
+        csv += "\n";
+        csv += _(keys).map(function(k) {
+          var val = row[k];
+          if (_.isString(val)) {
+            return '"' + addslashes(val) + '"';
+          }
+          if (_.isNumber(val)) {
+            return val;
+          }
+          if (_.isNull(val)) {
+            return "";
+          }
+        }).join(",");
+      });
+      var uriContent = "data:application/octet-stream," + encodeURIComponent(csv);
+      var myWindow = window.open(uriContent, "Nutrient CSV");
+      myWindow.focus();
+      return false;
+    });
+
     $('#line_opacity').change(function() {
       var val = $(this).val();
       $('#parallel .foreground path').css('stroke-opacity', val.toString());
@@ -190,6 +216,10 @@
     $('#myGrid').resizable({
       handles: 's'
     });
+
+    function addslashes( str ) {
+        return (str+'').replace(/([\\"'])/g, "\\$1").replace(/\0/g, "\\0");
+    };
   
   });
 
