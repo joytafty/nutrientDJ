@@ -44,6 +44,9 @@ svg {
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
     <script type="text/javascript" src="parallel-coordinates.js"></script>
     <script type="text/javascript">
+      d3.csv("cars.csv", function(cars) {
+          window.b = d3.select('body').datum(cars).call(parallelCoords);
+      });
     </script>
   </body>
 </html>

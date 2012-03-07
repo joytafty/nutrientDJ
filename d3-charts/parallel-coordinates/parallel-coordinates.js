@@ -1,27 +1,30 @@
-var m = [30, 10, 10, 10],
-    w = 960 - m[1] - m[3],
-    h = 500 - m[0] - m[2];
+function parallelCoords(selection) {
+  var my = {};
 
-var x = d3.scale.ordinal().rangePoints([0, w], 1),
-    y = {};
+  var m = [30, 10, 10, 10],
+      w = 960 - m[1] - m[3],
+      h = 500 - m[0] - m[2];
 
-var line = d3.svg.line(),
-    axis = d3.svg.axis().orient("left"),
-    background,
-    foreground;
+  var x = d3.scale.ordinal().rangePoints([0, w], 1),
+      y = {};
 
-var svg = d3.select("body").append("svg:svg")
-    .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2])
-  .append("svg:g")
-    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+  var line = d3.svg.line(),
+      axis = d3.svg.axis().orient("left"),
+      background,
+      foreground;
 
-d3.csv("nutrition.csv", function(cars) {
+  var data = selection.data()[0];
+
+  var svg = selection.append("svg:svg")
+      .attr("width", w + m[1] + m[3])
+      .attr("height", h + m[0] + m[2])
+    .append("svg:g")
+      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
   // Extract the list of dimensions and create a scale for each.
-  x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
-    return d != "name" && d != "group" && (y[d] = d3.scale.linear()
-        .domain(d3.extent(cars, function(p) { return +p[d]; }))
+  x.domain(dimensions = d3.keys(data[0]).filter(function(d) {
+    return d != "name" && (y[d] = d3.scale.linear()
+        .domain(d3.extent(data, function(p) { return +p[d]; }))
         .range([h, 0]));
   }));
 
@@ -29,7 +32,7 @@ d3.csv("nutrition.csv", function(cars) {
   background = svg.append("svg:g")
       .attr("class", "background")
     .selectAll("path")
-      .data(cars)
+      .data(data)
     .enter().append("svg:path")
       .attr("d", path);
 
@@ -37,7 +40,7 @@ d3.csv("nutrition.csv", function(cars) {
   foreground = svg.append("svg:g")
       .attr("class", "foreground")
     .selectAll("path")
-      .data(cars)
+      .data(data)
     .enter().append("svg:path")
       .attr("d", path);
 
@@ -64,22 +67,22 @@ d3.csv("nutrition.csv", function(cars) {
     .selectAll("rect")
       .attr("x", -8)
       .attr("width", 16);
-});
 
-// Returns the path for a given data point.
-function path(d) {
-  return line(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
-}
+  // Returns the path for a given data point.
+  function path(d) {
+    return line(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
+  }
 
-// Handles a brush event, toggling the display of foreground lines.
-function brush() {
-  var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-      extents = actives.map(function(p) { return y[p].brush.extent(); });
-  foreground.style("display", function(d) {
-    return actives.every(function(p, i) {
-      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-    }) ? null : "none";
-  });
-}
+  // Handles a brush event, toggling the display of foreground lines.
+  function brush() {
+    var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
+        extents = actives.map(function(p) { return y[p].brush.extent(); });
+    foreground.style("display", function(d) {
+      return actives.every(function(p, i) {
+        return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+      }) ? null : "none";
+    });
+  }
 
-
+  return my;
+};
