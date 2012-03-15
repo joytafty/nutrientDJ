@@ -13,12 +13,17 @@ d3.chart.chord = function(options) {
         h = 340,
         r0 = Math.min(w, h) * .37,
         r1 = r0 * 1.1,
-        coloring = 'target';
+        coloring = 'bigger';
 
     self.fill = d3.scale.category20c();
 
     var arc_svg = d3.svg.arc().innerRadius(r0).outerRadius(r1)
     var chord_svg = d3.svg.chord().radius(r0);
+
+    var comp = {
+      bigger:  function(a, b) { return a.value > b.value ? a : b },
+      smaller: function(a, b) { return a.value < b.value ? a : b }
+    }
 
     for (key in options) {
         self[key] = options[key];
@@ -59,6 +64,7 @@ d3.chart.chord = function(options) {
           .data(chord.chords)
           .transition()
           .duration(1500)
+          .style("fill", function(d) { return self.fill(comp[coloring](d.source, d.target).index); })
           .attrTween("d", chordTween(chord_svg, old));
 
         setTimeout(self.drawTicks, 1100);
@@ -90,7 +96,7 @@ d3.chart.chord = function(options) {
           .selectAll("path")
             .data(chord.chords)
           .enter().append("path")
-            .style("fill", function(d) { return self.fill(d[coloring].index); })
+            .style("fill", function(d) { return self.fill(comp[coloring](d.source, d.target).index); })
             .attr("d", chord_svg)
             .style("opacity", 1);
 
@@ -98,12 +104,12 @@ d3.chart.chord = function(options) {
     };
 
     self.flipColors = function() {
-      coloring = coloring == 'source' ? 'target' : 'source';
+      coloring = coloring == 'bigger' ? 'smaller' : 'bigger';
       svg.select(".chord")
         .selectAll("path")
         .transition()
         .duration(900)
-        .style("fill", function(d) { return self.fill(d[coloring].index); })
+        .style("fill", function(d) { return self.fill(comp[coloring](d.source, d.target).index); });
     };
 
     self.drawTicks = function() {
